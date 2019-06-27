@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+       x:Class="PlantAlarm.AppShell"
+       xmlns:pages="clr-namespace:PlantAlarm.Views">
+    <TabBar>
+        <Tab Title="Today">
+            <pages:TodayPage />
+        </Tab>
+        <Tab Title="Plants">
+            <pages:PlantsPage />
+        </Tab>
+        <Tab Title="Keep-alives">
+            <pages:AccessoriesPage />
+        </Tab>
+        <Tab Title="Settings">
+            <pages:SettingsPage />
+        </Tab>
+    </TabBar>
+</Shell>
