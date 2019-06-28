@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Foundation;
+using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
 using PlantAlarm.iOS.DependencyServices;
 using PlantAlarm.Models;
@@ -11,14 +12,14 @@ using Xamarin.Forms;
 [assembly: Dependency(typeof(NotificationService_iOS))]
 namespace PlantAlarm.iOS.DependencyServices
 {
-    public class NotificationService_iOS : INotificationService
+    public class NotificationService_iOS : INotificationServiceProvider
     {
-        public void CreateDailyReminders(List<List<TaskBase>> listOfTasksForEveryDay)
+        public void CreateDailyReminders(List<List<PlantActivityItem>> listOfTasksForEveryDay, byte atHour = 8)
         {
             var notificationCenter = UNUserNotificationCenter.Current;
 
-            //Create notifications for the next 63 days.
-            for (int i = 0; i < 62; i++)
+            //Create notifications for each day.
+            for (int i = 0; i < listOfTasksForEveryDay.Count; i++)
             {
                 var date = DateTime.Now.AddDays(i);
 
@@ -27,7 +28,7 @@ namespace PlantAlarm.iOS.DependencyServices
                     Year = date.Year,
                     Month = date.Month,
                     Day = date.Day,
-                    Hour = 8 //TODO allow user to set time.
+                    Hour = atHour
                 };
 
                 var trigger = UNCalendarNotificationTrigger.CreateTrigger(dateComponents, false);

@@ -7,6 +7,7 @@ namespace PlantAlarm.DatabaseModels
     {
         [AutoIncrement, PrimaryKey]
         public int Id { get; set; }
+        [NotNull]
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
     }
@@ -16,8 +17,29 @@ namespace PlantAlarm.DatabaseModels
         [AutoIncrement, PrimaryKey]
         public int Id { get; set; }
         [Indexed]
-        public int PlantId { get; set; }
-        [MaxLength(255)]
+        public int PlantFk { get; set; }
+        [MaxLength(255), NotNull]
+        public string Url { get; set; }
+        public DateTime TakenAt { get; set; }
+    }
+
+    public class Accessory
+    {
+        [AutoIncrement, PrimaryKey]
+        public int Id { get; set; }
+        [NotNull]
+        public string Name { get; set; }
+        public string Instructions { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class AccessoryPhoto
+    {
+        [AutoIncrement, PrimaryKey]
+        public int Id { get; set; }
+        [Indexed]
+        public int AccessoryFk { get; set; }
+        [MaxLength(255), NotNull]
         public string Url { get; set; }
         public DateTime TakenAt { get; set; }
     }
@@ -27,9 +49,11 @@ namespace PlantAlarm.DatabaseModels
         [AutoIncrement, PrimaryKey]
         public int Id { get; set; }
         [Indexed]
-        public int PlantId { get; set; }
+        public int PlantFk { get; set; }
         [MaxLength(511)]
         public string Description { get; set; }
+        [Indexed]
+        public int AccessoryFk { get; set; }
         public bool IsRepeating { get; set; }
         public DateTime FirstOccurrenceDate { get; set; }
         public bool? OnMonday { get; set; }
@@ -49,7 +73,7 @@ namespace PlantAlarm.DatabaseModels
         [AutoIncrement, PrimaryKey]
         public int Id { get; set; }
         [Indexed]
-        public int PlantTaskId { get; set; }
+        public int PlantTaskFk { get; set; }
         public DateTime Time { get; set; }
         public bool IsCompleted { get; set; }
     }
