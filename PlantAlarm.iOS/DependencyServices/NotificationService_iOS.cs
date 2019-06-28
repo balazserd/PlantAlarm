@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Foundation;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
@@ -14,12 +16,12 @@ namespace PlantAlarm.iOS.DependencyServices
 {
     public class NotificationService_iOS : INotificationServiceProvider
     {
-        public void CreateDailyReminders(List<List<PlantActivityItem>> listOfTasksForEveryDay, byte atHour = 8)
-        {
-            var notificationCenter = UNUserNotificationCenter.Current;
+        UNUserNotificationCenter NotificationCenter = UNUserNotificationCenter.Current;
 
+        public void CreateDailyReminders(List<PlantActivityItem>[] listOfTasksForEveryDay, byte atHour = 8, byte atMinute = 0)
+        {
             //Create notifications for each day.
-            for (int i = 0; i < listOfTasksForEveryDay.Count; i++)
+            for (int i = 0; i < listOfTasksForEveryDay.Count(); i++)
             {
                 var date = DateTime.Now.AddDays(i);
 
@@ -28,15 +30,17 @@ namespace PlantAlarm.iOS.DependencyServices
                     Year = date.Year,
                     Month = date.Month,
                     Day = date.Day,
-                    Hour = atHour
+                    Hour = atHour,
+                    Minute = atMinute,
                 };
 
                 var trigger = UNCalendarNotificationTrigger.CreateTrigger(dateComponents, false);
                 var content = new UNMutableNotificationContent
                 {
                     Title = "Your plants need you!",
-                    Body = $"You have {listOfTasksForEveryDay[i].Count} tasks for today.",
+                    Body = $"You have {listOfTasksForEveryDay[i].Count} tasks for today. Tap to see what you have to do in order to keep your (hopefully still) green friends happy.",
                     Sound = UNNotificationSound.Default,
+                    CategoryIdentifier = "DailyReminder",
                 };
 
                 var request = UNNotificationRequest.FromIdentifier(
@@ -44,8 +48,26 @@ namespace PlantAlarm.iOS.DependencyServices
                     content,
                     trigger);
 
-                notificationCenter.AddNotificationRequest(request, (error) => { /*TODO handle */ });
+                NotificationCenter.AddNotificationRequestAsync(request).Wait();
             }
+        }
+
+        public async Task RemoveDailyReminders(DateTime from, DateTime to)
+        {
+            var allNotificationRequests = await NotificationCenter.GetPendingNotificationRequestsAsync();
+
+            var removableRequests = allNotificationRequests
+                .Where(req =>
+                {
+                    NSDate notificationDate = (req.Trigger as UNCalendarNotificationTrigger).NextTriggerDate;
+                    bool notBefore = notificationDate.SecondsSinceReferenceDate >= ((NSDate)from.Date).SecondsSinceReferenceDate;
+                    bool notAfter = notificationDate.SecondsSinceReferenceDate <= ((NSDate)to.Date).SecondsSinceReferenceDate;
+
+                    return notBefore && notAfter;
+                })
+                .ToList();
+
+            NotificationCenter.RemovePendingNotificationRequests(removableRequests.Select(req => req.Identifier).ToArray());
         }
     }
 }

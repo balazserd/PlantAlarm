@@ -11,6 +11,7 @@ using Xamarin.Forms;
 
 namespace PlantAlarm.Services
 {
+    //This is the service that should be called instead of DependencyService.Get<INotificationServiceProvider>().
     public static class NotificationService
     {
         private static readonly INotificationServiceProvider platformNotiSvc = DependencyService.Get<INotificationServiceProvider>();
@@ -18,78 +19,32 @@ namespace PlantAlarm.Services
 
         static async Task AddDailyNotifications(int forTheNextXDays)
         {
-            var activities = await GetUpcomingActivities(forTheNextXDays);
+            var activities = await GetUpcomingActivitiesByDay(forTheNextXDays);
 
             platformNotiSvc.CreateDailyReminders(activities);
         }
 
-        static async Task<List<List<PlantActivityItem>>> GetUpcomingActivities(int NumberOfDays)
+        static async Task<List<PlantActivityItem>> GetUpcomingActivities(int NumberOfDays)
         {
-            var onetimeTaskList = await db.Table<PlantTask>().Where(pt => !pt.IsRepeating).ToListAsync();
-            var recurringTaskList = await db.Table<PlantTask>().Where(pt => pt.IsRepeating).ToListAsync();
+            var activities = db.Table<PlantActivityItem>()
+                .Where(act => act.Time >= DateTime.Now && act.Time <= DateTime.Now.AddDays(NumberOfDays))
+                .ToListAsync();
 
-            //Can't use simple list, it is not thread safe.
-            //As order is not guaranteed, we store the day in the second value of the tuple.
-            ConcurrentBag<(List<PlantActivityItem>, int)> resultList = new ConcurrentBag<(List<PlantActivityItem>, int)>();
-
-            var today = DateTime.Today;
-
-            Parallel.For(0, //From today
-                NumberOfDays + 1, //To today + X days
-                (i) =>
-                {
-                    var tasksForDay = new List<PlantActivityItem>();
-                    var thisDay = today.AddDays(i);
-
-                    foreach (var recurringTask in recurringTaskList)
-                    {
-                        //Single Days.
-                        if (thisDay.DayOfWeek == DayOfWeek.Monday && (recurringTask.OnMonday ?? false))       AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-                        if (thisDay.DayOfWeek == DayOfWeek.Tuesday && (recurringTask.OnTuesday ?? false))     AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-                        if (thisDay.DayOfWeek == DayOfWeek.Wednesday && (recurringTask.OnWednesday ?? false)) AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-                        if (thisDay.DayOfWeek == DayOfWeek.Thursday && (recurringTask.OnThursday ?? false))   AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-                        if (thisDay.DayOfWeek == DayOfWeek.Friday && (recurringTask.OnFriday ?? false))       AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-                        if (thisDay.DayOfWeek == DayOfWeek.Saturday && (recurringTask.OnSaturday ?? false))   AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-                        if (thisDay.DayOfWeek == DayOfWeek.Sunday && (recurringTask.OnSunday ?? false))       AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-
-                        //If it is that day of the month.
-                        if (recurringTask.OnDayOfMonth == thisDay.Day) AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-
-                        //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
-                        if ((thisDay - recurringTask.FirstOccurrenceDate).TotalDays % recurringTask.EveryXDays == 0) AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-
-                        //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
-                        if (((thisDay.Year - recurringTask.FirstOccurrenceDate.Year) * 12) + thisDay.Month - recurringTask.FirstOccurrenceDate.Month % recurringTask.EveryXMonths == 0 &&
-                              thisDay.Day == recurringTask.FirstOccurrenceDate.Day)
-                        {
-                            AddActivityItemForDay(tasksForDay, recurringTask.Id, thisDay);
-                        }
-                    }
-
-                    foreach (var onetimeTask in onetimeTaskList)
-                    {
-                        if (thisDay.Date == onetimeTask.FirstOccurrenceDate) AddActivityItemForDay(tasksForDay, onetimeTask.Id, thisDay);
-                    }
-
-                    resultList.Add(Tuple.Create(tasksForDay, i).ToValueTuple());
-                });
-
-            var result = resultList
-                .OrderBy(tup => tup.Item2)
-                .Select(tup => tup.Item1)
-                .ToList();
-
-            return result;
+            return await activities;
         }
 
-        private static void AddActivityItemForDay(List<PlantActivityItem> taskList, int plantTaskId, DateTime day)
+        static async Task<List<PlantActivityItem>[]> GetUpcomingActivitiesByDay(int NumberOfDays)
         {
-            taskList.Add(new PlantActivityItem()
+            var activities = await GetUpcomingActivities(NumberOfDays);
+
+            var result = new List<PlantActivityItem>[NumberOfDays + 1];
+
+            for (int i = 0; i <= NumberOfDays; i++)
             {
-                IsCompleted = false,
-                PlantTaskId = plantTaskId,
-                Time = day
-            });
+                result[i] = activities.Where(act => act.Time.Day == DateTime.Now.AddDays(i).Day).ToList();
+            }
+
+            return result;
         }
     }
 }

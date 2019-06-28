@@ -26,8 +26,10 @@ namespace PlantAlarm.DatabaseModels
 
                 db.CreateTableAsync<Plant>().Wait();
                 db.CreateTableAsync<PlantPhoto>().Wait();
+                db.CreateTableAsync<Accessory>().Wait();
+                db.CreateTableAsync<AccessoryPhoto>().Wait();
                 db.CreateTableAsync<PlantTask>().Wait();
-                db.CreateTableAsync<PlantActivity>().Wait();
+                db.CreateTableAsync<PlantActivityItem>().Wait();
             }
         }
     }

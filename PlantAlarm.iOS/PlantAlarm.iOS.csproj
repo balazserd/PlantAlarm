@@ -115,6 +115,22 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\TodayPageIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\GardenPageIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ActivitiesPageIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SettingsPageIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ActivitiesPageIcon.imageset\icons8-garden_shears_filled.png" />
+    <ImageAsset Include="Assets.xcassets\ActivitiesPageIcon.imageset\icons8-garden_shears_filled-1.png" />
+    <ImageAsset Include="Assets.xcassets\ActivitiesPageIcon.imageset\icons8-garden_shears_filled-2.png" />
+    <ImageAsset Include="Assets.xcassets\SettingsPageIcon.imageset\icons8-job_filled.png" />
+    <ImageAsset Include="Assets.xcassets\SettingsPageIcon.imageset\icons8-job_filled-1.png" />
+    <ImageAsset Include="Assets.xcassets\SettingsPageIcon.imageset\icons8-job_filled-2.png" />
+    <ImageAsset Include="Assets.xcassets\GardenPageIcon.imageset\icons8-potted_plant_filled.png" />
+    <ImageAsset Include="Assets.xcassets\GardenPageIcon.imageset\icons8-potted_plant_filled-1.png" />
+    <ImageAsset Include="Assets.xcassets\GardenPageIcon.imageset\icons8-potted_plant_filled-2.png" />
+    <ImageAsset Include="Assets.xcassets\TodayPageIcon.imageset\icons8-today_filled.png" />
+    <ImageAsset Include="Assets.xcassets\TodayPageIcon.imageset\icons8-today_filled-1.png" />
+    <ImageAsset Include="Assets.xcassets\TodayPageIcon.imageset\icons8-today_filled-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -137,5 +153,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DependencyServices\" />
+    <Folder Include="Assets.xcassets\TodayPageIcon.imageset\" />
+    <Folder Include="Assets.xcassets\GardenPageIcon.imageset\" />
+    <Folder Include="Assets.xcassets\ActivitiesPageIcon.imageset\" />
+    <Folder Include="Assets.xcassets\SettingsPageIcon.imageset\" />
   </ItemGroup>
 </Project>

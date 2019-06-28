@@ -91,6 +91,18 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ActivitiesPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ActivitiesPageIcon.png" />
+    <AndroidResource Include="Resources\drawable\SettingsPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\SettingsPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\SettingsPageIcon.png" />
+    <AndroidResource Include="Resources\drawable\ActivitiesPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\GardenPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\GardenPageIcon.png" />
+    <AndroidResource Include="Resources\drawable\GardenPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\TodayPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\TodayPageIcon.png" />
+    <AndroidResource Include="Resources\drawable\TodayPageIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
