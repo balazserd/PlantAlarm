@@ -8,14 +8,15 @@ using SQLite;
 
 namespace PlantAlarm.Services
 {
-    public static class PlantActivityCreatorService
+    public static class PlantActivityService
     {
         private static readonly SQLiteAsyncConnection db = App.LocalDbConnection.Db;
 
         #region PUBLIC methods
-        //IMPORTANT!
-        //Creating activities for the next 2 months.
-        //If user has not used the app in 2 months, we won't be sending notifications.
+        /// <summary>
+        /// Adds activities to the local storage from the specified Task for the next 2 months, last day inclusive.
+        /// </summary>
+        /// <param name="task">The PlantTask to create the activities for.</param>
         public static async Task AddActivitiesFromTask(PlantTask task)
         {
             List<PlantActivityItem> resultList = new List<PlantActivityItem>();
@@ -62,9 +63,44 @@ namespace PlantAlarm.Services
             await db.InsertAllAsync(resultList);
         }
 
+        /// <summary>
+        /// Removes all activities for the specified task from the local storage.
+        /// </summary>
+        /// <param name="task">The PlantTask which's activities should be removed.</param>
         public static async Task RemoveActivitiesOfTask(PlantTask task)
         {
             var activitiesToDelete = await db.Table<PlantActivityItem>().Where(act => act.PlantTaskFk == task.Id).DeleteAsync();
+        }
+
+        /// <summary>
+        /// Returns the upcoming activities for the next few days.
+        /// </summary>
+        /// <param name="NumberOfDays">The number of days into the future until which to collect activities (inclusive).</param>
+        public static async Task<List<PlantActivityItem>> GetUpcomingActivities(int NumberOfDays)
+        {
+            var activities = db.Table<PlantActivityItem>()
+                .Where(act => act.Time >= DateTime.Now && act.Time <= DateTime.Now.AddDays(NumberOfDays))
+                .ToListAsync();
+
+            return await activities;
+        }
+
+        /// <summary>
+        /// Returns the upcoming activities for the next few days, grouping them based on day into an array.
+        /// </summary>
+        /// <param name="NumberOfDays">The number of days into the future until which to collect activities (inclusive).</param>
+        public static async Task<List<PlantActivityItem>[]> GetUpcomingActivitiesByDay(int NumberOfDays)
+        {
+            var activities = await GetUpcomingActivities(NumberOfDays);
+
+            var result = new List<PlantActivityItem>[NumberOfDays + 1];
+
+            for (int i = 0; i <= NumberOfDays; i++)
+            {
+                result[i] = activities.Where(act => act.Time.Day == DateTime.Now.AddDays(i).Day).ToList();
+            }
+
+            return result;
         }
         #endregion
 
