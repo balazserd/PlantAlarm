@@ -32,24 +32,25 @@ namespace PlantAlarm.Services
                 {
                     //Check the task's each recurring option.
                     //If any of the options indicate that the task should be performed this day, it gets added to the list.
-                    //Single Days.
-                    if (thisDay.DayOfWeek == DayOfWeek.Monday && (task.OnMonday ?? false)) AddActivityItemForDay(resultList, task.Id, thisDay);
-                    if (thisDay.DayOfWeek == DayOfWeek.Tuesday && (task.OnTuesday ?? false)) AddActivityItemForDay(resultList, task.Id, thisDay);
-                    if (thisDay.DayOfWeek == DayOfWeek.Wednesday && (task.OnWednesday ?? false)) AddActivityItemForDay(resultList, task.Id, thisDay);
-                    if (thisDay.DayOfWeek == DayOfWeek.Thursday && (task.OnThursday ?? false)) AddActivityItemForDay(resultList, task.Id, thisDay);
-                    if (thisDay.DayOfWeek == DayOfWeek.Friday && (task.OnFriday ?? false)) AddActivityItemForDay(resultList, task.Id, thisDay);
-                    if (thisDay.DayOfWeek == DayOfWeek.Saturday && (task.OnSaturday ?? false)) AddActivityItemForDay(resultList, task.Id, thisDay);
-                    if (thisDay.DayOfWeek == DayOfWeek.Sunday && (task.OnSunday ?? false)) AddActivityItemForDay(resultList, task.Id, thisDay);
 
-                    //If it is that day of the month.
-                    if (task.OnDayOfMonth == thisDay.Day) AddActivityItemForDay(resultList, task.Id, thisDay);
+                        //Single Days.
+                    if ((thisDay.DayOfWeek == DayOfWeek.Monday && (task.OnMonday ?? false)) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Tuesday && (task.OnTuesday ?? false)) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Wednesday && (task.OnWednesday ?? false)) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Thursday && (task.OnThursday ?? false)) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Friday && (task.OnFriday ?? false)) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Saturday && (task.OnSaturday ?? false)) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Sunday && (task.OnSunday ?? false)) ||
 
-                    //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
-                    if ((thisDay - task.FirstOccurrenceDate).TotalDays % task.EveryXDays == 0) AddActivityItemForDay(resultList, task.Id, thisDay);
+                        //If it is that day of the month.
+                        (task.OnDayOfMonth == thisDay.Day) ||
 
-                    //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
-                    if (((thisDay.Year - task.FirstOccurrenceDate.Year) * 12) + thisDay.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
-                            thisDay.Day == task.FirstOccurrenceDate.Day)
+                        //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
+                        ((thisDay - task.FirstOccurrenceDate).TotalDays % task.EveryXDays == 0) ||
+
+                        //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
+                        (((thisDay.Year - task.FirstOccurrenceDate.Year) * 12) + thisDay.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
+                           thisDay.Day == task.FirstOccurrenceDate.Day)) 
                     {
                         AddActivityItemForDay(resultList, task.Id, thisDay);
                     }
@@ -59,7 +60,7 @@ namespace PlantAlarm.Services
                     if (thisDay.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, task.Id, thisDay);
                 }
             }
-
+            
             await db.InsertAllAsync(resultList);
         }
 
@@ -73,31 +74,43 @@ namespace PlantAlarm.Services
         }
 
         /// <summary>
+        /// Modifies the given activities in the database. For example, can mark them as done.
+        /// </summary>
+        /// <param name="activities">The list of activities to modify.</param>
+        public static async Task ModifyActivities(List<PlantActivityItem> activities)
+        {
+            await db.UpdateAllAsync(activities);
+        }
+
+        /// <summary>
         /// Returns the upcoming activities for the next few days.
         /// </summary>
-        /// <param name="NumberOfDays">The number of days into the future until which to collect activities (inclusive).</param>
-        public static async Task<List<PlantActivityItem>> GetUpcomingActivities(int NumberOfDays)
+        /// <param name="from">The first day for which to return the activities (inclusive).</param>
+        /// <param name="to">The last day for which to return the activities (inclusive).</param>
+        public static async Task<List<PlantActivityItem>> GetUpcomingActivities(DateTime from, DateTime to)
         {
             var activities = db.Table<PlantActivityItem>()
-                .Where(act => act.Time >= DateTime.Now && act.Time <= DateTime.Now.AddDays(NumberOfDays))
+                .Where(act => act.Time.Date >= from.Date && act.Time.Date <= to.Date)
                 .ToListAsync();
 
             return await activities;
         }
 
         /// <summary>
-        /// Returns the upcoming activities for the next few days, grouping them based on day into an array.
+        /// Returns the upcoming activities for the given days, grouping them based on day into an array.
         /// </summary>
-        /// <param name="NumberOfDays">The number of days into the future until which to collect activities (inclusive).</param>
-        public static async Task<List<PlantActivityItem>[]> GetUpcomingActivitiesByDay(int NumberOfDays)
+        /// <param name="from">The first day for which to return the activities (inclusive).</param>
+        /// <param name="to">The last day for which to return the activities (inclusive).</param>
+        public static async Task<List<PlantActivityItem>[]> GetUpcomingActivitiesByDay(DateTime from, DateTime to)
         {
-            var activities = await GetUpcomingActivities(NumberOfDays);
+            var activities = await GetUpcomingActivities(from, to);
+            int numberOfDays = (int)Math.Ceiling((to - from).TotalDays);
 
-            var result = new List<PlantActivityItem>[NumberOfDays + 1];
+            var result = new List<PlantActivityItem>[numberOfDays];
 
-            for (int i = 0; i <= NumberOfDays; i++)
+            for (int i = 0; i <= numberOfDays; i++)
             {
-                result[i] = activities.Where(act => act.Time.Day == DateTime.Now.AddDays(i).Day).ToList();
+                result[i] = activities.Where(act => act.Time.Day == from.Date.AddDays(i).Day).ToList();
             }
 
             return result;
@@ -105,9 +118,9 @@ namespace PlantAlarm.Services
         #endregion
 
         #region PRIVATE methods
-        private static void AddActivityItemForDay(List<PlantActivityItem> taskBag, int plantTaskId, DateTime day)
+        private static void AddActivityItemForDay(List<PlantActivityItem> taskList, int plantTaskId, DateTime day)
         {
-            taskBag.Add(new PlantActivityItem
+            taskList.Add(new PlantActivityItem
             {
                 IsCompleted = false,
                 PlantTaskFk = plantTaskId,

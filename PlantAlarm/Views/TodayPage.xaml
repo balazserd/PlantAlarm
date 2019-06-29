@@ -3,5 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlantAlarm.Views.TodayPage">
     <ContentPage.Content>
+        <StackLayout>
+            <RelativeLayout>
+                <ListView x:Name="TestListView"
+                          RowHeight="35"
+                          Rotation="270"
+                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-32}"
+                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=-0.5, Constant=32}"
+                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=45}"
+                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                          ItemsSource="{Binding CalendarDays}" SelectedItem="{Binding SelectedDay}" VerticalScrollBarVisibility="Never"
+                          SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Rotation="90" Margin="-10,-10,0,0">
+                                    <Label Text="{Binding MonthName}" TextColor="Silver" FontSize="9"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding Day}" FontAttributes="Bold" FontSize="16"
+                                           HorizontalOptions="Center" Margin="0,-5,0,0" />
+                                    <Label Text="{Binding DayName}" FontSize="10" HorizontalOptions="Center" Margin="0,-5,0,0" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativeLayout>
+            <StackLayout VerticalOptions="FillAndExpand">
+                <Label Text="THU" FontSize="16" />
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
