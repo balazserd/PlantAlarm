@@ -17,7 +17,7 @@ namespace PlantAlarm.Services
         /// Adds activities to the local storage from the specified Task for the next 2 months, last day inclusive.
         /// </summary>
         /// <param name="task">The PlantTask to create the activities for.</param>
-        public static async Task AddActivitiesFromTask(PlantTask task)
+        public static async Task AddActivitiesFromTaskAsync(PlantTask task)
         {
             List<PlantActivityItem> resultList = new List<PlantActivityItem>();
 
@@ -68,7 +68,7 @@ namespace PlantAlarm.Services
         /// Removes all activities for the specified task from the local storage.
         /// </summary>
         /// <param name="task">The PlantTask which's activities should be removed.</param>
-        public static async Task RemoveActivitiesOfTask(PlantTask task)
+        public static async Task RemoveActivitiesOfTaskAsync(PlantTask task)
         {
             var activitiesToDelete = await db.Table<PlantActivityItem>().Where(act => act.PlantTaskFk == task.Id).DeleteAsync();
         }
@@ -77,7 +77,7 @@ namespace PlantAlarm.Services
         /// Modifies the given activities in the database. For example, can mark them as done.
         /// </summary>
         /// <param name="activities">The list of activities to modify.</param>
-        public static async Task ModifyActivities(List<PlantActivityItem> activities)
+        public static async Task ModifyActivitiesAsync(List<PlantActivityItem> activities)
         {
             await db.UpdateAllAsync(activities);
         }
@@ -87,10 +87,23 @@ namespace PlantAlarm.Services
         /// </summary>
         /// <param name="from">The first day for which to return the activities (inclusive).</param>
         /// <param name="to">The last day for which to return the activities (inclusive).</param>
-        public static async Task<List<PlantActivityItem>> GetUpcomingActivities(DateTime from, DateTime to)
+        public static async Task<List<PlantActivityItem>> GetUpcomingActivitiesAsync(DateTime from, DateTime to)
         {
             var activities = db.Table<PlantActivityItem>()
                 .Where(act => act.Time.Date >= from.Date && act.Time.Date <= to.Date)
+                .ToListAsync();
+
+            return await activities;
+        }
+
+        /// <summary>
+        /// Returns the upcoming activities for the given day.
+        /// </summary>
+        /// <param name="day">The day for which to return the activities.</param>
+        public static async Task<List<PlantActivityItem>> GetUpcomingActivitiesAsync(DateTime day)
+        {
+            var activities = db.Table<PlantActivityItem>()
+                .Where(act => act.Time.Date == day.Date)
                 .ToListAsync();
 
             return await activities;
@@ -101,7 +114,7 @@ namespace PlantAlarm.Services
         /// </summary>
         /// <param name="from">The first day for which to return the activities (inclusive).</param>
         /// <param name="to">The last day for which to return the activities (inclusive).</param>
-        public static async Task<List<PlantActivityItem>[]> GetUpcomingActivitiesByDay(DateTime from, DateTime to)
+        public static async Task<List<PlantActivityItem>[]> GetUpcomingActivitiesByDayAsync(DateTime from, DateTime to)
         {
             var activities = await GetUpcomingActivities(from, to);
             int numberOfDays = (int)Math.Ceiling((to - from).TotalDays);

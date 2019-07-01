@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PlantAlarm.CustomControls.CalendarDayViewCell">
+    <ViewCell.View>
+        <StackLayout Rotation="90" Margin="-5,-8,3,0">
+            <Label Text="{Binding MonthName}" TextColor="Silver" FontSize="9"
+                   HorizontalOptions="Center"/>
+            <Label Text="{Binding Day}" FontAttributes="Bold" FontSize="16"
+                   HorizontalOptions="Center" Margin="0,-5,0,0" />
+            <Label Text="{Binding DayName}" FontSize="10" HorizontalOptions="Center" Margin="0,-5,0,0" />
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>

@@ -23,6 +23,7 @@
     <Folder Include="DatabaseModels\" />
     <Folder Include="DependencyServices\" />
     <Folder Include="Services\" />
+    <Folder Include="CustomControls\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Services\NotificationService\Notification.cs" />

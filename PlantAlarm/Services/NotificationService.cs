@@ -15,11 +15,10 @@ namespace PlantAlarm.Services
     public static class NotificationService
     {
         private static readonly INotificationServiceProvider platformNotiSvc = DependencyService.Get<INotificationServiceProvider>();
-        private static readonly SQLiteAsyncConnection db = App.LocalDbConnection.Db;
 
         public static async Task AddDailyNotifications(int forTheNextXDays)
         {
-            var activities = await PlantActivityService.GetUpcomingActivitiesByDay(DateTime.Today, DateTime.Today.AddDays(forTheNextXDays));
+            var activities = await PlantActivityService.GetUpcomingActivitiesByDayAsync(DateTime.Today, DateTime.Today.AddDays(forTheNextXDays));
 
             platformNotiSvc.CreateDailyReminders(activities);
         }

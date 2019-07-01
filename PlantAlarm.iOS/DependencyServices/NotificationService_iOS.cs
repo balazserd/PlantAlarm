@@ -24,7 +24,7 @@ namespace PlantAlarm.iOS.DependencyServices
             for (int i = 0; i < listOfTasksForEveryDay.Count(); i++)
             {
                 var date = DateTime.Now.AddDays(i);
-
+                
                 NSDateComponents dateComponents = new NSDateComponents
                 {
                     Year = date.Year,

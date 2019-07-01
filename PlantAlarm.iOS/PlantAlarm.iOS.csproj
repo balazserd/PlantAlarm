@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="DependencyServices\NotificationService_iOS.cs" />
+    <Compile Include="CustomRenderers\CalendarDayViewCellRenderer_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -158,5 +159,6 @@
     <Folder Include="Assets.xcassets\GardenPageIcon.imageset\" />
     <Folder Include="Assets.xcassets\ActivitiesPageIcon.imageset\" />
     <Folder Include="Assets.xcassets\SettingsPageIcon.imageset\" />
+    <Folder Include="CustomRenderers\" />
   </ItemGroup>
 </Project>

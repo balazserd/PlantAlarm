@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlantAlarm.Views.NewPlantPage"
+             Title="New Plant">
+    <ContentPage.Content>
+        <StackLayout>
+            <TableView Intent="Form" >
+                <TableSection>
+                    <EntryCell Label="Name" />
+                </TableSection>
+                <TableSection>
+                    <SwitchCell Text="Recurring" x:Name="RecurringSwitchCell" OnChanged="IsRepeatingChanged" />
+                </TableSection>
+                
+                <!-- Should show when not recurring -->
+                <TableSection Title="Only occurrence">
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                            <Label VerticalOptions="Center" Text="Date" HorizontalOptions="StartAndExpand"/>
+                            <DatePicker x:Name="OneTimeDatePicker" HorizontalOptions="End" />
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                            <Label VerticalOptions="Center" Text="Time" HorizontalOptions="StartAndExpand"/>
+                            <TimePicker x:Name="OneTimeTimePicker" HorizontalOptions="End" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                
+                <!-- Should show when recurring -->
+                <TableSection Title="First occurrence">
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                            <Label VerticalOptions="Center" Text="Date" HorizontalOptions="StartAndExpand"/>
+                            <DatePicker x:Name="OneTimeDatePicker" HorizontalOptions="End" />
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                            <Label VerticalOptions="Center" Text="Time" HorizontalOptions="StartAndExpand"/>
+                            <TimePicker x:Name="OneTimeTimePicker" HorizontalOptions="End" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

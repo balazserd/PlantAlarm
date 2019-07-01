@@ -10,6 +10,15 @@ namespace PlantAlarm.DatabaseModels
         [NotNull]
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
+        [Indexed]
+        public int? PlantCategoryFk { get; set; }
+    }
+
+    public class PlantCategory
+    {
+        [AutoIncrement, PrimaryKey]
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class PlantPhoto

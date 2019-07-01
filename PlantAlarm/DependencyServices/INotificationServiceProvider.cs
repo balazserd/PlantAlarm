@@ -12,7 +12,7 @@ namespace PlantAlarm.DependencyServices
     public interface INotificationServiceProvider
     {
         /// <summary>
-        /// Creates daily notifications ahead based on the supplied list of activities.
+        /// Creates daily notifications ahead based on the supplied array of lists of activities.
         /// </summary>
         /// <param name="listOfTasksForEveryDay">The list containing the activities for each day. It is assumed that the first item in the list is the activities for today,
         /// and every subsequent element is the collection of activities for the next day.</param>
@@ -21,7 +21,7 @@ namespace PlantAlarm.DependencyServices
         void CreateDailyReminders(List<PlantActivityItem>[] listOfTasksForEveryDay, byte atHour = 8, byte atMinute = 0);
 
         /// <summary>
-        /// Removes daily reminders between the two specified dates.
+        /// Removes all daily reminders between the two specified dates.
         /// </summary>
         /// <param name="from">The first day to remove the daily notification for, inclusive.</param>
         /// <param name="to">The last day to remove the daily notification for, inslucive.</param>

@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PlantAlarm.Views.TodayPage">
+             x:Class="PlantAlarm.Views.TodayPage"
+             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls">
     <ContentPage.Content>
         <StackLayout>
             <RelativeLayout>
@@ -10,27 +11,19 @@
                           Rotation="270"
                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-32}"
                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=-0.5, Constant=32}"
-                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=45}"
+                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=50}"
                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                           ItemsSource="{Binding CalendarDays}" SelectedItem="{Binding SelectedDay}" VerticalScrollBarVisibility="Never"
                           SeparatorVisibility="None">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Rotation="90" Margin="-10,-10,0,0">
-                                    <Label Text="{Binding MonthName}" TextColor="Silver" FontSize="9"
-                                           HorizontalOptions="Center"/>
-                                    <Label Text="{Binding Day}" FontAttributes="Bold" FontSize="16"
-                                           HorizontalOptions="Center" Margin="0,-5,0,0" />
-                                    <Label Text="{Binding DayName}" FontSize="10" HorizontalOptions="Center" Margin="0,-5,0,0" />
-                                </StackLayout>
-                            </ViewCell>
+                            <customControls:CalendarDayViewCell />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </RelativeLayout>
             <StackLayout VerticalOptions="FillAndExpand">
-                <Label Text="THU" FontSize="16" />
+                
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
