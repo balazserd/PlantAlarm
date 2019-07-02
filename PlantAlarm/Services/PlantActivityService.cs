@@ -42,9 +42,6 @@ namespace PlantAlarm.Services
                         (thisDay.DayOfWeek == DayOfWeek.Saturday && (task.OnSaturday ?? false)) ||
                         (thisDay.DayOfWeek == DayOfWeek.Sunday && (task.OnSunday ?? false)) ||
 
-                        //If it is that day of the month.
-                        (task.OnDayOfMonth == thisDay.Day) ||
-
                         //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
                         ((thisDay - task.FirstOccurrenceDate).TotalDays % task.EveryXDays == 0) ||
 
@@ -116,7 +113,7 @@ namespace PlantAlarm.Services
         /// <param name="to">The last day for which to return the activities (inclusive).</param>
         public static async Task<List<PlantActivityItem>[]> GetUpcomingActivitiesByDayAsync(DateTime from, DateTime to)
         {
-            var activities = await GetUpcomingActivities(from, to);
+            var activities = await GetUpcomingActivitiesAsync(from, to);
             int numberOfDays = (int)Math.Ceiling((to - from).TotalDays);
 
             var result = new List<PlantActivityItem>[numberOfDays];

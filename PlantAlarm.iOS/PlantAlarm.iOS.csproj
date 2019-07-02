@@ -72,6 +72,8 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="DependencyServices\NotificationService_iOS.cs" />
     <Compile Include="CustomRenderers\CalendarDayViewCellRenderer_iOS.cs" />
+    <Compile Include="CustomRenderers\BorderlessDatePickerRenderer_iOS.cs" />
+    <Compile Include="CustomRenderers\BorderlessTimePickerRenderer_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

@@ -74,7 +74,6 @@ namespace PlantAlarm.DatabaseModels
         public bool? OnSunday { get; set; }
         public byte? EveryXDays { get; set; }
         public byte? EveryXMonths { get; set; }
-        public byte? OnDayOfMonth { get; set; }
     }
 
     public class PlantActivityItem

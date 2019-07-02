@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlantAlarm.Views.NewTaskPage"
+             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+             Title="New Task">
+    <ContentPage.Content>
+        <ScrollView>
+            <TableView Intent="Form" HasUnevenRows="true">
+                <TableSection>
+                    <EntryCell Height="44" Label="Name" />
+                </TableSection>
+                
+                <!-- Should show when not recurring -->
+                <TableSection Title="First occurrence" x:Name="DateTimeSection">
+                    <ViewCell Height="44" >
+                        <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                            <Label VerticalOptions="Center" Text="Date" HorizontalOptions="StartAndExpand"/>
+                            <customControls:BorderlessDatePicker x:Name="DatePicker" HorizontalOptions="End" WidthRequest="100" />
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell Height="44" >
+                        <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                            <Label VerticalOptions="Center" Text="Time" HorizontalOptions="StartAndExpand"/>
+                            <customControls:BorderlessTimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                
+                <!-- Should show when recurring -->
+                <TableSection Title="Recurring pattern" x:Name="RecurringSection">
+                    <ViewCell Height="44" x:Name="RecurringOnDayCell">
+                        <Grid Margin="7,0,3,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0" Grid.Row="0">
+                                <Label Text="MON" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
+                                <Switch x:Name="MondaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" Grid.Row="0">
+                                <Label Text="TUE" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
+                                <Switch x:Name="TuesdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" Grid.Row="0">
+                                <Label Text="WED" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
+                                <Switch x:Name="WednesdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="3" Grid.Row="0">
+                                <Label Text="THU" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
+                                <Switch x:Name="ThursdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="4" Grid.Row="0">
+                                <Label Text="FRI" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
+                                <Switch x:Name="FridaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="5" Grid.Row="0">
+                                <Label Text="SAT" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
+                                <Switch x:Name="SaturdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="6" Grid.Row="0">
+                                <Label Text="SUN" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
+                                <Switch x:Name="SundaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                            </StackLayout>
+                        </Grid>
+                    </ViewCell>
+                    <ViewCell Height="44">
+                        <StackLayout Margin="15,0,0,0" Orientation="Horizontal" Grid.Column="0" >
+                            <Label Text="Every " VerticalOptions="Center" />
+                            <Entry VerticalOptions="Center" x:Name="EveryXDaysEntry" Keyboard="Numeric"  WidthRequest="37" 
+                                   HorizontalTextAlignment="Center" MaxLength="2"/>
+                            <Label Text=" days"  VerticalOptions="Center"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell Height="44" x:Name="RecurringEveryXMonthsCell">
+                        <StackLayout Margin="15,0,0,0" Orientation="Horizontal" Grid.Column="0" >
+                            <Label Text="Every " VerticalOptions="Center" />
+                            <Entry VerticalOptions="Center" x:Name="EveryXMonthsEntry" Keyboard="Numeric" WidthRequest="37" 
+                                   HorizontalTextAlignment="Center" MaxLength="2"/>
+                            <Label Text=" month(s)" VerticalOptions="Center" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                
+                <TableSection Title="Plants to perform this task on">
+                    <ViewCell>
+                        <StackLayout>
+                            <Button HorizontalOptions="FillAndExpand" Text="Add plants" FontSize="16"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout>
+                            <ListView ItemsSource="">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Orientation="Horizontal" Margin="15,0,15,0" >
+                                                <Image Source="{Binding PlantPhoto}" />
+                                                <Label Text="{Binding Name}" />
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                
+                <TableSection>
+                    <ViewCell>
+                        <StackLayout>
+                            <Button Text="Add Task" FontSize="16" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableView>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
