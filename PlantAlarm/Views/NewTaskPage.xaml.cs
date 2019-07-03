@@ -8,7 +8,6 @@ namespace PlantAlarm.Views
     public partial class NewTaskPage : ContentPage
     {
         private const int CellHeight = 44;
-        private readonly int OneTimeSectionHeight;
 
         public NewTaskPage()
         {

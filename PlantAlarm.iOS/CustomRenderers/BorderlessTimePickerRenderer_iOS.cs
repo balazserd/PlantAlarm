@@ -13,9 +13,12 @@ namespace PlantAlarm.iOS.CustomRenderers
         protected override void OnElementChanged(ElementChangedEventArgs<TimePicker> e)
         {
             base.OnElementChanged(e);
-
-            Control.Layer.BorderWidth = 0;
-            Control.BorderStyle = UITextBorderStyle.None;
+            try
+            {
+                Control.Layer.BorderWidth = 0;
+                Control.BorderStyle = UITextBorderStyle.None;
+            }
+            catch (NullReferenceException) {}
         }
     }
 }

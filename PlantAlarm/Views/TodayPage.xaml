@@ -4,10 +4,13 @@
              x:Class="PlantAlarm.Views.TodayPage"
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
              Title="To-dos">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back to Today" Clicked="Handle_Clicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <RelativeLayout>
-                <ListView x:Name="TestListView"
+                <ListView x:Name="DaysListView"
                           RowHeight="35"
                           Rotation="270"
                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-32}"
@@ -15,7 +18,7 @@
                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=50}"
                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                           ItemsSource="{Binding CalendarDays}" SelectedItem="{Binding SelectedDay}" VerticalScrollBarVisibility="Never"
-                          SeparatorVisibility="None">
+                          SeparatorVisibility="None" ItemSelected="Handle_ItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <customControls:CalendarDayViewCell />

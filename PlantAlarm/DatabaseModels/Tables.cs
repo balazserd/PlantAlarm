@@ -38,6 +38,8 @@ namespace PlantAlarm.DatabaseModels
         public int Id { get; set; }
         [NotNull]
         public string Name { get; set; }
+        [Indexed]
+        public int AccessoryCategoryFk { get; set; }
         public string Instructions { get; set; }
         public DateTime CreatedAt { get; set; }
     }
@@ -51,6 +53,13 @@ namespace PlantAlarm.DatabaseModels
         [MaxLength(255), NotNull]
         public string Url { get; set; }
         public DateTime TakenAt { get; set; }
+    }
+
+    public class AccessoryCategory
+    {
+        [AutoIncrement, PrimaryKey]
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class PlantTask

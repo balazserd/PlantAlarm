@@ -10,25 +10,25 @@ namespace PlantAlarm.ViewModels
 {
     public class TodayViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<CalendarDay> CalendarDays { get; private set; }
+        public List<CalendarDay> CalendarDays { get; private set; }
 
         private CalendarDay selectedDay { get; set; }
         public CalendarDay SelectedDay
         {
             get => selectedDay;
-            set { OnPropertyChanged(); selectedDay = value; }
+            set { selectedDay = value; OnPropertyChanged(); }
         }
 
         public TodayViewModel()
         {
-            var listOfDays = Enumerable.Range(-60, 121) //Will generate from 60 days into past to 60 days into future.
+            var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus 4 months. TODO: maybe a better calender option.
                 .Select(i => 
                     new CalendarDay
                     {
                         Date = DateTime.Today.AddDays(i)
                     });
 
-            CalendarDays = new ObservableCollection<CalendarDay>(listOfDays);
+            CalendarDays = listOfDays.ToList();
             SelectedDay = CalendarDays.Single(cd => cd.Date.Date == DateTime.Today.Date); //Default selection should be today.
         }
 

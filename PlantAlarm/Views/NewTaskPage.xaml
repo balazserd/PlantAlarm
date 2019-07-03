@@ -96,7 +96,7 @@
                     </ViewCell>
                     <ViewCell>
                         <StackLayout>
-                            <ListView ItemsSource="">
+                            <ListView>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
