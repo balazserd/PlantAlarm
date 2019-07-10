@@ -30,6 +30,7 @@ namespace PlantAlarm.DatabaseModels
         [MaxLength(255), NotNull]
         public string Url { get; set; }
         public DateTime TakenAt { get; set; }
+        public bool IsPrimary { get; set; }
     }
 
     public class Accessory

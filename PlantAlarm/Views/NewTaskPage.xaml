@@ -42,31 +42,38 @@
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0" Grid.Row="0">
                                 <Label Text="MON" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
-                                <Switch x:Name="MondaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                                <CheckBox x:Name="MondayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
+                                          Margin="0,-5,0,0"/>
                             </StackLayout>
                             <StackLayout Grid.Column="1" Grid.Row="0">
                                 <Label Text="TUE" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
-                                <Switch x:Name="TuesdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7"/>
+                                <CheckBox x:Name="TuesdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
+                                          Margin="0,-5,0,0"/>
                             </StackLayout>
                             <StackLayout Grid.Column="2" Grid.Row="0">
                                 <Label Text="WED" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
-                                <Switch x:Name="WednesdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                                <CheckBox x:Name="WednesdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
+                                          Margin="0,-5,0,0"/>
                             </StackLayout>
                             <StackLayout Grid.Column="3" Grid.Row="0">
                                 <Label Text="THU" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
-                                <Switch x:Name="ThursdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                                <CheckBox x:Name="ThursdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
+                                          Margin="0,-5,0,0"/>
                             </StackLayout>
                             <StackLayout Grid.Column="4" Grid.Row="0">
                                 <Label Text="FRI" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
-                                <Switch x:Name="FridaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                                <CheckBox x:Name="FridayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
+                                          Margin="0,-5,0,0"/>
                             </StackLayout>
                             <StackLayout Grid.Column="5" Grid.Row="0">
                                 <Label Text="SAT" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
-                                <Switch x:Name="SaturdaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                                <CheckBox x:Name="SaturdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
+                                          Margin="0,-5,0,0"/>
                             </StackLayout>
                             <StackLayout Grid.Column="6" Grid.Row="0">
                                 <Label Text="SUN" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
-                                <Switch x:Name="SundaySwitch" HorizontalOptions="CenterAndExpand" Scale="0.7" />
+                                <CheckBox x:Name="SundayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
+                                          Margin="0,-5,0,0"/>
                             </StackLayout>
                         </Grid>
                     </ViewCell>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="PlantAlarm.Views.CategorySelectorPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar Placeholder="Search for categories..." SearchCommand="{Binding SearchCategoriesCommand}" x:Name="SearchBar"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
+            <ListView ItemsSource="{Binding Categories}" HasUnevenRows="true" ItemTapped="CategoryTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding PlantCategory.Name}" />
+                                </StackLayout>
+                                <Grid Margin="10,0,0,0" IsVisible="{Binding IsExpanded}">
+                                    <ListView ItemsSource="{Binding PlantsOfCategory}" >
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout Margin="5,0,0,5" Orientation="Horizontal">
+                                                    <Image Source="{Binding PhotoOfPlant.Url}" />
+                                                    <Label Text="{Binding Plant.Name}" />
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -5,13 +5,13 @@ using Xamarin.Forms;
 
 namespace PlantAlarm.Views
 {
-    public partial class NewPlantPage : ContentPage
+    public partial class PlantSelectorPage : ContentPage
     {
-        public NewPlantPage()
+        public PlantSelectorPage()
         {
             InitializeComponent();
 
-            this.BindingContext = new NewPlantViewModel(this.Navigation);
+            this.BindingContext = new PlantSelectorViewModel();
         }
     }
 }

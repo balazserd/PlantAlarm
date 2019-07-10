@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using PlantAlarm.DatabaseModels;
+using PlantAlarm.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +16,11 @@ namespace PlantAlarm
             InitializeComponent();
 
             LocalDbConnection = new LocalDbConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantAlarmSQLite.db3"));
+
+            if (!Directory.Exists(PlantService.LocalPhotoFolder))
+            {
+                Directory.CreateDirectory(PlantService.LocalPhotoFolder);
+            }
 
             MainPage = new AppShell();
         }

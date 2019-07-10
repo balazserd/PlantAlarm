@@ -27,7 +27,7 @@ namespace PlantAlarm.Views
             bool EveryXDaysEntryMakesSense = int.TryParse(EveryXDaysEntry.Text, out int dayInterval) && dayInterval > 0; //Can be parsed into a valid int.
             bool EveryXMonthsEntryMakesSense = int.TryParse(EveryXMonthsEntry.Text, out int monthInterval) && monthInterval > 0; //Can be parsed into a valid int.
 
-            return MondaySwitch.IsToggled || TuesdaySwitch.IsToggled || WednesdaySwitch.IsToggled || ThursdaySwitch.IsToggled || FridaySwitch.IsToggled || SaturdaySwitch.IsToggled || SundaySwitch.IsToggled || (EveryXDaysEntry != null && EveryXDaysEntryMakesSense) || (EveryXMonthsEntry != null && EveryXMonthsEntryMakesSense);
+            return MondayCheckBox.IsChecked || TuesdayCheckBox.IsChecked || WednesdayCheckBox.IsChecked || ThursdayCheckBox.IsChecked || FridayCheckBox.IsChecked || SaturdayCheckBox.IsChecked || SundayCheckBox.IsChecked || (EveryXDaysEntry != null && EveryXDaysEntryMakesSense) || (EveryXMonthsEntry != null && EveryXMonthsEntryMakesSense);
         }
     }
 }

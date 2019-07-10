@@ -9,6 +9,16 @@
                 <TableSection>
                     <EntryCell Height="44" Label="Name" />
                 </TableSection>
+                <TableSection Title="Photos" >
+                    <ViewCell>
+                        <StackLayout>
+                            <Button Text="Add Photos" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <CollectionView ItemsSource="{Binding }"
+                    </ViewCell>
+                </TableSection>
             </TableView>
         </ScrollView>
     </ContentPage.Content>

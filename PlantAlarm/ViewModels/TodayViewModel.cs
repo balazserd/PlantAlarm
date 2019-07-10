@@ -21,7 +21,7 @@ namespace PlantAlarm.ViewModels
 
         public TodayViewModel()
         {
-            var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus 4 months. TODO: maybe a better calender option.
+            var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus 4 months. TODO: maybe a better calendar option.
                 .Select(i => 
                     new CalendarDay
                     {

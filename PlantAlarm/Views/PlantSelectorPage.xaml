@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="PlantAlarm.Views.PlantSelectorPage"
+             Title="Select plants">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Done" Command="{Binding DoneCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding PlantList}" HasUnevenRows="false">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="70">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="{Binding PrimaryPhotoOfPlant.Url}" Margin="5"/>
+                                <Label Text="{Binding Plant.Name}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

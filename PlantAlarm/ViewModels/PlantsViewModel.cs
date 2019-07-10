@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace PlantAlarm.ViewModels
 {
-    public class PlantViewModel : INotifyPropertyChanged
+    public class PlantsViewModel : INotifyPropertyChanged
     {
         private INavigation Navigation { get; set; }
 
@@ -17,7 +17,7 @@ namespace PlantAlarm.ViewModels
 
         public ICommand ShowNewPlantPageCommand { get; private set; }
 
-        public PlantViewModel(INavigation navigation)
+        public PlantsViewModel(INavigation navigation)
         {
             Navigation = navigation;
 

@@ -21,12 +21,12 @@ namespace PlantAlarm.Views
             ScrollToToday();
         }
 
-        void Handle_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        void NewDaySelected(object sender, SelectedItemChangedEventArgs e)
         {
             DaysListView.ScrollTo(DaysListView.SelectedItem, ScrollToPosition.Center, true);
         }
 
-        void Handle_Clicked(object sender, System.EventArgs e)
+        void BackToTodayTapped(object sender, EventArgs e)
         {
             ScrollToToday();
         }

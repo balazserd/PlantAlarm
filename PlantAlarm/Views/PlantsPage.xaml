@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="PlantAlarm.Views.PlantsPage"
              Title="Garden">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New item" Command="{Binding ShowNewPlantPageCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
     </ContentPage.Content>
 </ContentPage>
