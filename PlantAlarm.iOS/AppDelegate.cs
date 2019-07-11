@@ -5,6 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 using UserNotifications;
+using Xamarin.Forms;
 
 namespace PlantAlarm.iOS
 {
@@ -23,6 +24,7 @@ namespace PlantAlarm.iOS
         //
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
+            Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 

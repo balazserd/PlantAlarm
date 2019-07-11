@@ -17,9 +17,10 @@ namespace PlantAlarm
 
             LocalDbConnection = new LocalDbConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantAlarmSQLite.db3"));
 
-            if (!Directory.Exists(PlantService.LocalPhotoFolder))
+            string localFolderUrl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantPhotos");
+            if (!Directory.Exists(localFolderUrl))
             {
-                Directory.CreateDirectory(PlantService.LocalPhotoFolder);
+                Directory.CreateDirectory(localFolderUrl);
             }
 
             MainPage = new AppShell();

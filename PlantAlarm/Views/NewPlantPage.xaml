@@ -12,11 +12,24 @@
                 <TableSection Title="Photos" >
                     <ViewCell>
                         <StackLayout>
-                            <Button Text="Add Photos" HorizontalOptions="FillAndExpand"/>
+                            <Button Text="Add Photo" HorizontalOptions="FillAndExpand" FontSize="16"
+                                    Command="{Binding AddPhotoCommand}"/>
                         </StackLayout>
                     </ViewCell>
                     <ViewCell>
-                        <CollectionView ItemsSource="{Binding }"
+                        <CollectionView ItemsSource="{Binding Photos}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical" Span="3" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Margin="4" BackgroundColor="Teal">
+                                        <Image Source="{Binding Url}" Aspect="AspectFill" VerticalOptions="FillAndExpand"
+                                               HorizontalOptions="FillAndExpand"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </ViewCell>
                 </TableSection>
             </TableView>

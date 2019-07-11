@@ -34,5 +34,11 @@
 	<string>PlantAlarm</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>NSCameraUsageDescription</key>
+	<string>In order to take photos of your plants, PlantAlarm needs access to your camera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>In order to upload photos from your camera roll, PlantAlarm needs access to your Photo Libraries.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>In order to save the photos you shoot while using PlantAlarm, we need access to adding items to your Photo Libraries.</string>
 </dict>
 </plist>
