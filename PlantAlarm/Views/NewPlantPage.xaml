@@ -8,6 +8,11 @@
             <TableView Intent="Form" HasUnevenRows="true">
                 <TableSection>
                     <EntryCell Height="44" Label="Name" />
+                    <ViewCell Height="44">
+                        <StackLayout Orientation="Horizontal" Margin="14,0,0,0">
+                            <Label Text="Category" VerticalOptions="Center" />
+                        </StackLayout>
+                    </ViewCell>
                 </TableSection>
                 <TableSection Title="Photos" >
                     <ViewCell>
@@ -16,17 +21,19 @@
                                     Command="{Binding AddPhotoCommand}"/>
                         </StackLayout>
                     </ViewCell>
-                    <ViewCell>
-                        <CollectionView ItemsSource="{Binding Photos}">
+                    <ViewCell x:Name="PhotosCell">
+                        <CollectionView ItemsSource="{Binding Photos}" Margin="3" x:Name="ImageCollectionView"
+                                        SizeChanged="SetCollectionViewHeight" HorizontalOptions="FillAndExpand">
                             <CollectionView.ItemsLayout>
-                                <GridItemsLayout Orientation="Vertical" Span="3" />
+                                <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="3"
+                                                 HorizontalItemSpacing="3"/>
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Margin="4" BackgroundColor="Teal">
-                                        <Image Source="{Binding Url}" Aspect="AspectFill" VerticalOptions="FillAndExpand"
-                                               HorizontalOptions="FillAndExpand"/>
-                                    </StackLayout>
+                                    <customControls:SquaredImageContainerStack>
+                                        <customControls:SquaredImage Source="{Binding Url}" HorizontalOptions="Fill"
+                                                                     Aspect="AspectFill" VerticalOptions="Fill" />
+                                    </customControls:SquaredImageContainerStack>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
