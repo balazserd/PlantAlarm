@@ -7,11 +7,13 @@ namespace PlantAlarm.Views
 {
     public partial class NewPlantPage : ContentPage
     {
+        private NewPlantViewModel vm;
         public NewPlantPage()
         {
             InitializeComponent();
 
             this.BindingContext = new NewPlantViewModel(this.Navigation, this);
+            vm = this.BindingContext as NewPlantViewModel;
         }
 
         void SetCollectionViewHeight(object sender, EventArgs e)
@@ -23,6 +25,11 @@ namespace PlantAlarm.Views
             var colViewHeight = ((this.Width - 2 * gridLayout.HorizontalItemSpacing - horizontalMarginsTotalSize) / 3) * 2 + gridLayout.VerticalItemSpacing;
 
             colView.HeightRequest = colViewHeight;
+        }
+
+        void ShowAddCategoryPage(object sender, EventArgs e)
+        {
+            vm.ShowCategorySelectorPageCommand.Execute(null);
         }
     }
 }

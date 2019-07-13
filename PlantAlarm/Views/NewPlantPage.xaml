@@ -8,16 +8,17 @@
             <TableView Intent="Form" HasUnevenRows="true">
                 <TableSection>
                     <EntryCell Height="44" Label="Name" />
-                    <ViewCell Height="44">
-                        <StackLayout Orientation="Horizontal" Margin="14,0,0,0">
-                            <Label Text="Category" VerticalOptions="Center" />
+                    <ViewCell Height="44" Tapped="ShowAddCategoryPage">
+                        <StackLayout Orientation="Horizontal" Margin="14,0,10,0">
+                            <Label Text="Category" VerticalOptions="Center" FontSize="17"/>
+                            <Label Text="{Binding SelectedCategoriesMessage}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>
                 <TableSection Title="Photos" >
                     <ViewCell>
                         <StackLayout>
-                            <Button Text="Add Photo" HorizontalOptions="FillAndExpand" FontSize="16"
+                            <Button Text="Add Photo" HorizontalOptions="Fill" FontSize="17"
                                     Command="{Binding AddPhotoCommand}"/>
                         </StackLayout>
                     </ViewCell>

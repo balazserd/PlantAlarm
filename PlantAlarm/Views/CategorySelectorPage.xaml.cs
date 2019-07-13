@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PlantAlarm.DependencyServices;
 using PlantAlarm.ViewModels;
 using Xamarin.Forms;
 
@@ -14,12 +15,27 @@ namespace PlantAlarm.Views
 
             BindingContext = new CategorySelectorViewModel();
             vm = BindingContext as CategorySelectorViewModel;
+
+            MessagingCenter.Subscribe<object>(this, "ShowCategoryAdderModal", (viewModel) =>
+            {
+                string categoryName = DependencyService.Get<ITextInputModalProvider>().ShowTextModal();
+                if (!string.IsNullOrEmpty(categoryName))
+                {
+                    MessagingCenter.Send(this, "AddCategoryFromModal", categoryName);
+                }
+            });
         }
 
-        void CategoryTapped(object sender, ItemTappedEventArgs e)
+        void Handle_Appearing(object sender, EventArgs e)
         {
-            var categoryItem = e.Item as CategoryItem;
-            vm.ExpandCategoryItemCommand(categoryItem);
+            vm.AppearingCommand.Execute(null);
         }
+
+        //POSSIBLE UPGRADE TO SHOW PLANTS OF CATEGORY TAPPED
+        //void CategoryTapped(object sender, ItemTappedEventArgs e)
+        //{
+        //    var categoryItem = e.Item as CategoryItem;
+        //    vm.ExpandCategoryItemCommand(categoryItem);
+        //}
     }
 }

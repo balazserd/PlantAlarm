@@ -19,9 +19,15 @@ namespace PlantAlarm.ViewModels
         private INavigation Navigation { get; set; }
         private Page View { get; set; }
 
-        public Plant PlantToAdd { get; set; }
+        public string SelectedCategoriesMessage
+        {
+            get => $"{Categories.Count} categories selected";
+        }
 
-        public ICommand AddCategoryCommand { get; private set; }
+        public Plant PlantToAdd { get; set; }
+        public List<PlantCategory> Categories { get; private set; }
+
+        public ICommand ShowCategorySelectorPageCommand { get; private set; }
         public ICommand AddPhotoCommand { get; set; }
 
         public ObservableCollection<PlantPhoto> Photos { get; private set; }
@@ -31,11 +37,10 @@ namespace PlantAlarm.ViewModels
             View = viewForViewModel;
             Navigation = navigation;
 
-            AddCategoryCommand = new Command(async() =>
+            ShowCategorySelectorPageCommand = new Command(async() =>
             {
                await Navigation.PushAsync(new CategorySelectorPage());
             });
-
             AddPhotoCommand = new Command(async () =>
             {
                 if (PlantToAdd == null)
@@ -100,6 +105,7 @@ namespace PlantAlarm.ViewModels
                 Photos.Add(photo);
             });
 
+            Categories = new List<PlantCategory>();
             Photos = new ObservableCollection<PlantPhoto>();
         }
 
