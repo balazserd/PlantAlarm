@@ -10,7 +10,7 @@ namespace PlantAlarm.Services
 {
     public static class PlantService
     {
-        private static readonly SQLiteAsyncConnection db = App.LocalDbConnection.Db;
+        private static readonly SQLiteAsyncConnection db = Application.LocalDbConnection.Db;
 
         public readonly static string LocalPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantPhotos");
 

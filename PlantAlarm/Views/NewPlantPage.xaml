@@ -11,7 +11,8 @@
                     <ViewCell Height="44" Tapped="ShowAddCategoryPage">
                         <StackLayout Orientation="Horizontal" Margin="14,0,10,0">
                             <Label Text="Category" VerticalOptions="Center" FontSize="17"/>
-                            <Label Text="{Binding SelectedCategoriesMessage}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+                            <Label Text="{Binding SelectedCategoriesMessage}" HorizontalOptions="EndAndExpand" 
+                                   VerticalOptions="Center"/>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

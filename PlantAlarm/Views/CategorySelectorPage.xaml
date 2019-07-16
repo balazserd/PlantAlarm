@@ -9,11 +9,18 @@
         <ToolbarItem Text="Done" Command="{Binding AddCategoriesCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="0,0,0,0">
             <SearchBar Placeholder="Search for categories..." SearchCommand="{Binding SearchCategoriesCommand}" x:Name="SearchBar"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
             <Grid>
                 <CollectionView ItemsSource="{Binding Categories}">
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Label Text="No items found." TextColor="Silver"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -40,7 +47,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <controls:AddButton HorizontalOptions="End" VerticalOptions="End" Margin="0,0,20,60" 
+                <controls:AddButton HorizontalOptions="End" VerticalOptions="End" Margin="0,0,20,20" 
                                     TouchedCommand="{Binding AddCategoryCommand}"/>
             </Grid>
         </StackLayout>

@@ -10,7 +10,6 @@
         <Tab Title="Garden" Shell.TabBarBackgroundColor="#37C72A" Shell.BackgroundColor="#37C72A" Icon="GardenPageIcon.png">
             <ShellContent Title="Plants" ContentTemplate="{DataTemplate pages:PlantsPage}" />
             <ShellContent Title="Accessories" ContentTemplate="{DataTemplate pages:AccessoriesPage}" />
-            <ShellContent Title="Accessories" ContentTemplate="{DataTemplate pages:AccessoriesPage}" />
         </Tab>
         <Tab Title="Tasks" Shell.TabBarBackgroundColor="#FDA600" Shell.BackgroundColor="#FDA600" Icon="ActivitiesPageIcon.png">
             <ShellContent ContentTemplate="{DataTemplate pages:TasksPage}" />

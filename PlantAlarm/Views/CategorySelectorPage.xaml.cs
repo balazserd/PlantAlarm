@@ -13,17 +13,17 @@ namespace PlantAlarm.Views
         {
             InitializeComponent();
 
-            BindingContext = new CategorySelectorViewModel();
-            vm = BindingContext as CategorySelectorViewModel;
-
-            MessagingCenter.Subscribe<object>(this, "ShowCategoryAdderModal", (viewModel) =>
+            MessagingCenter.Subscribe<CategorySelectorViewModel>(this, "ShowCategoryAdderModal", async(viewModel) =>
             {
-                string categoryName = DependencyService.Get<ITextInputModalProvider>().ShowTextModal();
+                string categoryName = await DependencyService.Get<ITextInputModalProvider>().ShowTextModal();
                 if (!string.IsNullOrEmpty(categoryName))
                 {
                     MessagingCenter.Send(this, "AddCategoryFromModal", categoryName);
                 }
             });
+
+            BindingContext = new CategorySelectorViewModel();
+            vm = BindingContext as CategorySelectorViewModel;
         }
 
         void Handle_Appearing(object sender, EventArgs e)

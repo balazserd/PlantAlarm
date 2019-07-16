@@ -8,7 +8,7 @@
         <skia:SKCanvasView EnableTouchEvents="true" x:Name="ContainerCanvas" WidthRequest="50" HeightRequest="50"
                            PaintSurface="ContainerCanvasRendered" />
         <Grid.Effects>
-            <tt:TouchEffect TouchAction="ButtonTapped" />
+            <tt:TouchEffect TouchAction="ButtonTapped" Capture="true" />
         </Grid.Effects>
     </Grid>
 </ContentView>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace PlantAlarm.DependencyServices
 {
     public interface ITextInputModalProvider
     {
-        string ShowTextModal();
+        Task<string> ShowTextModal();
     }
 }

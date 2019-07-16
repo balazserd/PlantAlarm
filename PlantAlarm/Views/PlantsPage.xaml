@@ -2,10 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="PlantAlarm.Views.PlantsPage"
+             xmlns:controls="clr-namespace:PlantAlarm.CustomControls"
              Title="Garden">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="New item" Command="{Binding ShowNewPlantPageCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
+        <StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

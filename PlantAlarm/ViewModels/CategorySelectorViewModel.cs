@@ -54,7 +54,7 @@ namespace PlantAlarm.ViewModels
             });
             AddCategoryCommand = new Command(() =>
             {
-                MessagingCenter.Send(this, "ShowCategoryAdderModal");
+                Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(this, "ShowCategoryAdderModal"));
             });
             AppearingCommand = new Command(async () =>
             {

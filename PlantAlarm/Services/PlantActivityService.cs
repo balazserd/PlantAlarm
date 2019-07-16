@@ -10,7 +10,7 @@ namespace PlantAlarm.Services
 {
     public static class PlantActivityService
     {
-        private static readonly SQLiteAsyncConnection db = App.LocalDbConnection.Db;
+        private static readonly SQLiteAsyncConnection db = Application.LocalDbConnection.Db;
 
         #region PUBLIC methods
         /// <summary>
@@ -33,7 +33,7 @@ namespace PlantAlarm.Services
                     //Check the task's each recurring option.
                     //If any of the options indicate that the task should be performed this day, it gets added to the list.
 
-                        //Single Days.
+                    //Single Days.
                     if ((thisDay.DayOfWeek == DayOfWeek.Monday && (task.OnMonday ?? false)) ||
                         (thisDay.DayOfWeek == DayOfWeek.Tuesday && (task.OnTuesday ?? false)) ||
                         (thisDay.DayOfWeek == DayOfWeek.Wednesday && (task.OnWednesday ?? false)) ||
@@ -47,7 +47,7 @@ namespace PlantAlarm.Services
 
                         //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
                         (((thisDay.Year - task.FirstOccurrenceDate.Year) * 12) + thisDay.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
-                           thisDay.Day == task.FirstOccurrenceDate.Day)) 
+                           thisDay.Day == task.FirstOccurrenceDate.Day))
                     {
                         AddActivityItemForDay(resultList, task.Id, thisDay);
                     }
@@ -57,7 +57,7 @@ namespace PlantAlarm.Services
                     if (thisDay.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, task.Id, thisDay);
                 }
             }
-            
+
             await db.InsertAllAsync(resultList);
         }
 

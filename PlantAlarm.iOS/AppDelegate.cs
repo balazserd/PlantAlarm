@@ -26,7 +26,10 @@ namespace PlantAlarm.iOS
         {
             Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+            LoadApplication(new PlantAlarm.Application());
+
+            //TouchTracking bug requires this line: https://github.com/OndrejKunc/SkiaScene#touchtrackingforms
+            var _ = new TouchTracking.Forms.iOS.TouchEffect();
 
             //Ask for permission to Notifications.
             UNUserNotificationCenter.Current.RequestAuthorization(
