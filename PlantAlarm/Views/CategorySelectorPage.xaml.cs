@@ -13,12 +13,11 @@ namespace PlantAlarm.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<CategorySelectorViewModel>(this, "ShowCategoryAdderModal", async(viewModel) =>
-            {
-                string categoryName = await DependencyService.Get<ITextInputModalProvider>().ShowTextModal();
+            MessagingCenter.Subscribe<object>(this, "ShowCategoryAdderModal", async (viewmodel) => {
+                var categoryName = await DependencyService.Get<ITextInputModalProvider>().ShowTextModalAsync();
                 if (!string.IsNullOrEmpty(categoryName))
                 {
-                    MessagingCenter.Send(this, "AddCategoryFromModal", categoryName);
+                    MessagingCenter.Send((object)this, "AddCategoryFromModal", categoryName);
                 }
             });
 
@@ -26,16 +25,15 @@ namespace PlantAlarm.Views
             vm = BindingContext as CategorySelectorViewModel;
         }
 
+        protected override void OnDisappearing()
+        {
+            MessagingCenter.Unsubscribe<object>(this, "ShowCategoryAdderModal");
+            base.OnDisappearing();
+        }
+
         void Handle_Appearing(object sender, EventArgs e)
         {
             vm.AppearingCommand.Execute(null);
         }
-
-        //POSSIBLE UPGRADE TO SHOW PLANTS OF CATEGORY TAPPED
-        //void CategoryTapped(object sender, ItemTappedEventArgs e)
-        //{
-        //    var categoryItem = e.Item as CategoryItem;
-        //    vm.ExpandCategoryItemCommand(categoryItem);
-        //}
     }
 }

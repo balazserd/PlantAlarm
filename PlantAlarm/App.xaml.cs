@@ -7,11 +7,11 @@ using Xamarin.Forms.Xaml;
 
 namespace PlantAlarm
 {
-    public partial class Application : Xamarin.Forms.Application
+    public partial class App : Application
     {
         public static LocalDbConnection LocalDbConnection;
 
-        public Application()
+        public App()
         {
             InitializeComponent();
 

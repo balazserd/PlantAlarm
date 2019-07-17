@@ -5,6 +5,6 @@ namespace PlantAlarm.DependencyServices
 {
     public interface ITextInputModalProvider
     {
-        Task<string> ShowTextModal();
+        Task<string> ShowTextModalAsync();
     }
 }

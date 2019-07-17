@@ -16,8 +16,8 @@ namespace PlantAlarm.DatabaseModels
 
         public LocalDbConnection(string dbPath)
         {
-            //if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantAlarmSQLite.db3")))
-            if (false)
+            if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantAlarmSQLite.db3")))
+            //if (false)
             {
                 db = new SQLiteAsyncConnection(dbPath);
             }

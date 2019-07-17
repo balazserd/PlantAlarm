@@ -10,7 +10,7 @@ namespace PlantAlarm.Services
 {
     public static class PlantActivityService
     {
-        private static readonly SQLiteAsyncConnection db = Application.LocalDbConnection.Db;
+        private static readonly SQLiteAsyncConnection db = App.LocalDbConnection.Db;
 
         #region PUBLIC methods
         /// <summary>

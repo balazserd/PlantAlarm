@@ -9,45 +9,23 @@
         <ToolbarItem Text="Done" Command="{Binding AddCategoriesCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Margin="0,0,0,0">
+        <StackLayout Margin="0,80,0,0">
             <SearchBar Placeholder="Search for categories..." SearchCommand="{Binding SearchCategoriesCommand}" x:Name="SearchBar"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
             <Grid>
-                <CollectionView ItemsSource="{Binding Categories}">
-                    <CollectionView.EmptyViewTemplate>
-                        <DataTemplate>
-                            <StackLayout>
-                                <Label Text="No items found." TextColor="Silver"/>
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.EmptyViewTemplate>
+                <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding PlantCategory.Name}" VerticalOptions="Center" />
-                                        <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Silver" />
-                                    </StackLayout>
-                                    <!-- POSSIBLE UPGRADE TO SHOW ELEMENTS OF CATEGORY
-                                    <Grid Margin="10,0,0,0" IsVisible="{Binding IsExpanded}">
-                                        <ListView ItemsSource="{Binding PlantsOfCategory}" >
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackLayout Margin="5,0,0,5" Orientation="Horizontal">
-                                                        <Image Source="{Binding PhotoOfPlant.Url}" />
-                                                        <Label Text="{Binding Plant.Name}" />
-                                                    </StackLayout>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>
-                                    </Grid>-->
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding PlantCategory.Name}" VerticalOptions="Center" />
+                                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Silver" />
                                 </StackLayout>
-                            </ViewCell>
+                            </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <controls:AddButton HorizontalOptions="End" VerticalOptions="End" Margin="0,0,20,20" 
+                <controls:AddButton HorizontalOptions="End" VerticalOptions="End" Margin="0,0,20,60" 
                                     TouchedCommand="{Binding AddCategoryCommand}"/>
             </Grid>
         </StackLayout>
