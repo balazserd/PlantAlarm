@@ -9,18 +9,30 @@ using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.Services;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace PlantAlarm.ViewModels
 {
     public class CategorySelectorViewModel : INotifyPropertyChanged
     {
-        private List<CategoryItem> categories { get; set; }
-        public ObservableCollection<CategoryItem> Categories { get; private set; }
+        private List<CategoryItem> categoryList { get; set; }
+
+        private ObservableCollection<CategoryItem> _categories { get; set; }
+        public ObservableCollection<CategoryItem> Categories
+        {
+            get => _categories;
+            private set
+            {
+                _categories = value;
+                OnPropertyChanged();
+            }
+        }
 
         //public Action<CategoryItem> ExpandCategoryItemCommand { get; private set; }
         public ICommand SearchCategoriesCommand { get; private set; }
         public ICommand AddCategoryCommand { get; private set; }
         public ICommand AppearingCommand { get; private set; }
+        public ICommand SelectionChangedCommand { get; private set; }
 
         public CategorySelectorViewModel() 
         {
@@ -35,23 +47,24 @@ namespace PlantAlarm.ViewModels
             //    ci.IsExpanded = !ci.IsExpanded;
             //    Categories.Insert(index, ci);
             //});
-            SearchCategoriesCommand = new Command((s) =>
-            {
-                string searchString = s as string;
+            //SEARCH FUNCTIONALITY
+            //SearchCategoriesCommand = new Command((s) =>
+            //{
+            //    string searchString = s as string;
 
-                if (string.IsNullOrEmpty(searchString))
-                {
-                    Categories = new ObservableCollection<CategoryItem>(categories);
-                }
-                else
-                {
-                    var list = categories
-                        .Where(c => c.PlantCategory.Name.Contains(searchString))
-                        .ToList();
+            //    if (string.IsNullOrEmpty(searchString))
+            //    {
+            //        Categories = new ObservableCollection<CategoryItem>(categoryList);
+            //    }
+            //    else
+            //    {
+            //        var list = categoryList
+            //            .Where(c => c.PlantCategory.Name.Contains(searchString))
+            //            .ToList();
 
-                    Categories = new ObservableCollection<CategoryItem>(categories);
-                }
-            });
+            //        Categories = new ObservableCollection<CategoryItem>(categoryList);
+            //    }
+            //});
             AddCategoryCommand = new Command(() =>
             {
                 MessagingCenter.Send((object)this, "ShowCategoryAdderModal");
@@ -85,17 +98,49 @@ namespace PlantAlarm.ViewModels
 
                 var categoryItemList = plantCategoryList.Select(pc => new CategoryItem { PlantCategory = pc }).ToList();
 
+                categoryList = categoryItemList;
                 Categories = new ObservableCollection<CategoryItem>(categoryItemList);
+            });
+            SelectionChangedCommand = new Command((itemsSelected) =>
+            {
+                var selectedCategories = (itemsSelected as IList<object>).ToList().Cast<CategoryItem>();
+                var selectedIdsList = selectedCategories.Select(ci => ci.PlantCategory.Id).ToList();
+
+                foreach (var categoryItem in categoryList)
+                {
+                    //If we can find the current categoryItem's Id in the list of selected Id-s, then it is currently selected.
+                    if (selectedIdsList.FirstOrDefault(selId => selId == categoryItem.PlantCategory.Id) != default(int))
+                    {
+                        categoryItem.IsSelected = true;
+                    }
+                    else
+                    {
+                        categoryItem.IsSelected = false;
+                    }
+                }
+
+                OnPropertyChanged(nameof(Categories));
             });
 
             //Subscribe to messages from view.
             MessagingCenter.Subscribe<object, string>(this, "AddCategoryFromModal", async(sender, categoryName) =>
             {
                 var plantCategory = new PlantCategory { Name = categoryName };
-                await PlantService.AddPlantCategoryAsync(plantCategory);
+                try
+                {
+                    int Id = await PlantService.AddPlantCategoryAsync(plantCategory);
+                    plantCategory.Id = Id;
 
-                var categoryItem = new CategoryItem { PlantCategory = plantCategory };
-                Categories.Add(categoryItem);
+                    var categoryItem = new CategoryItem { PlantCategory = plantCategory };
+
+                    Categories.Add(categoryItem);
+                    categoryList.Add(categoryItem);
+                }
+                catch (PlantServiceException pse)
+                {
+                    MessagingCenter.Send(this as object, "AddCategoryFailed", pse.Message);
+                    return;
+                } 
             });
         }
 
@@ -109,9 +154,20 @@ namespace PlantAlarm.ViewModels
 
     //WARNING
     //The classes here only exist to serve this viewmodel. They should never be reused.
-    public class CategoryItem
+    public class CategoryItem : BindableObject
     {
         public PlantCategory PlantCategory { get; set; }
+
+        private bool isSelected { get; set; }
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                isSelected = value;
+                OnPropertyChanged();
+            }
+        }
         //public ObservableCollection<CategoryPlantItem> PlantsOfCategory { get; set; }
         //public bool IsExpanded { get; set; }
     }

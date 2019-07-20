@@ -20,6 +20,10 @@ namespace PlantAlarm.Views
                     MessagingCenter.Send((object)this, "AddCategoryFromModal", categoryName);
                 }
             });
+            MessagingCenter.Subscribe<object, string>(this, "AddCategoryFailed", async (viewModel, message) =>
+            {
+                await DisplayAlert("Error", message, "OK");
+            });
 
             BindingContext = new CategorySelectorViewModel();
             vm = BindingContext as CategorySelectorViewModel;
@@ -28,6 +32,7 @@ namespace PlantAlarm.Views
         protected override void OnDisappearing()
         {
             MessagingCenter.Unsubscribe<object>(this, "ShowCategoryAdderModal");
+            MessagingCenter.Unsubscribe<object>(this, "AddCategoryFailed");
             base.OnDisappearing();
         }
 

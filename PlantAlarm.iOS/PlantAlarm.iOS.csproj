@@ -75,6 +75,7 @@
     <Compile Include="CustomRenderers\BorderlessDatePickerRenderer_iOS.cs" />
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer_iOS.cs" />
     <Compile Include="DependencyServices\TextInputModal_iOS.cs" />
+    <Compile Include="CustomRenderers\CategoryCollectionViewRenderer_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -115,6 +116,10 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ItunesArtwork%402x.png" />
+    <ImageAsset Include="Assets.xcassets\GreenDoneIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\GreenDoneIcon.imageset\icons8-checkmark.png" />
+    <ImageAsset Include="Assets.xcassets\GreenDoneIcon.imageset\icons8-checkmark-1.png" />
+    <ImageAsset Include="Assets.xcassets\GreenDoneIcon.imageset\icons8-checkmark-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -154,5 +159,6 @@
     <Folder Include="Assets.xcassets\ActivitiesPageIcon.imageset\" />
     <Folder Include="Assets.xcassets\SettingsPageIcon.imageset\" />
     <Folder Include="CustomRenderers\" />
+    <Folder Include="Assets.xcassets\GreenDoneIcon.imageset\" />
   </ItemGroup>
 </Project>

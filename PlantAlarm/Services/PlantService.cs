@@ -19,9 +19,27 @@ namespace PlantAlarm.Services
             return await db.InsertAsync(newPlant);
         }
 
-        public static async Task AddPlantCategoryAsync(PlantCategory newPlantCategory)
+        /// <summary>
+        /// Adds a new category to the local Database. Throws a PlantServiceException if the category already exists.
+        /// </summary>
+        /// <param name="newPlantCategory">The new category to add.</param>
+        /// <returns>The asynchronous Task of adding the category.</returns>
+        public static async Task<int> AddPlantCategoryAsync(PlantCategory newPlantCategory)
         {
-            await db.InsertAsync(newPlantCategory);
+            int Id = 0;
+            try
+            {
+                Id = await db.InsertAsync(newPlantCategory);
+            }
+            catch (SQLiteException e)
+            {
+                if (e.Message == "Constraint")
+                {
+                    throw new PlantServiceException("A category with the given name already exists.");
+                }
+            }
+
+            return Id;
         }
 
         public static async Task AddPlantPhotoAsync(PlantPhoto photo)
@@ -58,5 +76,10 @@ namespace PlantAlarm.Services
 
             return urlCorrectedPhotos;
         }
+    }
+
+    public class PlantServiceException : Exception
+    {
+        public PlantServiceException(string message) : base(message) { }
     }
 }

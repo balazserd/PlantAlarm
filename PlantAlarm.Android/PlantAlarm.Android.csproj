@@ -106,6 +106,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\TodayPageIcon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\TodayPageIcon.png" />
     <AndroidResource Include="Resources\drawable\TodayPageIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\GreenDoneIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\GreenDoneIcon.png" />
+    <AndroidResource Include="Resources\drawable\GreenDoneIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

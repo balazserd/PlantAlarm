@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SQLite;
 
 namespace PlantAlarm.DatabaseModels
@@ -10,14 +11,23 @@ namespace PlantAlarm.DatabaseModels
         [NotNull]
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
-        [Indexed]
-        public int? PlantCategoryFk { get; set; }
+    }
+
+    public class PlantCategorization
+    {
+        [AutoIncrement, PrimaryKey]
+        public int Id { get; set; }
+        [NotNull, Indexed]
+        public int PlantFk { get; set; }
+        [NotNull, Indexed]
+        public int PlantCategoryFk { get; set; }
     }
 
     public class PlantCategory
     {
         [AutoIncrement, PrimaryKey]
         public int Id { get; set; }
+        [Unique]
         public string Name { get; set; }
     }
 
