@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
@@ -19,13 +20,31 @@ namespace PlantAlarm.ViewModels
         private INavigation Navigation { get; set; }
         private Page View { get; set; }
 
+        private const string DefaultCategoriesMessage = "Tap to select categories";
         public string SelectedCategoriesMessage
         {
-            get => $"{Categories.Count} categories selected";
+            get
+            {
+                return categories == null || categories.Count == 0 ?
+                    DefaultCategoriesMessage :
+                    string.Join(", ", categories.Select(c => c.Name));
+            }
         }
 
         public Plant PlantToAdd { get; set; }
-        public List<PlantCategory> Categories { get; private set; }
+
+        private List<PlantCategory> categories { get; set; }
+        public List<PlantCategory> Categories
+        {
+            get => categories;
+            set
+            {
+                categories = value;
+
+                OnPropertyChanged(nameof(SelectedCategoriesMessage));
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand ShowCategorySelectorPageCommand { get; private set; }
         public ICommand AddPhotoCommand { get; set; }
@@ -37,9 +56,9 @@ namespace PlantAlarm.ViewModels
             View = viewForViewModel;
             Navigation = navigation;
 
-            ShowCategorySelectorPageCommand = new Command(async() =>
+            ShowCategorySelectorPageCommand = new Command(async () =>
             {
-               await Navigation.PushAsync(new CategorySelectorPage());
+                await Navigation.PushAsync(new CategorySelectorPage(Categories));
             });
             AddPhotoCommand = new Command(async () =>
             {
@@ -47,13 +66,12 @@ namespace PlantAlarm.ViewModels
                 {
                     //Add the plant instantly, so that we will have an id for the plant photos.
                     PlantToAdd = new Plant { Name = "Placeholder Name" };
-                    int plantId = await PlantService.AddPlantAsync(PlantToAdd);
-                    PlantToAdd.Id = plantId;
+                    await PlantService.AddPlantAsync(PlantToAdd);
                 }
 
                 //Create the actions for the add photo dialog.
                 var actions = new List<string>();
-
+                
                 if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported) actions.Add("Take photo");
                 if (CrossMedia.Current.IsPickPhotoSupported) actions.Add("Pick from device");
 
@@ -82,7 +100,7 @@ namespace PlantAlarm.ViewModels
                             break;
                         }
                     case "Back": return;
-                    default: throw new InvalidOperationException("The operation received to perform is invalid.");
+                    default: throw new InvalidOperationException();
                 }
 
                 if (image == null) return;
@@ -103,6 +121,11 @@ namespace PlantAlarm.ViewModels
 
                 //Add the created object to the collection of photos.
                 Photos.Add(photo);
+            });
+
+            MessagingCenter.Subscribe<object, List<PlantCategory>>(this, "CategoriesSelected", async (viewModel, categoryList) =>
+            {
+                Categories = categoryList;
             });
 
             Categories = new List<PlantCategory>();

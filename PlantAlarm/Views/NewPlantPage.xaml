@@ -7,13 +7,30 @@
         <ScrollView>
             <TableView Intent="Form" HasUnevenRows="true">
                 <TableSection>
-                    <EntryCell Height="44" Label="Name" />
+                    <ViewCell Height="44">
+                        <Grid Margin="15,0,15,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Name" VerticalOptions="Center" FontSize="18" Grid.Column="0"/>
+                            <customControls:BorderlessEntry HorizontalOptions="Fill" Grid.Column="1"
+                                                            HorizontalTextAlignment="End"
+                                                            Text="{Binding PlantToAdd.Name, Mode=TwoWay}" 
+                                                            FontAttributes="Italic"/>
+                        </Grid>
+                    </ViewCell>
                     <ViewCell Height="44" Tapped="ShowAddCategoryPage">
-                        <StackLayout Orientation="Horizontal" Margin="14,0,10,0">
-                            <Label Text="Category" VerticalOptions="Center" FontSize="17"/>
-                            <Label Text="{Binding SelectedCategoriesMessage}" HorizontalOptions="EndAndExpand" 
-                                   VerticalOptions="Center"/>
-                        </StackLayout>
+                        <Grid Margin="15,0,15,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Categories" VerticalOptions="Center" FontSize="18" Grid.Column="0"/>
+                            <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center" 
+                                   Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
+                                   HorizontalOptions="End"/>
+                        </Grid>
                     </ViewCell>
                 </TableSection>
                 <TableSection Title="Photos" >

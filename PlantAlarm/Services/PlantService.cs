@@ -14,22 +14,16 @@ namespace PlantAlarm.Services
 
         public readonly static string LocalPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantPhotos");
 
-        public static async Task<int> AddPlantAsync(Plant newPlant)
+        public static async Task AddPlantAsync(Plant newPlant)
         {
-            return await db.InsertAsync(newPlant);
+            await db.InsertAsync(newPlant);
         }
 
-        /// <summary>
-        /// Adds a new category to the local Database. Throws a PlantServiceException if the category already exists.
-        /// </summary>
-        /// <param name="newPlantCategory">The new category to add.</param>
-        /// <returns>The asynchronous Task of adding the category.</returns>
-        public static async Task<int> AddPlantCategoryAsync(PlantCategory newPlantCategory)
+        public static async Task AddPlantCategoryAsync(PlantCategory newPlantCategory)
         {
-            int Id = 0;
             try
             {
-                Id = await db.InsertAsync(newPlantCategory);
+                await db.InsertAsync(newPlantCategory);
             }
             catch (SQLiteException e)
             {
@@ -38,8 +32,19 @@ namespace PlantAlarm.Services
                     throw new PlantServiceException("A category with the given name already exists.");
                 }
             }
+        }
 
-            return Id;
+        public static async Task AddPlantCategoryConnectionsAsync(List<PlantCategory> categoryList, Plant plant)
+        {
+            List<PlantCategorization> itemsToAdd = categoryList
+                .Select(category => new PlantCategorization
+                {
+                    PlantFk = plant.Id,
+                    PlantCategoryFk = category.Id
+                })
+                .ToList();
+
+            await db.InsertAllAsync(itemsToAdd);
         }
 
         public static async Task AddPlantPhotoAsync(PlantPhoto photo)

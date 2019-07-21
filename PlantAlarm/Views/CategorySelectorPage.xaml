@@ -32,9 +32,8 @@
                     <SearchBar Placeholder="Search for categories..." SearchCommand="{Binding SearchCategoriesCommand}" x:Name="SearchBar"
                            SearchCommandParameter="{Binding Source={x:Reference SearchBar}, Path=Value}" Margin="0,0,0,-6"/>
                     <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem" x:Name="CategoryColView"
-                                                 SelectionMode="Multiple" SelectionChangedCommand="{Binding SelectionChangedCommand}" 
-                                                 SelectionChangedCommandParameter="{Binding 
-                                                    Source={x:Reference CategoryColView}, Path=SelectedItems}">
+                                    SelectionMode="Multiple" SelectionChangedCommand="{Binding SelectionChangedCommand}" 
+                                    SelectionChangedCommandParameter="{Binding Source={x:Reference CategoryColView}, Path=SelectedItems}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <StackLayout Orientation="Vertical" HeightRequest="44">
@@ -52,7 +51,7 @@
                 </StackLayout>
             </ScrollView>
             <controls:AddButton HorizontalOptions="End" VerticalOptions="End" Margin="0,0,20,60" 
-                                TouchedCommand="{Binding AddCategoryCommand}"/>
+                                TouchedCommand="{Binding AddCategoryModalCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

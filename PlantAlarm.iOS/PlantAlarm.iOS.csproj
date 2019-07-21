@@ -76,6 +76,7 @@
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer_iOS.cs" />
     <Compile Include="DependencyServices\TextInputModal_iOS.cs" />
     <Compile Include="CustomRenderers\CategoryCollectionViewRenderer_iOS.cs" />
+    <Compile Include="CustomRenderers\BorderlessEntryRenderer_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

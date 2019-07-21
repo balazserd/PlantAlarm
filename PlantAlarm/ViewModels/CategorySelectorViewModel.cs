@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
+using PlantAlarm.DependencyServices;
 using PlantAlarm.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -16,6 +17,7 @@ namespace PlantAlarm.ViewModels
     public class CategorySelectorViewModel : INotifyPropertyChanged
     {
         private List<CategoryItem> categoryList { get; set; }
+        private readonly Page View;
 
         private ObservableCollection<CategoryItem> _categories { get; set; }
         public ObservableCollection<CategoryItem> Categories
@@ -30,12 +32,14 @@ namespace PlantAlarm.ViewModels
 
         //public Action<CategoryItem> ExpandCategoryItemCommand { get; private set; }
         public ICommand SearchCategoriesCommand { get; private set; }
-        public ICommand AddCategoryCommand { get; private set; }
+        public ICommand AddCategoryModalCommand { get; private set; }
         public ICommand AppearingCommand { get; private set; }
         public ICommand SelectionChangedCommand { get; private set; }
+        public ICommand AddCategoriesCommand { get; set; }
 
-        public CategorySelectorViewModel() 
+        public CategorySelectorViewModel(Page view, List<PlantCategory> alreadySelectedCategories) 
         {
+            View = view;
             //Initing the Commands.
 
             //IF WE WANT TO IMPLEMENT IN THE FUTURE THAT TAPPING ON CATEGORY SHOWS ITS LIST OF PLANTS
@@ -65,9 +69,36 @@ namespace PlantAlarm.ViewModels
             //        Categories = new ObservableCollection<CategoryItem>(categoryList);
             //    }
             //});
-            AddCategoryCommand = new Command(() =>
+            AddCategoriesCommand = new Command(async () =>
             {
-                MessagingCenter.Send((object)this, "ShowCategoryAdderModal");
+                var selectedCategories = categoryList
+                    .Where(ci => ci.IsSelected)
+                    .Select(ci => ci.PlantCategory)
+                    .ToList();
+
+                MessagingCenter.Send(this as object, "CategoriesSelected", selectedCategories);
+                await Application.Current.MainPage.Navigation.PopAsync();
+            });
+            AddCategoryModalCommand = new Command(async () =>
+            {
+                var categoryName = await DependencyService.Get<ITextInputModalProvider>().ShowTextModalAsync();
+                if (string.IsNullOrEmpty(categoryName)) return;
+
+                var plantCategory = new PlantCategory { Name = categoryName };
+                try
+                {
+                    await PlantService.AddPlantCategoryAsync(plantCategory);
+
+                    var categoryItem = new CategoryItem { PlantCategory = plantCategory };
+
+                    Categories.Add(categoryItem);
+                    categoryList.Add(categoryItem);
+                }
+                catch (PlantServiceException pse)
+                {
+                    await View.DisplayAlert("Error", pse.Message, "OK");
+                    return;
+                }
             });
             AppearingCommand = new Command(async () =>
             {
@@ -100,6 +131,12 @@ namespace PlantAlarm.ViewModels
 
                 categoryList = categoryItemList;
                 Categories = new ObservableCollection<CategoryItem>(categoryItemList);
+
+                foreach (var selCat in alreadySelectedCategories)
+                {
+                    var categoryItem = categoryList.First(ci => ci.PlantCategory.Id == selCat.Id);
+                    categoryItem.IsSelected = true;
+                }
             });
             SelectionChangedCommand = new Command((itemsSelected) =>
             {
@@ -120,27 +157,6 @@ namespace PlantAlarm.ViewModels
                 }
 
                 OnPropertyChanged(nameof(Categories));
-            });
-
-            //Subscribe to messages from view.
-            MessagingCenter.Subscribe<object, string>(this, "AddCategoryFromModal", async(sender, categoryName) =>
-            {
-                var plantCategory = new PlantCategory { Name = categoryName };
-                try
-                {
-                    int Id = await PlantService.AddPlantCategoryAsync(plantCategory);
-                    plantCategory.Id = Id;
-
-                    var categoryItem = new CategoryItem { PlantCategory = plantCategory };
-
-                    Categories.Add(categoryItem);
-                    categoryList.Add(categoryItem);
-                }
-                catch (PlantServiceException pse)
-                {
-                    MessagingCenter.Send(this as object, "AddCategoryFailed", pse.Message);
-                    return;
-                } 
             });
         }
 

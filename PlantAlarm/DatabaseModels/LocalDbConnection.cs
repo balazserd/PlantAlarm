@@ -25,17 +25,17 @@ namespace PlantAlarm.DatabaseModels
             {
                 db = new SQLiteAsyncConnection(dbPath);
 
-                db.DropTableAsync<Plant>().Wait();
-                db.DropTableAsync<PlantPhoto>().Wait();
-                db.DropTableAsync<PlantCategory>().Wait();
-                db.DropTableAsync<PlantCategorization>().Wait();
+                //db.DropTableAsync<Plant>().Wait();
+                //db.DropTableAsync<PlantPhoto>().Wait();
+                //db.DropTableAsync<PlantCategory>().Wait();
+                //db.DropTableAsync<PlantCategorization>().Wait();
 
-                db.DropTableAsync<Accessory>().Wait();
-                db.DropTableAsync<AccessoryPhoto>().Wait();
-                db.DropTableAsync<AccessoryCategory>().Wait();
+                //db.DropTableAsync<Accessory>().Wait();
+                //db.DropTableAsync<AccessoryPhoto>().Wait();
+                //db.DropTableAsync<AccessoryCategory>().Wait();
 
-                db.DropTableAsync<PlantTask>().Wait();
-                db.DropTableAsync<PlantActivityItem>().Wait();
+                //db.DropTableAsync<PlantTask>().Wait();
+                //db.DropTableAsync<PlantActivityItem>().Wait();
 
                 db.CreateTableAsync<Plant>().Wait();
                 db.CreateTableAsync<PlantPhoto>().Wait();

@@ -49,12 +49,12 @@ namespace PlantAlarm.Services
                         (((thisDay.Year - task.FirstOccurrenceDate.Year) * 12) + thisDay.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
                            thisDay.Day == task.FirstOccurrenceDate.Day))
                     {
-                        AddActivityItemForDay(resultList, task.Id, thisDay);
+                        AddActivityItemForDay(resultList, (int)task.Id, thisDay);
                     }
                 }
                 else
                 {
-                    if (thisDay.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, task.Id, thisDay);
+                    if (thisDay.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, (int)task.Id, thisDay);
                 }
             }
 
