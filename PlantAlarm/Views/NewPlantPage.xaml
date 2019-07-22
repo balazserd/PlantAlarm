@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlantAlarm.Views.NewPlantPage"
-             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls">
+             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+             xmlns:customEffects="clr-namespace:PlantAlarm.Effects">
     <ContentPage.Content>
         <ScrollView>
             <TableView Intent="Form" HasUnevenRows="true">
@@ -10,21 +11,22 @@
                     <ViewCell Height="44">
                         <Grid Margin="15,0,15,0" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="Name" VerticalOptions="Center" FontSize="18" Grid.Column="0"/>
-                            <customControls:BorderlessEntry HorizontalOptions="Fill" Grid.Column="1"
-                                                            HorizontalTextAlignment="End"
-                                                            Text="{Binding PlantToAdd.Name, Mode=TwoWay}" 
-                                                            FontAttributes="Italic"/>
+                            <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
+                                   Text="{Binding PlantToAdd.Name, Mode=TwoWay}" FontAttributes="Italic">
+                                <Entry.Effects>
+                                    <customEffects:BorderlessEffect />
+                                </Entry.Effects>
+                            </Entry>
                         </Grid>
                     </ViewCell>
                     <ViewCell Height="44" Tapped="ShowAddCategoryPage">
                         <Grid Margin="15,0,15,0" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="8*" />
                             </Grid.ColumnDefinitions>
                             <Label Text="Categories" VerticalOptions="Center" FontSize="18" Grid.Column="0"/>
                             <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center" 

@@ -27,6 +27,8 @@
     <Folder Include="Services\" />
     <Folder Include="CustomControls\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Effects\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Services\NotificationService\Notification.cs" />

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlantAlarm.Views.NewTaskPage"
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
              Title="New Task">
     <ContentPage.Content>
         <ScrollView>
@@ -16,13 +17,21 @@
                     <ViewCell Height="44" >
                         <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                             <Label VerticalOptions="Center" Text="Date" HorizontalOptions="StartAndExpand"/>
-                            <customControls:BorderlessDatePicker x:Name="DatePicker" HorizontalOptions="End" WidthRequest="100" />
+                            <DatePicker x:Name="DatePicker" HorizontalOptions="End" WidthRequest="100">
+                                <DatePicker.Effects>
+                                    <customEffects:BorderlessEffect />
+                                </DatePicker.Effects>
+                            </DatePicker>
                         </StackLayout>
                     </ViewCell>
                     <ViewCell Height="44" >
                         <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                             <Label VerticalOptions="Center" Text="Time" HorizontalOptions="StartAndExpand"/>
-                            <customControls:BorderlessTimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" />
+                            <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100">
+                                <TimePicker.Effects>
+                                    <customEffects:BorderlessEffect />
+                                </TimePicker.Effects>
+                            </TimePicker>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

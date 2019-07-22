@@ -72,11 +72,9 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="DependencyServices\NotificationService_iOS.cs" />
     <Compile Include="CustomRenderers\CalendarDayViewCellRenderer_iOS.cs" />
-    <Compile Include="CustomRenderers\BorderlessDatePickerRenderer_iOS.cs" />
-    <Compile Include="CustomRenderers\BorderlessTimePickerRenderer_iOS.cs" />
     <Compile Include="DependencyServices\TextInputModal_iOS.cs" />
     <Compile Include="CustomRenderers\CategoryCollectionViewRenderer_iOS.cs" />
-    <Compile Include="CustomRenderers\BorderlessEntryRenderer_iOS.cs" />
+    <Compile Include="Effects\BorderlessEffect_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -161,5 +159,6 @@
     <Folder Include="Assets.xcassets\SettingsPageIcon.imageset\" />
     <Folder Include="CustomRenderers\" />
     <Folder Include="Assets.xcassets\GreenDoneIcon.imageset\" />
+    <Folder Include="Effects\" />
   </ItemGroup>
 </Project>

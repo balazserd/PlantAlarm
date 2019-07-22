@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
+using PlantAlarm.Helpers;
 using PlantAlarm.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -22,7 +23,17 @@ namespace PlantAlarm.ViewModels
         private ObservableCollection<CategoryItem> _categories { get; set; }
         public ObservableCollection<CategoryItem> Categories
         {
-            get => _categories;
+            get
+            {
+                if (_categories == null) return null;
+
+                _categories.Sort(new Comparison<CategoryItem>((a, b) =>
+                {
+                    return string.Compare(a.PlantCategory.Name, b.PlantCategory.Name, StringComparison.Ordinal);
+                }));
+
+                return _categories;
+            }  
             private set
             {
                 _categories = value;
