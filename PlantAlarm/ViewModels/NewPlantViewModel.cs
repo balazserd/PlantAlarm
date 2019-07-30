@@ -58,7 +58,7 @@ namespace PlantAlarm.ViewModels
 
             ShowCategorySelectorPageCommand = new Command(async () =>
             {
-                await Navigation.PushAsync(new CategorySelectorPage(Categories));
+                await Navigation.PushAsync(await CategorySelectorPage.CreateAsync(Categories));
             });
             AddPhotoCommand = new Command(async () =>
             {

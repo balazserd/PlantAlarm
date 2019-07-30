@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="PlantAlarm.Views.CategorySelectorPage"
              xmlns:controls="clr-namespace:PlantAlarm.CustomControls"
-             Title="Select categories"
-             Appearing="Handle_Appearing">
+             Title="Select categories">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Done"  Command="{Binding AddCategoriesCommand}" />
     </ContentPage.ToolbarItems>
@@ -13,11 +12,14 @@
             <Setter Property="VisualStateManager.VisualStateGroups">
                 <VisualStateGroupList>
                     <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="White" />
+                            </VisualState.Setters>
+                        </VisualState>
                         <VisualState x:Name="Selected">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor"
-                                        Value="White" />
+                                <Setter Property="BackgroundColor" Value="White" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -33,7 +35,8 @@
                            SearchCommandParameter="{Binding Source={x:Reference SearchBar}, Path=Value}" Margin="0,0,0,-6"/>
                     <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem" x:Name="CategoryColView"
                                     SelectionMode="Multiple" SelectionChangedCommand="{Binding SelectionChangedCommand}" 
-                                    SelectionChangedCommandParameter="{Binding Source={x:Reference CategoryColView}, Path=SelectedItems}">
+                                    SelectionChangedCommandParameter="{Binding Source={x:Reference CategoryColView}, Path=SelectedItems}"
+                                    SelectedItems="{Binding SelectedCategoryItems}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <StackLayout Orientation="Vertical" HeightRequest="44">

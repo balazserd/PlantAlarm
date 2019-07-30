@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
@@ -19,6 +21,18 @@ namespace PlantAlarm.ViewModels
     {
         private List<CategoryItem> categoryList { get; set; }
         private readonly Page View;
+        private readonly List<PlantCategory> plantCategoryList;
+
+        private ObservableCollection<object> selectedCategoryItems { get; set; }
+        public ObservableCollection<object> SelectedCategoryItems
+        {
+            get => selectedCategoryItems;
+            set
+            {
+                selectedCategoryItems = value;
+                OnPropertyChanged();
+            }
+        }
 
         private ObservableCollection<CategoryItem> _categories { get; set; }
         public ObservableCollection<CategoryItem> Categories
@@ -48,9 +62,48 @@ namespace PlantAlarm.ViewModels
         public ICommand SelectionChangedCommand { get; private set; }
         public ICommand AddCategoriesCommand { get; set; }
 
-        public CategorySelectorViewModel(Page view, List<PlantCategory> alreadySelectedCategories) 
+        private CategorySelectorViewModel(Page view, List<PlantCategory> alreadySelectedCategories, List<PlantCategory> allCategories) 
         {
             View = view;
+            plantCategoryList = allCategories;
+
+            //IF WE WANT TO IMPLEMENT IN THE FUTURE THAT TAPPING ON CATEGORY SHOWS ITS LIST OF PLANTS
+            //var plantList = PlantService.GetPlantsAsync().Result;
+
+            //categories = plantCategoryList
+            //    .Select(pc => {
+            //        var plantsOfThisCategory = plantList
+            //            .Where(p => p.PlantCategoryFk == pc.Id)
+            //            .Select(p => new CategoryPlantItem
+            //            {
+            //                Plant = p,
+            //                PhotoOfPlant = PlantService.GetPhotosOfPlantAsync(p)
+            //                    .Result
+            //                    .FirstOrDefault(photo => photo.IsPrimary)
+            //            });
+            //        return new CategoryItem
+            //        {
+            //            PlantCategory = pc,
+            //            PlantsOfCategory = new ObservableCollection<CategoryPlantItem>(plantsOfThisCategory.ToList())
+            //        };
+            //    })
+            //    .ToList();
+
+            var categoryItemList = plantCategoryList.Select(pc => new CategoryItem { PlantCategory = pc }).ToList();
+
+            categoryList = categoryItemList;
+            Categories = new ObservableCollection<CategoryItem>(categoryItemList);
+
+            foreach (var selCat in alreadySelectedCategories)
+            {
+                var categoryItem = categoryList.First(ci => ci.PlantCategory.Id == selCat.Id);
+                categoryItem.IsSelected = true;
+            }
+
+            var alreadySelectedCategoryItems = Categories.Where(ci => alreadySelectedCategories.FirstOrDefault(pc => pc.Id == ci.PlantCategory.Id) != null).Cast<object>();
+
+            SelectedCategoryItems = new ObservableCollection<object>(alreadySelectedCategoryItems);
+
             //Initing the Commands.
 
             //IF WE WANT TO IMPLEMENT IN THE FUTURE THAT TAPPING ON CATEGORY SHOWS ITS LIST OF PLANTS
@@ -113,41 +166,7 @@ namespace PlantAlarm.ViewModels
             });
             AppearingCommand = new Command(async () =>
             {
-                //Building the Item Sets.
-                var plantCategoryList = await PlantService.GetPlantCategoriesAsync();
-
-                //IF WE WANT TO IMPLEMENT IN THE FUTURE THAT TAPPING ON CATEGORY SHOWS ITS LIST OF PLANTS
-                //var plantList = PlantService.GetPlantsAsync().Result;
-
-                //categories = plantCategoryList
-                //    .Select(pc => {
-                //        var plantsOfThisCategory = plantList
-                //            .Where(p => p.PlantCategoryFk == pc.Id)
-                //            .Select(p => new CategoryPlantItem
-                //            {
-                //                Plant = p,
-                //                PhotoOfPlant = PlantService.GetPhotosOfPlantAsync(p)
-                //                    .Result
-                //                    .FirstOrDefault(photo => photo.IsPrimary)
-                //            });
-                //        return new CategoryItem
-                //        {
-                //            PlantCategory = pc,
-                //            PlantsOfCategory = new ObservableCollection<CategoryPlantItem>(plantsOfThisCategory.ToList())
-                //        };
-                //    })
-                //    .ToList();
-
-                var categoryItemList = plantCategoryList.Select(pc => new CategoryItem { PlantCategory = pc }).ToList();
-
-                categoryList = categoryItemList;
-                Categories = new ObservableCollection<CategoryItem>(categoryItemList);
-
-                foreach (var selCat in alreadySelectedCategories)
-                {
-                    var categoryItem = categoryList.First(ci => ci.PlantCategory.Id == selCat.Id);
-                    categoryItem.IsSelected = true;
-                }
+                
             });
             SelectionChangedCommand = new Command((itemsSelected) =>
             {
@@ -166,9 +185,15 @@ namespace PlantAlarm.ViewModels
                         categoryItem.IsSelected = false;
                     }
                 }
-
-                OnPropertyChanged(nameof(Categories));
             });
+        }
+
+        public static async Task<CategorySelectorViewModel> CreateAsync(Page view, List<PlantCategory> alreadySelected)
+        {
+            var allCategories = await PlantService.GetPlantCategoriesAsync();
+            var vm = new CategorySelectorViewModel(view, alreadySelected, allCategories);
+
+            return vm;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
