@@ -11,9 +11,10 @@
                     <ViewCell Height="44">
                         <Grid Margin="15,0,15,0" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*" />
                                 <ColumnDefinition Width="8*" />
                             </Grid.ColumnDefinitions>
+                            <Label Text="Name" FontSize="18" VerticalOptions="Center"/>
                             <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
                                    Text="{Binding PlantToAdd.Name, Mode=TwoWay}" FontAttributes="Italic">
                                 <Entry.Effects>
@@ -35,7 +36,7 @@
                         </Grid>
                     </ViewCell>
                 </TableSection>
-                <TableSection Title="Photos" >
+                <TableSection Title="Photos">
                     <ViewCell>
                         <StackLayout>
                             <Button Text="Add Photo" HorizontalOptions="Fill" FontSize="17"
@@ -52,8 +53,12 @@
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <customControls:SquaredImageContainerStack>
-                                        <customControls:SquaredImage Source="{Binding Url}" HorizontalOptions="Fill"
-                                                                     Aspect="AspectFill" VerticalOptions="Fill" />
+                                        <customControls:SquaredImage Source="{Binding Photo.Url}" HorizontalOptions="Fill"
+                                                                     Aspect="AspectFill" VerticalOptions="Fill">
+                                            <customControls:SquaredImage.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ShowOptions}" />
+                                            </customControls:SquaredImage.GestureRecognizers>
+                                        </customControls:SquaredImage>
                                     </customControls:SquaredImageContainerStack>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
