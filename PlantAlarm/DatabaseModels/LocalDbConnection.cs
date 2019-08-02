@@ -7,8 +7,15 @@ namespace PlantAlarm.DatabaseModels
 {
     public class LocalDbConnection
     { 
-        private SQLiteAsyncConnection db;
-        public SQLiteAsyncConnection Db
+        private SQLiteAsyncConnection asyncDb;
+        public SQLiteAsyncConnection AsyncDb
+        {
+            get => asyncDb;
+            private set => asyncDb = value;
+        }
+
+        private SQLiteConnection db;
+        public SQLiteConnection Db
         {
             get => db;
             private set => db = value;
@@ -19,35 +26,37 @@ namespace PlantAlarm.DatabaseModels
             //if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantAlarmSQLite.db3")))
             if (false)
             {
-                db = new SQLiteAsyncConnection(dbPath);
+                AsyncDb = new SQLiteAsyncConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex);
+                Db = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex);
             }
             else
             {
-                db = new SQLiteAsyncConnection(dbPath);
+                AsyncDb = new SQLiteAsyncConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex);
+                Db = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex);
 
-                //db.DropTableAsync<Plant>().Wait();
-                //db.DropTableAsync<PlantPhoto>().Wait();
-                //db.DropTableAsync<PlantCategory>().Wait();
-                //db.DropTableAsync<PlantCategorization>().Wait();
+                //AsyncDb.DropTableAsync<Plant>().Wait();
+                //AsyncDb.DropTableAsync<PlantPhoto>().Wait();
+                //AsyncDb.DropTableAsync<PlantCategory>().Wait();
+                //AsyncDb.DropTableAsync<PlantCategorization>().Wait();
 
-                //db.DropTableAsync<Accessory>().Wait();
-                //db.DropTableAsync<AccessoryPhoto>().Wait();
-                //db.DropTableAsync<AccessoryCategory>().Wait();
+                //AsyncDb.DropTableAsync<Accessory>().Wait();
+                //AsyncDb.DropTableAsync<AccessoryPhoto>().Wait();
+                //AsyncDb.DropTableAsync<AccessoryCategory>().Wait();
 
-                //db.DropTableAsync<PlantTask>().Wait();
-                //db.DropTableAsync<PlantActivityItem>().Wait();
+                //AsyncDb.DropTableAsync<PlantTask>().Wait();
+                //AsyncDb.DropTableAsync<PlantActivityItem>().Wait();
 
-                db.CreateTableAsync<Plant>().Wait();
-                db.CreateTableAsync<PlantPhoto>().Wait();
-                db.CreateTableAsync<PlantCategory>().Wait();
-                db.CreateTableAsync<PlantCategorization>().Wait();
+                AsyncDb.CreateTableAsync<Plant>().Wait();
+                AsyncDb.CreateTableAsync<PlantPhoto>().Wait();
+                AsyncDb.CreateTableAsync<PlantCategory>().Wait();
+                AsyncDb.CreateTableAsync<PlantCategorization>().Wait();
 
-                db.CreateTableAsync<Accessory>().Wait();
-                db.CreateTableAsync<AccessoryPhoto>().Wait();
-                db.CreateTableAsync<AccessoryCategory>().Wait();
+                AsyncDb.CreateTableAsync<Accessory>().Wait();
+                AsyncDb.CreateTableAsync<AccessoryPhoto>().Wait();
+                AsyncDb.CreateTableAsync<AccessoryCategory>().Wait();
 
-                db.CreateTableAsync<PlantTask>().Wait();
-                db.CreateTableAsync<PlantActivityItem>().Wait();
+                AsyncDb.CreateTableAsync<PlantTask>().Wait();
+                AsyncDb.CreateTableAsync<PlantActivityItem>().Wait();
             }
         }
     }

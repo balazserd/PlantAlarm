@@ -32,7 +32,7 @@ namespace PlantAlarm.ViewModels
             }
         }
 
-        public Plant PlantToAdd { get; set; }
+        public string PlantName { get; set; }
 
         private List<PlantCategory> categories { get; set; }
         public List<PlantCategory> Categories
@@ -52,13 +52,20 @@ namespace PlantAlarm.ViewModels
         public ICommand ShowPhotoOptionsCommand { get; set; }
         public ICommand DeletePhotoCommand { get; set; }
         public ICommand ChangePhotoCommand { get; set; }
+        public ICommand AddPlantCommand { get; set; }
 
-        public ObservableCollection<PlantPhotoItem> Photos { get; private set; }
+        //This is a backing store, without absolute path to the photos.
+        private List<PlantPhoto> photosToAdd { get; set; }
+        public ObservableCollection<PlantPhotoItem> Photos { get; set; }
 
         public NewPlantViewModel(INavigation navigation, Page viewForViewModel)
         {
             View = viewForViewModel;
             Navigation = navigation;
+
+            Categories = new List<PlantCategory>();
+            Photos = new ObservableCollection<PlantPhotoItem>();
+            photosToAdd = new List<PlantPhoto>();
 
             ShowCategorySelectorPageCommand = new Command(async () =>
             {
@@ -66,25 +73,37 @@ namespace PlantAlarm.ViewModels
             });
             AddPhotoCommand = new Command(async () =>
             {
-                await InitPlantToAddIfNeeded();
-
                 var image = await GetNewPhoto();
                 if (image == null) return;
 
                 //Save the created image to the local folder. Must be done, or it can be removed by the user from their public picture folder.
-                var guidString = Guid.NewGuid().ToString().Replace("-", "");
-                var fullUrl = Path.Combine(PlantService.LocalPhotoFolder, guidString);
+                var photoName = Guid.NewGuid().ToString().Replace("-", "");
 
-                await image.GetStreamWithImageRotatedForExternalStorage().CopyToAsync(File.Create(fullUrl));
+                await image
+                .GetStreamWithImageRotatedForExternalStorage()
+                .CopyToAsync(
+                    File.Create(
+                        PlantService.AppendLocalAppDataFolderToPhotoName(photoName)));
+
+                //Goes to backing store.
+                var plantPhoto_noFullUrl = new PlantPhoto
+                {
+                    IsPrimary = false,
+                    TakenAt = DateTime.Now,
+                    Url = photoName
+                };
+                photosToAdd.Add(plantPhoto_noFullUrl);
+
+                //Goes to ObservableCollection.
+                var plantPhoto_fullUrl = new PlantPhoto
+                {
+                    IsPrimary = false,
+                    TakenAt = DateTime.Now,
+                    Url = PlantService.AppendLocalAppDataFolderToPhotoName(photoName)
+                };
 
                 var photoItem = new PlantPhotoItem(
-                    new PlantPhoto
-                    {
-                        PlantFk = PlantToAdd.Id,
-                        IsPrimary = false,
-                        TakenAt = DateTime.Now,
-                        Url = fullUrl
-                    },
+                    plantPhoto_fullUrl,
                     this.ShowPhotoOptionsCommand);
                 
                 //Add the created object to the collection of photos.
@@ -113,7 +132,12 @@ namespace PlantAlarm.ViewModels
                 var plantPhotoItem = ppi as PlantPhotoItem;
 
                 File.Delete(plantPhotoItem.Photo.Url);
+
+                //Remove from BOTH backing store and observed store.
                 Photos.Remove(plantPhotoItem);
+                photosToAdd.Remove(
+                    photosToAdd.First(
+                        ph => plantPhotoItem.Photo.Url.Contains(ph.Url)));
             });
             ChangePhotoCommand = new Command(async (ppi) =>
             {
@@ -126,18 +150,36 @@ namespace PlantAlarm.ViewModels
                 File.Delete(plantPhotoItem.Photo.Url);
                 await image.GetStreamWithImageRotatedForExternalStorage().CopyToAsync(File.Create(plantPhotoItem.Photo.Url));
 
+                //No need to re-add for backing store, as this is a step only to visually represent the change.
                 plantPhotoItem.Photo.TakenAt = DateTime.Now;
                 Photos.Remove(plantPhotoItem);
                 Photos.Insert(index, plantPhotoItem);
+            });
+            AddPlantCommand = new Command(async() =>
+            {
+                Plant plantToAdd = new Plant
+                {
+                    CreatedAt = DateTime.Now,
+                    Name = PlantName
+                };
+                await PlantService.AddPlantAsync(plantToAdd);
+
+                if (Photos.Count > 0) photosToAdd[0].IsPrimary = true;
+                var photosOfPlant = photosToAdd.Select(plantPhoto =>
+                {
+                    plantPhoto.PlantFk = plantToAdd.Id;
+                    return plantPhoto;
+                });
+
+                await PlantService.AddPlantPhotosAsync(photosOfPlant);
+
+                await Navigation.PopAsync();
             });
 
             MessagingCenter.Subscribe<object, List<PlantCategory>>(this, "CategoriesSelected", (viewModel, categoryList) =>
             {
                 Categories = categoryList;
             });
-
-            Categories = new List<PlantCategory>();
-            Photos = new ObservableCollection<PlantPhotoItem>();
         }
 
         private async Task<MediaFile> GetNewPhoto()
@@ -177,16 +219,6 @@ namespace PlantAlarm.ViewModels
             }
 
             return image;
-        }
-
-        private async Task InitPlantToAddIfNeeded()
-        {
-            if (PlantToAdd == null)
-            {
-                //Add the plant instantly, so that we will have an id for the plant photos.
-                PlantToAdd = new Plant { Name = "Placeholder Name" };
-                await PlantService.AddPlantAsync(PlantToAdd);
-            }
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

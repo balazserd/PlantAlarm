@@ -164,10 +164,6 @@ namespace PlantAlarm.ViewModels
                     return;
                 }
             });
-            AppearingCommand = new Command(async () =>
-            {
-                
-            });
             SelectionChangedCommand = new Command((itemsSelected) =>
             {
                 var selectedCategories = (itemsSelected as IList<object>).ToList().Cast<CategoryItem>();

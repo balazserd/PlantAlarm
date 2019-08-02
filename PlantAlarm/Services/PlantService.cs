@@ -10,20 +10,22 @@ namespace PlantAlarm.Services
 {
     public static class PlantService
     {
-        private static readonly SQLiteAsyncConnection db = App.LocalDbConnection.Db;
+        private static readonly SQLiteAsyncConnection asyncDb = App.LocalDbConnection.AsyncDb;
+        private static readonly SQLiteConnection Db = App.LocalDbConnection.Db;
 
         public readonly static string LocalPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantPhotos");
+        public static string AppendLocalAppDataFolderToPhotoName(string photoName) => Path.Combine(LocalPhotoFolder, photoName);
 
         public static async Task AddPlantAsync(Plant newPlant)
         {
-            await db.InsertAsync(newPlant);
+            await asyncDb.InsertAsync(newPlant);
         }
 
         public static async Task AddPlantCategoryAsync(PlantCategory newPlantCategory)
         {
             try
             {
-                await db.InsertAsync(newPlantCategory);
+                await asyncDb.InsertAsync(newPlantCategory);
             }
             catch (SQLiteException e)
             {
@@ -44,29 +46,57 @@ namespace PlantAlarm.Services
                 })
                 .ToList();
 
-            await db.InsertAllAsync(itemsToAdd);
+            await asyncDb.InsertAllAsync(itemsToAdd);
         }
 
         public static async Task AddPlantPhotoAsync(PlantPhoto photo)
         {
-            await db.InsertAsync(photo);
+            await asyncDb.InsertAsync(photo);
+        }
+
+        public static async Task AddPlantPhotosAsync(IEnumerable<PlantPhoto> photos)
+        {
+            int inserted = await asyncDb.InsertAllAsync(photos);
+            if (inserted != photos.Count()) throw new PlantServiceException("Not all photos could be added.");
         }
 
         public static async Task<List<Plant>> GetPlantsAsync()
         {
-            var plantList = await db.Table<Plant>().ToListAsync();
+            var plantList = await asyncDb.Table<Plant>().ToListAsync();
             return plantList;
+        }
+
+        public static List<Plant> GetPlants()
+        {
+            var plantList = Db.Table<Plant>().ToList();
+            return plantList;
+        }
+
+        public static List<PlantPhoto> GetAllPhotos()
+        {
+            var photoList = Db.Table<PlantPhoto>().ToList();
+
+            //correcting the url (only the image name is stored in the db).
+            photoList = photoList
+                .Select(photo =>
+                {
+                    photo.Url = AppendLocalAppDataFolderToPhotoName(photo.Url);
+                    return photo;
+                })
+                .ToList();
+
+            return photoList;
         }
 
         public static async Task<List<PlantCategory>> GetPlantCategoriesAsync()
         {
-            var plantCategoryList = await db.Table<PlantCategory>().ToListAsync();
+            var plantCategoryList = await asyncDb.Table<PlantCategory>().ToListAsync();
             return plantCategoryList;
         }
 
         public static async Task<List<PlantPhoto>> GetPhotosOfPlantAsync(Plant p)
         {
-            var photos = await db.Table<PlantPhoto>()
+            var photos = await asyncDb.Table<PlantPhoto>()
                 .Where(photo => photo.PlantFk == p.Id)
                 .ToListAsync();
 
@@ -74,7 +104,7 @@ namespace PlantAlarm.Services
             var urlCorrectedPhotos = photos
                 .Select(photo =>
                 {
-                    photo.Url = Path.Combine(LocalPhotoFolder, photo.Url);
+                    photo.Url = AppendLocalAppDataFolderToPhotoName(photo.Url);
                     return photo;
                 })
                 .ToList();

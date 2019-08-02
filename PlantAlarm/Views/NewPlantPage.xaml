@@ -4,6 +4,9 @@
              x:Class="PlantAlarm.Views.NewPlantPage"
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
              xmlns:customEffects="clr-namespace:PlantAlarm.Effects">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddPlantCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
             <TableView Intent="Form" HasUnevenRows="true">
@@ -16,7 +19,7 @@
                             </Grid.ColumnDefinitions>
                             <Label Text="Name" FontSize="18" VerticalOptions="Center"/>
                             <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
-                                   Text="{Binding PlantToAdd.Name, Mode=TwoWay}" FontAttributes="Italic">
+                                   Text="{Binding PlantName}" FontAttributes="Italic">
                                 <Entry.Effects>
                                     <customEffects:BorderlessEffect />
                                 </Entry.Effects>

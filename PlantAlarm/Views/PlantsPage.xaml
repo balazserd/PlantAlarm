@@ -8,7 +8,21 @@
         <ToolbarItem Text="New item" Command="{Binding ShowNewPlantPageCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <CollectionView ItemsSource="{Binding PlantItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout>
+                                    <Label Text="{Binding Plant.Name}" FontSize="18" FontAttributes="Bold" />
+                                </StackLayout>
+                                <Image WidthRequest="80" HeightRequest="80" Source="{Binding MainPhoto.Url}" VerticalOptions="Center" Aspect="AspectFill" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

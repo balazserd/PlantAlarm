@@ -10,7 +10,7 @@ namespace PlantAlarm.Services
 {
     public static class PlantActivityService
     {
-        private static readonly SQLiteAsyncConnection db = App.LocalDbConnection.Db;
+        private static readonly SQLiteAsyncConnection asyncDb = App.LocalDbConnection.AsyncDb;
 
         #region PUBLIC methods
         /// <summary>
@@ -58,7 +58,7 @@ namespace PlantAlarm.Services
                 }
             }
 
-            await db.InsertAllAsync(resultList);
+            await asyncDb.InsertAllAsync(resultList);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace PlantAlarm.Services
         /// <param name="task">The PlantTask which's activities should be removed.</param>
         public static async Task RemoveActivitiesOfTaskAsync(PlantTask task)
         {
-            var activitiesToDelete = await db.Table<PlantActivityItem>().Where(act => act.PlantTaskFk == task.Id).DeleteAsync();
+            var activitiesToDelete = await asyncDb.Table<PlantActivityItem>().Where(act => act.PlantTaskFk == task.Id).DeleteAsync();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace PlantAlarm.Services
         /// <param name="activities">The list of activities to modify.</param>
         public static async Task ModifyActivitiesAsync(List<PlantActivityItem> activities)
         {
-            await db.UpdateAllAsync(activities);
+            await asyncDb.UpdateAllAsync(activities);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace PlantAlarm.Services
         /// <param name="to">The last day for which to return the activities (inclusive).</param>
         public static async Task<List<PlantActivityItem>> GetUpcomingActivitiesAsync(DateTime from, DateTime to)
         {
-            var activities = db.Table<PlantActivityItem>()
+            var activities = asyncDb.Table<PlantActivityItem>()
                 .Where(act => act.Time.Date >= from.Date && act.Time.Date <= to.Date)
                 .ToListAsync();
 
@@ -99,7 +99,7 @@ namespace PlantAlarm.Services
         /// <param name="day">The day for which to return the activities.</param>
         public static async Task<List<PlantActivityItem>> GetUpcomingActivitiesAsync(DateTime day)
         {
-            var activities = db.Table<PlantActivityItem>()
+            var activities = asyncDb.Table<PlantActivityItem>()
                 .Where(act => act.Time.Date == day.Date)
                 .ToListAsync();
 

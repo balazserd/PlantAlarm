@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using PlantAlarm.ViewModels;
 using Xamarin.Forms;
 
@@ -10,7 +11,6 @@ namespace PlantAlarm.Views
         public PlantsPage()
         {
             InitializeComponent();
-
             this.BindingContext = new PlantsViewModel(Application.Current.MainPage.Navigation);
         }
     }
