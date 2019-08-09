@@ -25,9 +25,7 @@ namespace PlantAlarm.CustomControls
             {
                 var sl = (bindable as RoundedCorneredStackLayout);
                 sl.IsSelected = (bool)newValue;
-                //sl.InvalidateLayout();
             });
-
 
         public RoundedCorneredStackLayout()
         {

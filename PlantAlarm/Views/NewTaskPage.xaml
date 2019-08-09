@@ -5,11 +5,36 @@
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
              xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
              Title="New Task">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddTaskCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
             <TableView Intent="Form" HasUnevenRows="true">
                 <TableSection>
-                    <EntryCell Height="44" Label="Name" />
+                    <ViewCell Height="44">
+                        <Grid Margin="15,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="8*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Name" FontSize="18" VerticalOptions="Center"/>
+                            <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
+                                   Text="{Binding TaskName}" FontAttributes="Italic">
+                                <Entry.Effects>
+                                    <customEffects:BorderlessEffect />
+                                </Entry.Effects>
+                            </Entry>
+                        </Grid>
+                    </ViewCell>
+                    <ViewCell Height="44" Tapped="AddPlantsTapped">
+                        <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                            <Label Text="{Binding SelectedPlantsText}" VerticalOptions="Center" FontSize="18" 
+                                   HorizontalOptions="StartAndExpand" FontAttributes="Italic"/>
+                            <Image Source="RightArrowBlack.png" VerticalOptions="Center" Margin="0,0,15,0"
+                                   HeightRequest="25" HorizontalOptions="End"/>
+                        </StackLayout>
+                    </ViewCell>
                 </TableSection>
                 
                 <!-- Should show when not recurring -->
@@ -100,41 +125,6 @@
                             <Entry VerticalOptions="Center" x:Name="EveryXMonthsEntry" Keyboard="Numeric" WidthRequest="37" 
                                    HorizontalTextAlignment="Center" MaxLength="2"/>
                             <Label Text=" month(s)" VerticalOptions="Center" />
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>
-                
-                <TableSection Title="Plants to perform this task on">
-                    <ViewCell>
-                        <StackLayout>
-                            <Button HorizontalOptions="FillAndExpand" Text="Add plants" FontSize="16"
-                                    Command="{Binding AddPlantsCommand}"/>
-                        </StackLayout>
-                    </ViewCell>
-                    <ViewCell>
-                        <StackLayout>
-                            <CollectionView>
-                                <CollectionView.ItemsLayout>
-                                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="3"
-                                                     HorizontalItemSpacing="3"/>
-                                </CollectionView.ItemsLayout>   
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackLayout Orientation="Horizontal" Margin="3" >
-                                            <Image Source="{Binding PlantPhoto}" />
-                                            <Label Text="{Binding Name}" LineBreakMode="TailTruncation"/>
-                                        </StackLayout>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>
-                
-                <TableSection>
-                    <ViewCell>
-                        <StackLayout>
-                            <Button Text="Add Task" FontSize="16" HorizontalOptions="FillAndExpand"/>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

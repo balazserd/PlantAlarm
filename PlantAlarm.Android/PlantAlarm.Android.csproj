@@ -109,6 +109,12 @@
     <AndroidResource Include="Resources\drawable-xhdpi\GreenDoneIcon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\GreenDoneIcon.png" />
     <AndroidResource Include="Resources\drawable\GreenDoneIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\RightArrowYellow.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\RightArrowYellow.png" />
+    <AndroidResource Include="Resources\drawable\RightArrowYellow.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\RightArrowBlack.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\RightArrowBlack.png" />
+    <AndroidResource Include="Resources\drawable\RightArrowBlack.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

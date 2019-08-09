@@ -121,6 +121,14 @@
     <ImageAsset Include="Assets.xcassets\GreenDoneIcon.imageset\icons8-checkmark.png" />
     <ImageAsset Include="Assets.xcassets\GreenDoneIcon.imageset\icons8-checkmark-1.png" />
     <ImageAsset Include="Assets.xcassets\GreenDoneIcon.imageset\icons8-checkmark-2.png" />
+    <ImageAsset Include="Assets.xcassets\RightArrowYellow.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RightArrowYellow.imageset\icons8-chevron_right.png" />
+    <ImageAsset Include="Assets.xcassets\RightArrowYellow.imageset\icons8-chevron_right-1.png" />
+    <ImageAsset Include="Assets.xcassets\RightArrowYellow.imageset\icons8-chevron_right-2.png" />
+    <ImageAsset Include="Assets.xcassets\RightArrowBlack.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RightArrowBlack.imageset\icons8-chevron_right.png" />
+    <ImageAsset Include="Assets.xcassets\RightArrowBlack.imageset\icons8-chevron_right-1.png" />
+    <ImageAsset Include="Assets.xcassets\RightArrowBlack.imageset\icons8-chevron_right-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -162,5 +170,7 @@
     <Folder Include="CustomRenderers\" />
     <Folder Include="Assets.xcassets\GreenDoneIcon.imageset\" />
     <Folder Include="Effects\" />
+    <Folder Include="Assets.xcassets\RightArrowYellow.imageset\" />
+    <Folder Include="Assets.xcassets\RightArrowBlack.imageset\" />
   </ItemGroup>
 </Project>

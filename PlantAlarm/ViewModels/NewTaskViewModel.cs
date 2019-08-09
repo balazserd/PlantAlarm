@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -11,15 +12,44 @@ namespace PlantAlarm.ViewModels
 {
     public class NewTaskViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Plant> PlantList { get; private set; }
+        private List<Plant> plantList { get; set; }
+        public List<Plant> PlantList
+        {
+            get => plantList;
+            set
+            {
+                plantList = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedPlantsText));
+            }
+        }
+
+        public string TaskName { get; set; }
+
+        public string SelectedPlantsText
+        {
+            get
+            {
+                return PlantList == null || PlantList.Count == 0 ?
+                    "Tap here to select plants" :
+                    $"{PlantList.Count} plants selected";
+            }
+        }
+
+        public ICommand AddTaskCommand { get; private set; }
         public ICommand AddPlantsCommand { get; private set; }
 
         public NewTaskViewModel()
         {
-            PlantList = new ObservableCollection<Plant>();
+            PlantList = new List<Plant>();
             AddPlantsCommand = new Command(async () =>
             {
-                await Application.Current.MainPage.Navigation.PushAsync(new PlantSelectorPage());
+                await Application.Current.MainPage.Navigation.PushAsync(new PlantSelectorPage(PlantList));
+            });
+
+            MessagingCenter.Subscribe<object, List<Plant>>(this, "PlantsSelected", (viewModel, selectedPlants) =>
+            {
+                PlantList = selectedPlants;
             });
         }
 

@@ -29,7 +29,7 @@ namespace PlantAlarm.ViewModels
         public ICommand AddCommand { get; private set; }
         public ICommand SelectionChangedCommand { get; private set; }
 
-        public PlantSelectorViewModel()
+        public PlantSelectorViewModel(List<Plant> alreadySelectedPlants)
         {
             SelectedPlantItems = new ObservableCollection<object>();
 
@@ -45,11 +45,19 @@ namespace PlantAlarm.ViewModels
                     Photos = photos.ToList(),
                     PrimaryPhoto = photos?.FirstOrDefault(photo => photo.IsPrimary),
                     Plant = plant,
-                    IsSelected = false
+                    IsSelected = alreadySelectedPlants.Any(selPlant => selPlant.Id == plant.Id)
                 };
             });
 
             Plants = new ObservableCollection<PlantSelectionItem>(plantItems);
+
+            var preSelection = Plants.Where(
+                plantItem => alreadySelectedPlants.Any(
+                    selPlant => selPlant.Id == plantItem.Plant.Id))
+                .Cast<object>()
+                .ToList();
+
+            SelectedPlantItems = new ObservableCollection<object>(preSelection);
 
             SelectionChangedCommand = new Command((plantsSelected) =>
             {
@@ -61,6 +69,14 @@ namespace PlantAlarm.ViewModels
                     plantItem.IsSelected =
                         selectedIdsList.FirstOrDefault(selId => selId == plantItem.Plant.Id) != default(int);
                 }
+            });
+
+            AddCommand = new Command(async () =>
+            {
+                var selectedPlants = SelectedPlantItems.Select(plantItem => (plantItem as PlantSelectionItem).Plant).ToList();
+                MessagingCenter.Send(this as object, "PlantsSelected", selectedPlants);
+
+                await Application.Current.MainPage.Navigation.PopAsync();
             });
         }
 

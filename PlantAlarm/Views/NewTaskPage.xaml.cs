@@ -9,6 +9,7 @@ namespace PlantAlarm.Views
     public partial class NewTaskPage : ContentPage
     {
         private const int CellHeight = 44;
+        private readonly NewTaskViewModel vm;
 
         public NewTaskPage()
         {
@@ -18,6 +19,7 @@ namespace PlantAlarm.Views
             this.TimePicker.Time = TimeSpan.FromHours(8);
 
             this.BindingContext = new NewTaskViewModel();
+            vm = this.BindingContext as NewTaskViewModel;
         }
 
         void CategorySelectorTapped(object sender, System.EventArgs e)
@@ -31,6 +33,11 @@ namespace PlantAlarm.Views
             bool EveryXMonthsEntryMakesSense = int.TryParse(EveryXMonthsEntry.Text, out int monthInterval) && monthInterval > 0; //Can be parsed into a valid int.
 
             return MondayCheckBox.IsChecked || TuesdayCheckBox.IsChecked || WednesdayCheckBox.IsChecked || ThursdayCheckBox.IsChecked || FridayCheckBox.IsChecked || SaturdayCheckBox.IsChecked || SundayCheckBox.IsChecked || (EveryXDaysEntry != null && EveryXDaysEntryMakesSense) || (EveryXMonthsEntry != null && EveryXMonthsEntryMakesSense);
+        }
+
+        void AddPlantsTapped(object sender, EventArgs e)
+        {
+            vm.AddPlantsCommand.Execute(vm.PlantList);
         }
     }
 }
