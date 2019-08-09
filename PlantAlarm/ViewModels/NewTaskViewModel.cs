@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
+using PlantAlarm.Views;
 using Xamarin.Forms;
 
 namespace PlantAlarm.ViewModels
@@ -16,13 +17,11 @@ namespace PlantAlarm.ViewModels
         public NewTaskViewModel()
         {
             PlantList = new ObservableCollection<Plant>();
-            AddPlantsCommand = new Command(() =>
+            AddPlantsCommand = new Command(async () =>
             {
-
+                await Application.Current.MainPage.Navigation.PushAsync(new PlantSelectorPage());
             });
         }
-
-
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

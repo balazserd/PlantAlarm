@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlantAlarm.ViewModels;
 using Xamarin.Forms;
 
 namespace PlantAlarm.Views
@@ -15,6 +16,8 @@ namespace PlantAlarm.Views
 
             this.DatePicker.MinimumDate = DateTime.Now.Date;
             this.TimePicker.Time = TimeSpan.FromHours(8);
+
+            this.BindingContext = new NewTaskViewModel();
         }
 
         void CategorySelectorTapped(object sender, System.EventArgs e)

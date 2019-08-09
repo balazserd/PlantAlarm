@@ -55,7 +55,6 @@ namespace PlantAlarm.ViewModels
             }
         }
 
-        //public Action<CategoryItem> ExpandCategoryItemCommand { get; private set; }
         public ICommand SearchCategoriesCommand { get; private set; }
         public ICommand AddCategoryModalCommand { get; private set; }
         public ICommand AppearingCommand { get; private set; }
@@ -66,29 +65,6 @@ namespace PlantAlarm.ViewModels
         {
             View = view;
             plantCategoryList = allCategories;
-
-            //IF WE WANT TO IMPLEMENT IN THE FUTURE THAT TAPPING ON CATEGORY SHOWS ITS LIST OF PLANTS
-            //var plantList = PlantService.GetPlantsAsync().Result;
-
-            //categories = plantCategoryList
-            //    .Select(pc => {
-            //        var plantsOfThisCategory = plantList
-            //            .Where(p => p.PlantCategoryFk == pc.Id)
-            //            .Select(p => new CategoryPlantItem
-            //            {
-            //                Plant = p,
-            //                PhotoOfPlant = PlantService.GetPhotosOfPlantAsync(p)
-            //                    .Result
-            //                    .FirstOrDefault(photo => photo.IsPrimary)
-            //            });
-            //        return new CategoryItem
-            //        {
-            //            PlantCategory = pc,
-            //            PlantsOfCategory = new ObservableCollection<CategoryPlantItem>(plantsOfThisCategory.ToList())
-            //        };
-            //    })
-            //    .ToList();
-
             var categoryItemList = plantCategoryList.Select(pc => new CategoryItem { PlantCategory = pc }).ToList();
 
             categoryList = categoryItemList;
@@ -104,35 +80,6 @@ namespace PlantAlarm.ViewModels
 
             SelectedCategoryItems = new ObservableCollection<object>(alreadySelectedCategoryItems);
 
-            //Initing the Commands.
-
-            //IF WE WANT TO IMPLEMENT IN THE FUTURE THAT TAPPING ON CATEGORY SHOWS ITS LIST OF PLANTS
-            //ExpandCategoryItemCommand = new Action<CategoryItem>(ci =>
-            //{
-            //    var index = Categories.IndexOf(ci);
-            //    Categories.Remove(ci);
-
-            //    ci.IsExpanded = !ci.IsExpanded;
-            //    Categories.Insert(index, ci);
-            //});
-            //SEARCH FUNCTIONALITY
-            //SearchCategoriesCommand = new Command((s) =>
-            //{
-            //    string searchString = s as string;
-
-            //    if (string.IsNullOrEmpty(searchString))
-            //    {
-            //        Categories = new ObservableCollection<CategoryItem>(categoryList);
-            //    }
-            //    else
-            //    {
-            //        var list = categoryList
-            //            .Where(c => c.PlantCategory.Name.Contains(searchString))
-            //            .ToList();
-
-            //        Categories = new ObservableCollection<CategoryItem>(categoryList);
-            //    }
-            //});
             AddCategoriesCommand = new Command(async () =>
             {
                 var selectedCategories = categoryList
@@ -216,13 +163,5 @@ namespace PlantAlarm.ViewModels
                 OnPropertyChanged();
             }
         }
-        //public ObservableCollection<CategoryPlantItem> PlantsOfCategory { get; set; }
-        //public bool IsExpanded { get; set; }
-    }
-
-    public class CategoryPlantItem
-    {
-        public Plant Plant { get; set; }
-        public PlantPhoto PhotoOfPlant { get; set; }
     }
 }

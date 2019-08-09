@@ -75,6 +75,8 @@
     <Compile Include="DependencyServices\TextInputModal_iOS.cs" />
     <Compile Include="CustomRenderers\CategoryCollectionViewRenderer_iOS.cs" />
     <Compile Include="Effects\BorderlessEffect_iOS.cs" />
+    <Compile Include="CustomRenderers\RoundedCorneredFrameRenderer_iOS.cs" />
+    <Compile Include="CustomRenderers\RoundedImageRenderer_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

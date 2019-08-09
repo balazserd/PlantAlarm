@@ -173,6 +173,7 @@ namespace PlantAlarm.ViewModels
 
                 await PlantService.AddPlantPhotosAsync(photosOfPlant);
 
+                MessagingCenter.Send(this as object, "PlantAdded");
                 await Navigation.PopAsync();
             });
 

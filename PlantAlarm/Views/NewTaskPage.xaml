@@ -37,7 +37,7 @@
                 </TableSection>
                 
                 <!-- Should show when recurring -->
-                <TableSection Title="Recurring pattern" x:Name="RecurringSection">
+                <TableSection Title="Recurring pattern (if needed)" x:Name="RecurringSection">
                     <ViewCell Height="44" x:Name="RecurringOnDayCell">
                         <Grid Margin="7,0,3,0">
                             <Grid.ColumnDefinitions>
@@ -107,23 +107,26 @@
                 <TableSection Title="Plants to perform this task on">
                     <ViewCell>
                         <StackLayout>
-                            <Button HorizontalOptions="FillAndExpand" Text="Add plants" FontSize="16"/>
+                            <Button HorizontalOptions="FillAndExpand" Text="Add plants" FontSize="16"
+                                    Command="{Binding AddPlantsCommand}"/>
                         </StackLayout>
                     </ViewCell>
                     <ViewCell>
                         <StackLayout>
-                            <ListView>
-                                <ListView.ItemTemplate>
+                            <CollectionView>
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="3"
+                                                     HorizontalItemSpacing="3"/>
+                                </CollectionView.ItemsLayout>   
+                                <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
-                                            <StackLayout Orientation="Horizontal" Margin="15,0,15,0" >
-                                                <Image Source="{Binding PlantPhoto}" />
-                                                <Label Text="{Binding Name}" />
-                                            </StackLayout>
-                                        </ViewCell>
+                                        <StackLayout Orientation="Horizontal" Margin="3" >
+                                            <Image Source="{Binding PlantPhoto}" />
+                                            <Label Text="{Binding Name}" LineBreakMode="TailTruncation"/>
+                                        </StackLayout>
                                     </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

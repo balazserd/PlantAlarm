@@ -2,24 +2,55 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="PlantAlarm.Views.PlantSelectorPage"
+             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
              Title="Select plants">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Done" Command="{Binding DoneCommand}" />
+        <ToolbarItem Text="Add" Command="{Binding AddCommand}" />
     </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <Style TargetType="StackLayout">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="White" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="White" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <ListView ItemsSource="{Binding PlantList}" HasUnevenRows="false">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell Height="70">
-                            <StackLayout Orientation="Horizontal">
-                                <Image Source="{Binding PrimaryPhotoOfPlant.Url}" Margin="5"/>
-                                <Label Text="{Binding Plant.Name}" />
+        <ScrollView>
+            <StackLayout Margin="6,6,0,6">
+                <CollectionView ItemsSource="{Binding Plants}" SelectionMode="Multiple" x:Name="PlantColView"
+                                SelectionChangedCommand="{Binding SelectionChangedCommand}" SelectedItems="{Binding SelectedPlantItems}"
+                                SelectionChangedCommandParameter="{Binding Source={x:Reference PlantColView}, Path=SelectedItems}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Span="3" HorizontalItemSpacing="0" VerticalItemSpacing="6" Orientation="Vertical"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="0,0,6,0">
+                                <customControls:RoundedCorneredStackLayout Orientation="Vertical" IsSelected="{Binding IsSelected}">
+                                    <customControls:RoundedImage Source="{Binding PrimaryPhoto.Url}" Aspect="AspectFill" 
+                                                                         Margin="6,6,6,0"/>
+                                    <Label VerticalTextAlignment="Center" Margin="2,-1,2,0" Text="{Binding Plant.Name}"
+                                           HorizontalTextAlignment="Center" MaxLines="1" LineBreakMode="TailTruncation"
+                                           FontSize="12"/>
+                                </customControls:RoundedCorneredStackLayout>
                             </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

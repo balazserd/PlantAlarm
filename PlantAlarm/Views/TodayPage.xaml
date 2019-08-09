@@ -5,7 +5,7 @@
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
              Title="To-dos">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Back to Today" Clicked="BackToTodayTapped"/>
+        <ToolbarItem Text="Today" Clicked="BackToTodayTapped"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>

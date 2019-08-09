@@ -13,11 +13,16 @@
                 <CollectionView ItemsSource="{Binding PlantItems}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Orientation="Horizontal">
-                                <StackLayout>
-                                    <Label Text="{Binding Plant.Name}" FontSize="18" FontAttributes="Bold" />
+                            <StackLayout>
+                                <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" VerticalOptions="Start"/>
+                                <StackLayout Orientation="Horizontal" Margin="10,5,10,5">
+                                    <StackLayout HorizontalOptions="StartAndExpand">
+                                        <Label Text="{Binding Plant.Name}" FontSize="17" />
+                                    </StackLayout>
+                                    <Image WidthRequest="70" HeightRequest="70" Source="{Binding MainPhoto.Url}" VerticalOptions="Center" 
+                                           Aspect="AspectFill" />
                                 </StackLayout>
-                                <Image WidthRequest="80" HeightRequest="80" Source="{Binding MainPhoto.Url}" VerticalOptions="Center" Aspect="AspectFill" />
+                                <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" VerticalOptions="End"/>
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

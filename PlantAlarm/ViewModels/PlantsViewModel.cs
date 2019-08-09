@@ -33,12 +33,28 @@ namespace PlantAlarm.ViewModels
         public PlantsViewModel(INavigation navigation)
         {
             Navigation = navigation;
+            this.RefreshSource();
 
             ShowNewPlantPageCommand = new Command(async () =>
             {
                 await Navigation.PushAsync(new NewPlantPage());
             });
 
+            MessagingCenter.Subscribe<object>(this, "PlantAdded", (vm) =>
+            {
+                this.RefreshSource();
+            });
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RefreshSource()
+        {
             var plantList = PlantService.GetPlants();
             var photoList = PlantService.GetAllPhotos();
 
@@ -55,13 +71,6 @@ namespace PlantAlarm.ViewModels
                 PlantItems.Add(plantItem);
             }
         }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     public class PlantItem
