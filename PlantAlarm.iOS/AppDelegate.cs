@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using PlantAlarm.iOS.DependencyServices;
+using PlantAlarm.Services;
 using UIKit;
 using UserNotifications;
 using Xamarin.Forms;
@@ -32,9 +34,7 @@ namespace PlantAlarm.iOS
             var _ = new TouchTracking.Forms.iOS.TouchEffect();
 
             //Ask for permission to Notifications.
-            UNUserNotificationCenter.Current.RequestAuthorization(
-                    UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound,
-                    (approved, error) => { });
+            NotificationService.AskForNotificationPermission();
 
             return base.FinishedLaunching(uiApplication, launchOptions);
         }

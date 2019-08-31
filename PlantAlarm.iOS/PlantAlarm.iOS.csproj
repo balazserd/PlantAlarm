@@ -129,6 +129,14 @@
     <ImageAsset Include="Assets.xcassets\RightArrowBlack.imageset\icons8-chevron_right.png" />
     <ImageAsset Include="Assets.xcassets\RightArrowBlack.imageset\icons8-chevron_right-1.png" />
     <ImageAsset Include="Assets.xcassets\RightArrowBlack.imageset\icons8-chevron_right-2.png" />
+    <ImageAsset Include="Assets.xcassets\RecurringIconGold.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RecurringIconGold.imageset\icons8-recurring_appointment.png" />
+    <ImageAsset Include="Assets.xcassets\RecurringIconGold.imageset\icons8-recurring_appointment-1.png" />
+    <ImageAsset Include="Assets.xcassets\RecurringIconGold.imageset\icons8-recurring_appointment-2.png" />
+    <ImageAsset Include="Assets.xcassets\AlertRed.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AlertRed.imageset\icons8-box_important.png" />
+    <ImageAsset Include="Assets.xcassets\AlertRed.imageset\icons8-box_important-1.png" />
+    <ImageAsset Include="Assets.xcassets\AlertRed.imageset\icons8-box_important-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -139,7 +147,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.673156" />
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
     <PackageReference Include="TouchTracking.Forms">
       <Version>1.1.0</Version>
@@ -172,5 +180,7 @@
     <Folder Include="Effects\" />
     <Folder Include="Assets.xcassets\RightArrowYellow.imageset\" />
     <Folder Include="Assets.xcassets\RightArrowBlack.imageset\" />
+    <Folder Include="Assets.xcassets\RecurringIconGold.imageset\" />
+    <Folder Include="Assets.xcassets\AlertRed.imageset\" />
   </ItemGroup>
 </Project>

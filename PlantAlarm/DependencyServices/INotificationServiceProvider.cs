@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
-using PlantAlarm.Models;
+using PlantAlarm.Enums;
 
 namespace PlantAlarm.DependencyServices
 {
@@ -18,13 +18,29 @@ namespace PlantAlarm.DependencyServices
         /// and every subsequent element is the collection of activities for the next day.</param>
         /// <param name="atHour">The hour at which the notification should be displayed. Defaults to 8.</param>
         /// <param name="atMinute">The minute at which the notification should be displayed. Defaults to 0.</param>
-        void CreateDailyReminders(List<PlantActivityItem>[] listOfTasksForEveryDay, byte atHour = 8, byte atMinute = 0);
+        Task CreateDailyReminders(List<PlantActivityItem>[] listOfTasksForEveryDay, byte atHour = 8, byte atMinute = 0);
 
         /// <summary>
-        /// Removes all daily reminders between the two specified dates.
+        /// Removes all daily reminders.
         /// </summary>
-        /// <param name="from">The first day to remove the daily notification for, inclusive.</param>
-        /// <param name="to">The last day to remove the daily notification for, inslucive.</param>
-        Task RemoveDailyReminders(DateTime from, DateTime to);
+        Task RemoveDailyReminders();
+
+        /// <summary>
+        /// Checks whether notifications have been enabled.
+        /// </summary>
+        /// <returns></returns>
+        NotificationPermissionState AreNotificationsEnabled();
+
+        /// <summary>
+        /// Asks for permissions of notifications.
+        /// </summary>
+        /// <returns></returns>
+        void AskForNotificationPermission();
+
+        /// <summary>
+        /// Presents an alert, explaining that Notification settings can only be modified from the Settings app after the initial answer. Then, executes the completionHandler.
+        /// </summary>
+        /// <param name="completionHandler">The code to execute when the method returns.</param>
+        void ExplainNotificationPermissionHandling(Action completionHandler);
     }
 }

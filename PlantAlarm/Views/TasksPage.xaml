@@ -7,15 +7,18 @@
         <ToolbarItem Text="New Task" Command="{Binding ShowNewTaskPageCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="AAA" />
-            <Label Text="AAA" />
-            <Label Text="AAA" />
-            <Label Text="AAA" />
-            <Label Text="BBB" />
-            <Label Text="AAA" />
-            <Label Text="AAA" />
-            <Label Text="AAA" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <CollectionView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

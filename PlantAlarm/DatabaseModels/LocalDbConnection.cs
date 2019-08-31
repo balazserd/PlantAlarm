@@ -56,6 +56,7 @@ namespace PlantAlarm.DatabaseModels
                 AsyncDb.CreateTableAsync<AccessoryCategory>().Wait();
 
                 AsyncDb.CreateTableAsync<PlantTask>().Wait();
+                AsyncDb.CreateTableAsync<PlantTaskPlantConnection>().Wait();
                 AsyncDb.CreateTableAsync<PlantActivityItem>().Wait();
             }
         }

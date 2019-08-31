@@ -77,23 +77,29 @@ namespace PlantAlarm.DatabaseModels
     {
         [AutoIncrement, PrimaryKey]
         public int Id { get; set; }
-        [Indexed]
-        public int PlantFk { get; set; }
         [MaxLength(511)]
         public string Description { get; set; }
-        [Indexed]
-        public int AccessoryFk { get; set; }
         public bool IsRepeating { get; set; }
         public DateTime FirstOccurrenceDate { get; set; }
-        public bool? OnMonday { get; set; }
-        public bool? OnTuesday { get; set; }
-        public bool? OnWednesday { get; set; }
-        public bool? OnThursday { get; set; }
-        public bool? OnFriday { get; set; }
-        public bool? OnSaturday { get; set; }
-        public bool? OnSunday { get; set; }
-        public byte? EveryXDays { get; set; }
-        public byte? EveryXMonths { get; set; }
+        public bool OnMonday { get; set; }
+        public bool OnTuesday { get; set; }
+        public bool OnWednesday { get; set; }
+        public bool OnThursday { get; set; }
+        public bool OnFriday { get; set; }
+        public bool OnSaturday { get; set; }
+        public bool OnSunday { get; set; }
+        public byte EveryXDays { get; set; }
+        public byte EveryXMonths { get; set; }
+    }
+
+    public class PlantTaskPlantConnection
+    {
+        [AutoIncrement, PrimaryKey]
+        public int Id { get; set; }
+        [Indexed]
+        public int PlantTaskFk { get; set; }
+        [Indexed]
+        public int PlantFk { get; set; }
     }
 
     public class PlantActivityItem

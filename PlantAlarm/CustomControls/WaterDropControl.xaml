@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlantAlarm.CustomControls.WaterDropControl"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             xmlns:tt="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms">
+    <ContentView.Content>
+        <Grid>
+            <skia:SKCanvasView EnableTouchEvents="true" x:Name="ContainerCanvas" WidthRequest="50" HeightRequest="50"
+                               PaintSurface="WaterDropCanvasRendered" />
+            <Grid.Effects>
+                <tt:TouchEffect TouchAction="Handle_TouchAction" Capture="true" />
+            </Grid.Effects>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

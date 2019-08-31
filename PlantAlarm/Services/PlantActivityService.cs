@@ -14,19 +14,94 @@ namespace PlantAlarm.Services
 
         #region PUBLIC methods
         /// <summary>
+        /// Adds the PlantTask to the local storage, asynchronously. Then, creates the associated PlantActivityItems.
+        /// </summary>
+        /// <param name="task">The PlantTask to add.</param>
+        /// <returns></returns>
+        public static async Task AddPlantTaskAsync(PlantTask task)
+        {
+            await asyncDb.InsertAsync(task);
+            await AddActivitiesFromTaskAsync(task);
+        }
+
+        /// <summary>
+        /// Removes a PlantTask and its future PlantActivityItems and all PlantConnections.
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns></returns>
+        public static async Task RemoveTaskAsync(PlantTask task)
+        {
+            await asyncDb.DeleteAsync(task);
+            await RemoveActivitiesOfTaskAsync(task);
+            await RemovePlantTaskPlantConnectionsForPlantTaskAsync(task);
+        }
+
+        /// <summary>
+        /// Removes all tasks specified. Also removes all non-completed PlantActivityItems and all PlantConnections associated with them.
+        /// </summary>
+        /// <param name="tasks">The tasks to remove.</param>
+        /// <returns></returns>
+        public static async Task RemoveTasksAsync(List<PlantTask> tasks)
+        {
+            await asyncDb.Table<PlantTask>()
+                .Where(plantTask => tasks.Any(t => t.Id == plantTask.Id))
+                .DeleteAsync();
+            await RemovesActivitesOfTasksAsync(tasks);
+            await RemovePlantTaskPlantConnectionsForPlantTasksAsync(tasks);
+        }
+
+        /// <summary>
+        /// Adds all PlantTask and Plant connection items to the local storage, asynchronously.
+        /// </summary>
+        /// <param name="connections">The list of connections to add.</param>
+        /// <returns></returns>
+        public static async Task AddPlantTaskPlantConnectionsAsync(List<PlantTaskPlantConnection> connections)
+        {
+            await asyncDb.InsertAllAsync(connections);
+        }
+
+        /// <summary>
+        /// Removes the Plant association items for the PlantTask.
+        /// </summary>
+        /// <param name="task">The PlantTask to remove Plant connections for.</param>
+        /// <returns></returns>
+        public static async Task RemovePlantTaskPlantConnectionsForPlantTaskAsync(PlantTask task)
+        {
+            await asyncDb.Table<PlantTaskPlantConnection>()
+                .Where(conn => conn.PlantTaskFk == task.Id)
+                .DeleteAsync();
+        }
+
+        /// <summary>
+        /// Removes the Plant association items for the specified PlantTasks.
+        /// </summary>
+        /// <param name="tasks">The tasks for which to remove all PlantConnection items.</param>
+        /// <returns></returns>
+        private static async Task RemovePlantTaskPlantConnectionsForPlantTasksAsync(List<PlantTask> tasks)
+        {
+            await asyncDb.Table<PlantTaskPlantConnection>()
+                .Where(conn => tasks.Any(t => t.Id == conn.PlantTaskFk))
+                .DeleteAsync();
+        }
+
+        /// <summary>
         /// Adds activities to the local storage from the specified Task for the next 2 months, last day inclusive.
         /// </summary>
         /// <param name="task">The PlantTask to create the activities for.</param>
         public static async Task AddActivitiesFromTaskAsync(PlantTask task)
         {
+            //First, we need to delete all activities that are in the future.
+            await asyncDb.Table<PlantActivityItem>()
+                .Where(act => act.PlantTaskFk == task.Id)
+                .DeleteAsync();
+
+            //Now add for the next 2 months.
             List<PlantActivityItem> resultList = new List<PlantActivityItem>();
 
-            var today = DateTime.Today;
-
-            int days = (int)Math.Ceiling((DateTime.Now.AddMonths(2) - DateTime.Now).TotalDays);
+            int days = (int)Math.Ceiling((DateTime.Now.AddDays(30) - DateTime.Now).TotalDays);
             for (int i = 0; i < days; i++)
             {
-                var thisDay = today.AddDays(i);
+                var thisDay = task.FirstOccurrenceDate.AddDays(i);
 
                 if (task.IsRepeating)
                 {
@@ -34,31 +109,32 @@ namespace PlantAlarm.Services
                     //If any of the options indicate that the task should be performed this day, it gets added to the list.
 
                     //Single Days.
-                    if ((thisDay.DayOfWeek == DayOfWeek.Monday && (task.OnMonday ?? false)) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Tuesday && (task.OnTuesday ?? false)) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Wednesday && (task.OnWednesday ?? false)) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Thursday && (task.OnThursday ?? false)) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Friday && (task.OnFriday ?? false)) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Saturday && (task.OnSaturday ?? false)) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Sunday && (task.OnSunday ?? false)) ||
+                    if ((thisDay.DayOfWeek == DayOfWeek.Monday && task.OnMonday) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Tuesday && task.OnTuesday) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Wednesday && task.OnWednesday) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Thursday && task.OnThursday) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Friday && task.OnFriday) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Saturday && task.OnSaturday) ||
+                        (thisDay.DayOfWeek == DayOfWeek.Sunday && task.OnSunday) ||
 
                         //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
-                        ((thisDay - task.FirstOccurrenceDate).TotalDays % task.EveryXDays == 0) ||
+                        (task.EveryXDays > 0 && (thisDay - task.FirstOccurrenceDate).Days % task.EveryXDays == 0) ||
 
                         //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
-                        (((thisDay.Year - task.FirstOccurrenceDate.Year) * 12) + thisDay.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
+                        (task.EveryXMonths > 0 && ((thisDay.Year - task.FirstOccurrenceDate.Year) * 12) + thisDay.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
                            thisDay.Day == task.FirstOccurrenceDate.Day))
                     {
-                        AddActivityItemForDay(resultList, (int)task.Id, thisDay);
+                        AddActivityItemForDay(resultList, task.Id, thisDay);
                     }
                 }
                 else
                 {
-                    if (thisDay.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, (int)task.Id, thisDay);
+                    if (thisDay.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, task.Id, thisDay);
                 }
             }
 
             await asyncDb.InsertAllAsync(resultList);
+            await RecreateDailyReminders();
         }
 
         /// <summary>
@@ -67,7 +143,23 @@ namespace PlantAlarm.Services
         /// <param name="task">The PlantTask which's activities should be removed.</param>
         public static async Task RemoveActivitiesOfTaskAsync(PlantTask task)
         {
-            var activitiesToDelete = await asyncDb.Table<PlantActivityItem>().Where(act => act.PlantTaskFk == task.Id).DeleteAsync();
+            await asyncDb.Table<PlantActivityItem>()
+                .Where(act => act.PlantTaskFk == task.Id && act.Time > DateTime.Now)
+                .DeleteAsync();
+            await RecreateDailyReminders();
+        }
+
+        /// <summary>
+        /// Removes the future activites of the specified tasks.
+        /// </summary>
+        /// <param name="tasks"></param>
+        /// <returns></returns>
+        public static async Task RemovesActivitesOfTasksAsync(List<PlantTask> tasks)
+        {
+            await asyncDb.Table<PlantActivityItem>()
+                .Where(ai => ai.Time > DateTime.Now && tasks.Any(t => t.Id == ai.PlantTaskFk))
+                .DeleteAsync();
+            await RecreateDailyReminders();
         }
 
         /// <summary>
@@ -77,6 +169,7 @@ namespace PlantAlarm.Services
         public static async Task ModifyActivitiesAsync(List<PlantActivityItem> activities)
         {
             await asyncDb.UpdateAllAsync(activities);
+            await RecreateDailyReminders();
         }
 
         /// <summary>
@@ -86,11 +179,12 @@ namespace PlantAlarm.Services
         /// <param name="to">The last day for which to return the activities (inclusive).</param>
         public static async Task<List<PlantActivityItem>> GetUpcomingActivitiesAsync(DateTime from, DateTime to)
         {
-            var activities = asyncDb.Table<PlantActivityItem>()
-                .Where(act => act.Time.Date >= from.Date && act.Time.Date <= to.Date)
+            var activities = await asyncDb.Table<PlantActivityItem>()
                 .ToListAsync();
 
-            return await activities;
+            return activities
+                .Where(act => act.Time.Date >= from.Date && act.Time.Date <= to.Date)
+                .ToList();
         }
 
         /// <summary>
@@ -116,7 +210,7 @@ namespace PlantAlarm.Services
             var activities = await GetUpcomingActivitiesAsync(from, to);
             int numberOfDays = (int)Math.Ceiling((to - from).TotalDays);
 
-            var result = new List<PlantActivityItem>[numberOfDays];
+            var result = new List<PlantActivityItem>[numberOfDays + 1];
 
             for (int i = 0; i <= numberOfDays; i++)
             {
@@ -136,6 +230,11 @@ namespace PlantAlarm.Services
                 PlantTaskFk = plantTaskId,
                 Time = day
             });
+        }
+
+        private static async Task RecreateDailyReminders()
+        {
+            await NotificationService.AddDailyNotifications();
         }
         #endregion
     }

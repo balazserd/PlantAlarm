@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
+using PlantAlarm.Enums;
 using PlantAlarm.Models;
 using SQLite;
 using Xamarin.Forms;
@@ -16,11 +17,17 @@ namespace PlantAlarm.Services
     {
         private static readonly INotificationServiceProvider platformNotiSvc = DependencyService.Get<INotificationServiceProvider>();
 
-        public static async Task AddDailyNotifications(int forTheNextXDays)
+        public static async Task AddDailyNotifications()
         {
-            var activities = await PlantActivityService.GetUpcomingActivitiesByDayAsync(DateTime.Today, DateTime.Today.AddDays(forTheNextXDays));
+            var activities = await PlantActivityService.GetUpcomingActivitiesByDayAsync(DateTime.Today, DateTime.Today.AddDays(30));
 
-            platformNotiSvc.CreateDailyReminders(activities);
+            await platformNotiSvc.CreateDailyReminders(activities);
         }
+
+        public static NotificationPermissionState AreNotificationsEnabled() => platformNotiSvc.AreNotificationsEnabled();
+
+        public static void ExplainNotificationPermissionHandling(Action completionhandler) => platformNotiSvc.ExplainNotificationPermissionHandling(completionhandler);
+
+        public static void AskForNotificationPermission() => platformNotiSvc.AskForNotificationPermission();
     }
 }

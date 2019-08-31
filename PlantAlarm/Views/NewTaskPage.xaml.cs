@@ -22,17 +22,9 @@ namespace PlantAlarm.Views
             vm = this.BindingContext as NewTaskViewModel;
         }
 
-        void CategorySelectorTapped(object sender, System.EventArgs e)
+        void CategorySelectorTapped(object sender, EventArgs e)
         {
             //Show category selector window.
-        }
-
-        private bool IsRecurringTask()
-        {
-            bool EveryXDaysEntryMakesSense = int.TryParse(EveryXDaysEntry.Text, out int dayInterval) && dayInterval > 0; //Can be parsed into a valid int.
-            bool EveryXMonthsEntryMakesSense = int.TryParse(EveryXMonthsEntry.Text, out int monthInterval) && monthInterval > 0; //Can be parsed into a valid int.
-
-            return MondayCheckBox.IsChecked || TuesdayCheckBox.IsChecked || WednesdayCheckBox.IsChecked || ThursdayCheckBox.IsChecked || FridayCheckBox.IsChecked || SaturdayCheckBox.IsChecked || SundayCheckBox.IsChecked || (EveryXDaysEntry != null && EveryXDaysEntryMakesSense) || (EveryXMonthsEntry != null && EveryXMonthsEntryMakesSense);
         }
 
         void AddPlantsTapped(object sender, EventArgs e)

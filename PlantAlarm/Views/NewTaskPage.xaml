@@ -4,6 +4,7 @@
              x:Class="PlantAlarm.Views.NewTaskPage"
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
              xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+             xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
              Title="New Task">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddTaskCommand}" />
@@ -18,7 +19,7 @@
                                 <ColumnDefinition Width="3*" />
                                 <ColumnDefinition Width="8*" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="Name" FontSize="18" VerticalOptions="Center"/>
+                            <Label Text="Name" VerticalOptions="Center"/>
                             <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
                                    Text="{Binding TaskName}" FontAttributes="Italic">
                                 <Entry.Effects>
@@ -29,7 +30,7 @@
                     </ViewCell>
                     <ViewCell Height="44" Tapped="AddPlantsTapped">
                         <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
-                            <Label Text="{Binding SelectedPlantsText}" VerticalOptions="Center" FontSize="18" 
+                            <Label Text="{Binding SelectedPlantsText}" VerticalOptions="Center"  
                                    HorizontalOptions="StartAndExpand" FontAttributes="Italic"/>
                             <Image Source="RightArrowBlack.png" VerticalOptions="Center" Margin="0,0,15,0"
                                    HeightRequest="25" HorizontalOptions="End"/>
@@ -37,12 +38,12 @@
                     </ViewCell>
                 </TableSection>
                 
-                <!-- Should show when not recurring -->
                 <TableSection Title="First occurrence" x:Name="DateTimeSection">
                     <ViewCell Height="44" >
                         <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                             <Label VerticalOptions="Center" Text="Date" HorizontalOptions="StartAndExpand"/>
-                            <DatePicker x:Name="DatePicker" HorizontalOptions="End" WidthRequest="100">
+                            <DatePicker x:Name="DatePicker" HorizontalOptions="End" WidthRequest="100" 
+                                        Date="{Binding Date, Mode=TwoWay}">
                                 <DatePicker.Effects>
                                     <customEffects:BorderlessEffect />
                                 </DatePicker.Effects>
@@ -52,7 +53,8 @@
                     <ViewCell Height="44" >
                         <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                             <Label VerticalOptions="Center" Text="Time" HorizontalOptions="StartAndExpand"/>
-                            <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100">
+                            <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" 
+                                        Time="{Binding Time, Mode=TwoWay}">
                                 <TimePicker.Effects>
                                     <customEffects:BorderlessEffect />
                                 </TimePicker.Effects>
@@ -61,7 +63,6 @@
                     </ViewCell>
                 </TableSection>
                 
-                <!-- Should show when recurring -->
                 <TableSection Title="Recurring pattern (if needed)" x:Name="RecurringSection">
                     <ViewCell Height="44" x:Name="RecurringOnDayCell">
                         <Grid Margin="7,0,3,0">
@@ -77,37 +78,37 @@
                             <StackLayout Grid.Column="0" Grid.Row="0">
                                 <Label Text="MON" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
                                 <CheckBox x:Name="MondayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
-                                          Margin="0,-5,0,0"/>
+                                          Margin="0,-5,0,0" IsChecked="{Binding IsOnMonday}"/>
                             </StackLayout>
                             <StackLayout Grid.Column="1" Grid.Row="0">
                                 <Label Text="TUE" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
                                 <CheckBox x:Name="TuesdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
-                                          Margin="0,-5,0,0"/>
+                                          Margin="0,-5,0,0" IsChecked="{Binding IsOnTuesday}"/>
                             </StackLayout>
                             <StackLayout Grid.Column="2" Grid.Row="0">
                                 <Label Text="WED" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
                                 <CheckBox x:Name="WednesdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
-                                          Margin="0,-5,0,0"/>
+                                          Margin="0,-5,0,0" IsChecked="{Binding IsOnWednesday}"/>
                             </StackLayout>
                             <StackLayout Grid.Column="3" Grid.Row="0">
                                 <Label Text="THU" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
                                 <CheckBox x:Name="ThursdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
-                                          Margin="0,-5,0,0"/>
+                                          Margin="0,-5,0,0" IsChecked="{Binding IsOnThursday}"/>
                             </StackLayout>
                             <StackLayout Grid.Column="4" Grid.Row="0">
                                 <Label Text="FRI" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
                                 <CheckBox x:Name="FridayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
-                                          Margin="0,-5,0,0"/>
+                                          Margin="0,-5,0,0" IsChecked="{Binding IsOnFriday}"/>
                             </StackLayout>
                             <StackLayout Grid.Column="5" Grid.Row="0">
                                 <Label Text="SAT" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
                                 <CheckBox x:Name="SaturdayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
-                                          Margin="0,-5,0,0"/>
+                                          Margin="0,-5,0,0" IsChecked="{Binding IsOnSaturday}"/>
                             </StackLayout>
                             <StackLayout Grid.Column="6" Grid.Row="0">
                                 <Label Text="SUN" FontSize="12" HorizontalOptions="CenterAndExpand" Margin="2,3,0,-10" />
                                 <CheckBox x:Name="SundayCheckBox" WidthRequest="30" HorizontalOptions="Center" Color="Gold" 
-                                          Margin="0,-5,0,0"/>
+                                          Margin="0,-5,0,0" IsChecked="{Binding IsOnSunday}"/>
                             </StackLayout>
                         </Grid>
                     </ViewCell>
@@ -115,7 +116,11 @@
                         <StackLayout Margin="15,0,0,0" Orientation="Horizontal" Grid.Column="0" >
                             <Label Text="Every " VerticalOptions="Center" />
                             <Entry VerticalOptions="Center" x:Name="EveryXDaysEntry" Keyboard="Numeric"  WidthRequest="37" 
-                                   HorizontalTextAlignment="Center" MaxLength="2"/>
+                                   HorizontalTextAlignment="Center" MaxLength="2" Text="{Binding EveryXDays}">
+                                <Entry.Behaviors>
+                                    <behaviors:DoubleDigitEntryCheckingBehavior/>
+                                </Entry.Behaviors>
+                            </Entry>
                             <Label Text=" days"  VerticalOptions="Center"/>
                         </StackLayout>
                     </ViewCell>
@@ -123,8 +128,21 @@
                         <StackLayout Margin="15,0,0,0" Orientation="Horizontal" Grid.Column="0" >
                             <Label Text="Every " VerticalOptions="Center" />
                             <Entry VerticalOptions="Center" x:Name="EveryXMonthsEntry" Keyboard="Numeric" WidthRequest="37" 
-                                   HorizontalTextAlignment="Center" MaxLength="2"/>
+                                   HorizontalTextAlignment="Center" MaxLength="2" Text="{Binding EveryXMonths}">
+                                <Entry.Behaviors>
+                                    <behaviors:DoubleDigitEntryCheckingBehavior/>
+                                </Entry.Behaviors>
+                            </Entry>
                             <Label Text=" month(s)" VerticalOptions="Center" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                
+                <TableSection Title="Description" >
+                    <ViewCell Height="176">
+                        <StackLayout Margin="10,5,10,5" >
+                            <Editor Text="{Binding DescriptionText}" FontAttributes="Italic" MaxLength="511" 
+                                    VerticalOptions="FillAndExpand"/>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

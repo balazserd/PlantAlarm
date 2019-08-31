@@ -2,7 +2,36 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="PlantAlarm.Views.SettingsPage"
+             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+             xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
              Title="Settings">
     <ContentPage.Content>
+        <ScrollView>
+            <TableView Intent="Form" HasUnevenRows="true">
+                <TableSection Title="Notifications">
+                    <ViewCell Height="44">
+                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                            <Label Text="Notifications" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+                            <Switch IsToggled="{Binding AreNotificationsEnabled, Mode=TwoWay}" VerticalOptions="Center"
+                                    Scale="0.9"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell Height="44" IsEnabled="{Binding AreNotificationsEnabled}">
+                        <StackLayout Orientation="Horizontal" Margin="15,0,-5,0">
+                            <Label VerticalOptions="Center" Text="Reminder presentation time" HorizontalOptions="StartAndExpand"
+                                   Opacity="{Binding ReminderLinesOpacity}" />
+                            <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" 
+                                        Time="{Binding Time, Mode=TwoWay}" Opacity="{Binding ReminderLinesOpacity}"
+                                        IsEnabled="{Binding AreNotificationsEnabled}">
+                                <TimePicker.Effects>
+                                    <customEffects:BorderlessEffect />
+                                </TimePicker.Effects>
+                            </TimePicker>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableView>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
