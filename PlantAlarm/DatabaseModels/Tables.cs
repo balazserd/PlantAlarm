@@ -77,6 +77,7 @@ namespace PlantAlarm.DatabaseModels
     {
         [AutoIncrement, PrimaryKey]
         public int Id { get; set; }
+        public string Name { get; set; }
         [MaxLength(511)]
         public string Description { get; set; }
         public bool IsRepeating { get; set; }

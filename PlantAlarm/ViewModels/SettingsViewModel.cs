@@ -11,7 +11,27 @@ namespace PlantAlarm.ViewModels
     {
         private bool isInTheProcessOfShowingExplanationAlert = false;
 
-        public double reminderLinesOpacity { get; set; }
+        private TimeSpan notificationTime { get; set; }
+        public TimeSpan NotificationTime
+        {
+            get => notificationTime;
+            set
+            {
+                if (value != notificationTime)
+                {
+                    notificationTime = value;
+                    Application.Current.Properties[NotificationService.NotificationTimeKey] = value.ToString();
+
+                    bool.TryParse(Application.Current.Properties[NotificationService.NotificationsEnabledKey].ToString(), out bool notiAllowed);
+                    if (notiAllowed)
+                    {
+                        _ = NotificationService.AddDailyNotifications(notificationTime);
+                    }
+                }
+            }
+        }
+
+        private double reminderLinesOpacity { get; set; }
         public double ReminderLinesOpacity
         {
             get => reminderLinesOpacity;
@@ -35,6 +55,17 @@ namespace PlantAlarm.ViewModels
                 {
                     HandleFakePermissionSwitchChange();
                 }
+
+                Application.Current.Properties[NotificationService.NotificationsEnabledKey] = value.ToString();
+                if (value)
+                {
+                    _ = NotificationService.AddDailyNotifications();
+                }
+                else
+                {
+                    _ = NotificationService.RemoveDailyNotifications();
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -42,6 +73,18 @@ namespace PlantAlarm.ViewModels
         public SettingsViewModel()
         {
             areNotificationsEnabled = NotificationService.AreNotificationsEnabled() == NotificationPermissionState.Allowed;
+            
+            if (Application.Current.Properties.TryGetValue(NotificationService.NotificationTimeKey, out object notiTimeAsObject))
+            {
+                if (TimeSpan.TryParse(notiTimeAsObject.ToString(), out TimeSpan timeOfNotification))
+                {
+                    notificationTime = timeOfNotification;
+                }
+            }
+            else
+            {
+                notificationTime = TimeSpan.FromHours(8);
+            }
         }
 
         private void HandleFakePermissionSwitchChange()

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
 using PlantAlarm.Enums;
-using PlantAlarm.Models;
 using SQLite;
 using Xamarin.Forms;
 
@@ -17,12 +16,28 @@ namespace PlantAlarm.Services
     {
         private static readonly INotificationServiceProvider platformNotiSvc = DependencyService.Get<INotificationServiceProvider>();
 
-        public static async Task AddDailyNotifications()
+        /// <summary>
+        /// The key which stores in the App Properties dictionary whether notifications are enabled.
+        /// </summary>
+        public static string NotificationsEnabledKey = "AreNotificationsEnabled";
+
+        /// <summary>
+        /// The key which stores in the App Properties dictionary the time at which notifications are shown during the day.
+        /// </summary>
+        public static string NotificationTimeKey = "NotificationTime";
+
+        public static async Task AddDailyNotifications(TimeSpan? timeOfDay = null)
         {
             var activities = await PlantActivityService.GetUpcomingActivitiesByDayAsync(DateTime.Today, DateTime.Today.AddDays(30));
 
-            await platformNotiSvc.CreateDailyReminders(activities);
+            Task remindersTask = timeOfDay != null ?
+                platformNotiSvc.CreateDailyReminders(activities, (byte)timeOfDay?.Hours, (byte)timeOfDay?.Minutes) :
+                platformNotiSvc.CreateDailyReminders(activities);
+
+            await remindersTask;
         }
+
+        public static async Task RemoveDailyNotifications() => await platformNotiSvc.RemoveDailyReminders();
 
         public static NotificationPermissionState AreNotificationsEnabled() => platformNotiSvc.AreNotificationsEnabled();
 

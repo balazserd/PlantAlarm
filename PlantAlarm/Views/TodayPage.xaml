@@ -26,9 +26,42 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </RelativeLayout>
-            <StackLayout VerticalOptions="FillAndExpand">
-                
-            </StackLayout>
+            <ScrollView VerticalOptions="FillAndExpand">
+                <ListView ItemsSource="{Binding ActivitiesForDay}" HasUnevenRows="false">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell Height="88">
+                                <StackLayout>
+                                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" 
+                                             VerticalOptions="Start"/>
+                                    <StackLayout Orientation="Horizontal" Margin="10,5,10,5">
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                            <Label Text="{Binding Name}" />
+                                            <CollectionView ItemsSource="{Binding Plants}" Margin="10,0,0,0">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"
+                                                                     HorizontalItemSpacing="5"/>
+                                                </CollectionView.ItemsLayout>    
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout>
+                                                            <Image Source="{Binding Photo.Url}" HeightRequest="40" WidthRequest="40"
+                                                                   Aspect="AspectFill" />
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </StackLayout>
+                                        <CheckBox IsChecked="{Binding PlantActivityItem.IsCompleted, Mode=TwoWay}" HorizontalOptions="End" />
+                                    </StackLayout>
+                                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" 
+                                             VerticalOptions="End" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

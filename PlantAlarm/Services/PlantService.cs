@@ -94,14 +94,18 @@ namespace PlantAlarm.Services
             return plantCategoryList;
         }
 
-        public static async Task<List<PlantPhoto>> GetPhotosOfPlantAsync(Plant p)
+        public static async Task<List<PlantPhoto>> GetPhotosOfPlantAsync(Plant p, bool onlyPrimaryPhoto = false)
         {
             var photos = await asyncDb.Table<PlantPhoto>()
-                .Where(photo => photo.PlantFk == p.Id)
                 .ToListAsync();
 
+            var photosOfPlant = photos
+                .Where(photo => onlyPrimaryPhoto ?
+                    photo.PlantFk == p.Id && photo.IsPrimary :
+                    photo.PlantFk == p.Id);
+
             //We do not store the constant part of the url.
-            var urlCorrectedPhotos = photos
+            var urlCorrectedPhotos = photosOfPlant
                 .Select(photo =>
                 {
                     photo.Url = AppendLocalAppDataFolderToPhotoName(photo.Url);

@@ -8,7 +8,6 @@ using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
 using PlantAlarm.Enums;
 using PlantAlarm.iOS.DependencyServices;
-using PlantAlarm.Models;
 using UIKit;
 using UserNotifications;
 using Xamarin.Forms;

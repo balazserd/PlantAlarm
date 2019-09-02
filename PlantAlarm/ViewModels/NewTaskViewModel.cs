@@ -48,7 +48,7 @@ namespace PlantAlarm.ViewModels
             {
                 return PlantList == null || PlantList.Count == 0 ?
                     "Tap here to select plants" :
-                    $"{PlantList.Count} plants selected";
+                    $"{PlantList.Count} plant{(PlantList.Count > 1 ? "s" : "")} selected";
             }
         }
 
@@ -73,6 +73,7 @@ namespace PlantAlarm.ViewModels
 
                 var plantTask = new PlantTask
                 {
+                    Name = TaskName,
                     Description = DescriptionText,
                     EveryXDays = daysRecur,
                     EveryXMonths = monthsRecur,

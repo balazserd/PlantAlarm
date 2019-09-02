@@ -156,9 +156,17 @@ namespace PlantAlarm.Services
         /// <returns></returns>
         public static async Task RemovesActivitesOfTasksAsync(List<PlantTask> tasks)
         {
-            await asyncDb.Table<PlantActivityItem>()
+            var activityItems = await asyncDb.Table<PlantActivityItem>()
+                .ToListAsync();
+
+            var itemsToDelete = activityItems
                 .Where(ai => ai.Time > DateTime.Now && tasks.Any(t => t.Id == ai.PlantTaskFk))
+                .Select(ai => ai.Id);
+
+            await asyncDb.Table<PlantActivityItem>()
+                .Where(ai => itemsToDelete.Any(del => del == ai.Id))
                 .DeleteAsync();
+
             await RecreateDailyReminders();
         }
 
@@ -193,11 +201,12 @@ namespace PlantAlarm.Services
         /// <param name="day">The day for which to return the activities.</param>
         public static async Task<List<PlantActivityItem>> GetUpcomingActivitiesAsync(DateTime day)
         {
-            var activities = asyncDb.Table<PlantActivityItem>()
-                .Where(act => act.Time.Date == day.Date)
+            var activities = await asyncDb.Table<PlantActivityItem>()
                 .ToListAsync();
 
-            return await activities;
+            return activities
+                .Where(act => act.Time.Date == day.Date)
+                .ToList();
         }
 
         /// <summary>
@@ -219,6 +228,45 @@ namespace PlantAlarm.Services
 
             return result;
         }
+
+        /// <summary>
+        /// Gets the list of plants the given Activity must be performed on.
+        /// </summary>
+        /// <param name="activity">The Activity for which the associated plants must be returned.</param>
+        /// <returns></returns>
+        public static async Task<List<Plant>> GetPlantsOfActivity(PlantActivityItem activity)
+        {
+            var plantTask = await GetTaskOfActivity(activity);
+
+            var plantConnections = await asyncDb.Table<PlantTaskPlantConnection>()
+                .Where(ptpc => ptpc.PlantTaskFk == plantTask.Id)
+                .ToListAsync();
+
+            var plants = await asyncDb.Table<Plant>()
+                .ToListAsync();
+
+            return plants
+                .Where(p => plantConnections
+                    .Select(pc => pc.PlantFk)
+                    .Contains(p.Id))
+                .ToList();
+        }
+
+        public static async Task<PlantTask> GetTaskOfActivity(PlantActivityItem activity)
+        {
+            PlantTask plantTask;
+            try
+            {
+                plantTask = await asyncDb.Table<PlantTask>()
+                .FirstAsync(task => task.Id == activity.PlantTaskFk);
+            }
+            catch (Exception)
+            {
+                throw new PlantActivityServiceException("Could not retrieve the single PlantTask from which this PlantActivityItem was created.");
+            }
+
+            return plantTask;
+        }
         #endregion
 
         #region PRIVATE methods
@@ -237,5 +285,10 @@ namespace PlantAlarm.Services
             await NotificationService.AddDailyNotifications();
         }
         #endregion
+    }
+
+    public class PlantActivityServiceException : Exception
+    {
+        public PlantActivityServiceException(string message) : base(message) { }
     }
 }

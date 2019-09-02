@@ -14,7 +14,7 @@
                         <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
                             <Label Text="Notifications" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
                             <Switch IsToggled="{Binding AreNotificationsEnabled, Mode=TwoWay}" VerticalOptions="Center"
-                                    Scale="0.9"/>
+                                    Scale=".9"/>
                         </StackLayout>
                     </ViewCell>
                     <ViewCell Height="44" IsEnabled="{Binding AreNotificationsEnabled}">
@@ -22,7 +22,7 @@
                             <Label VerticalOptions="Center" Text="Reminder presentation time" HorizontalOptions="StartAndExpand"
                                    Opacity="{Binding ReminderLinesOpacity}" />
                             <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" 
-                                        Time="{Binding Time, Mode=TwoWay}" Opacity="{Binding ReminderLinesOpacity}"
+                                        Time="{Binding NotificationTime, Mode=TwoWay}" Opacity="{Binding ReminderLinesOpacity}"
                                         IsEnabled="{Binding AreNotificationsEnabled}">
                                 <TimePicker.Effects>
                                     <customEffects:BorderlessEffect />
@@ -31,6 +31,24 @@
                         </StackLayout>
                     </ViewCell>
                 </TableSection>
+                <!--<TableSection Title="Data">
+                    <ViewCell Height="44">
+                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                            <Label Text="Online Mode" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                            <Switch VerticalOptions="Center" Scale=".9" />
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell Height="44">
+                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                            <Label Text="Upload interval" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                            <Picker ItemsSource="" SelectedItem="">
+                                <Picker.Effects>
+                                    <customEffects:BorderlessEffect />
+                                </Picker.Effects>
+                            </Picker>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>-->
             </TableView>
         </ScrollView>
     </ContentPage.Content>
