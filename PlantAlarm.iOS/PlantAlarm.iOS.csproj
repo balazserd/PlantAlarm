@@ -75,8 +75,9 @@
     <Compile Include="DependencyServices\TextInputModal_iOS.cs" />
     <Compile Include="CustomRenderers\CategoryCollectionViewRenderer_iOS.cs" />
     <Compile Include="Effects\BorderlessEffect_iOS.cs" />
-    <Compile Include="CustomRenderers\RoundedCorneredFrameRenderer_iOS.cs" />
+    <Compile Include="CustomRenderers\RoundedCorneredStackLayoutRenderer_iOS.cs" />
     <Compile Include="CustomRenderers\RoundedImageRenderer_iOS.cs" />
+    <Compile Include="Effects\RoundedCornerEffect_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -137,6 +138,10 @@
     <ImageAsset Include="Assets.xcassets\AlertRed.imageset\icons8-box_important.png" />
     <ImageAsset Include="Assets.xcassets\AlertRed.imageset\icons8-box_important-1.png" />
     <ImageAsset Include="Assets.xcassets\AlertRed.imageset\icons8-box_important-2.png" />
+    <ImageAsset Include="Assets.xcassets\QuestionIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\QuestionIcon.imageset\icons8-question_mark.png" />
+    <ImageAsset Include="Assets.xcassets\QuestionIcon.imageset\icons8-question_mark-1.png" />
+    <ImageAsset Include="Assets.xcassets\QuestionIcon.imageset\icons8-question_mark-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -182,5 +187,6 @@
     <Folder Include="Assets.xcassets\RightArrowBlack.imageset\" />
     <Folder Include="Assets.xcassets\RecurringIconGold.imageset\" />
     <Folder Include="Assets.xcassets\AlertRed.imageset\" />
+    <Folder Include="Assets.xcassets\QuestionIcon.imageset\" />
   </ItemGroup>
 </Project>

@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlantAlarm.Views.TodayPage"
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+             xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
              Title="To-dos">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Today" Clicked="BackToTodayTapped"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
+        <Grid>
             <RelativeLayout>
                 <ListView x:Name="DaysListView"
                           RowHeight="35"
@@ -26,18 +28,20 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </RelativeLayout>
-            <ScrollView VerticalOptions="FillAndExpand">
-                <ListView ItemsSource="{Binding ActivitiesForDay}" HasUnevenRows="false">
+                
+            <StackLayout Margin="0,65,0,0">
+                <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" />
+                <ListView ItemsSource="{Binding ActivitiesForDay}" HasUnevenRows="true" VerticalOptions="FillAndExpand" Margin="0,-6,0,0">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell Height="88">
+                            <ViewCell Height="100">
                                 <StackLayout>
-                                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" 
-                                             VerticalOptions="Start"/>
-                                    <StackLayout Orientation="Horizontal" Margin="10,5,10,5">
+                                    <!--<BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" 
+                                             VerticalOptions="Start"/>-->
+                                    <StackLayout Orientation="Horizontal" Margin="10,10,10,5">
                                         <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                            <Label Text="{Binding Name}" />
-                                            <CollectionView ItemsSource="{Binding Plants}" Margin="10,0,0,0">
+                                            <Label Text="{Binding Name}" FontAttributes="Bold" Margin="0,0,0,5"/>
+                                            <CollectionView ItemsSource="{Binding Plants}" Margin="10,0,0,0" InputTransparent="true">
                                                 <CollectionView.ItemsLayout>
                                                     <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"
                                                                      HorizontalItemSpacing="5"/>
@@ -45,8 +49,12 @@
                                                 <CollectionView.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackLayout>
-                                                            <Image Source="{Binding Photo.Url}" HeightRequest="40" WidthRequest="40"
-                                                                   Aspect="AspectFill" />
+                                                            <Image Source="{Binding Photo.Url}" HeightRequest="50" WidthRequest="50"
+                                                                   Aspect="AspectFill">
+                                                                <Image.Effects>
+                                                                    <customEffects:RoundedCornerEffect Radius="5"/>
+                                                                </Image.Effects>
+                                                            </Image>
                                                         </StackLayout>
                                                     </DataTemplate>
                                                 </CollectionView.ItemTemplate>
@@ -54,14 +62,14 @@
                                         </StackLayout>
                                         <CheckBox IsChecked="{Binding PlantActivityItem.IsCompleted, Mode=TwoWay}" HorizontalOptions="End" />
                                     </StackLayout>
-                                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" 
-                                             VerticalOptions="End" />
+                                    <!--<BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" 
+                                             VerticalOptions="End" />-->
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </ScrollView>
-        </StackLayout>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

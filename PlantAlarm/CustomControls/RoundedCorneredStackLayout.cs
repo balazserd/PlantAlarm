@@ -23,7 +23,7 @@ namespace PlantAlarm.CustomControls
             false,
             propertyChanged: (bindable, oldValue, newValue) =>
             {
-                var sl = (bindable as RoundedCorneredStackLayout);
+                var sl = bindable as RoundedCorneredStackLayout;
                 sl.IsSelected = (bool)newValue;
             });
 

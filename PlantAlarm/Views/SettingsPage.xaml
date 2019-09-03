@@ -19,15 +19,28 @@
                     </ViewCell>
                     <ViewCell Height="44" IsEnabled="{Binding AreNotificationsEnabled}">
                         <StackLayout Orientation="Horizontal" Margin="15,0,-5,0">
-                            <Label VerticalOptions="Center" Text="Reminder presentation time" HorizontalOptions="StartAndExpand"
+                            <Label VerticalOptions="Center" Text="Reminder presentation time"
                                    Opacity="{Binding ReminderLinesOpacity}" />
-                            <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" 
+                            <ImageButton Command="{Binding ShowReminderPresentationTimeExplanation}" Source="QuestionIcon.png"
+                                         Scale=".7" VerticalOptions="Center" Margin="5,0,0,0" />
+                            <TimePicker x:Name="TimePicker" HorizontalOptions="EndAndExpand" WidthRequest="100" 
                                         Time="{Binding NotificationTime, Mode=TwoWay}" Opacity="{Binding ReminderLinesOpacity}"
                                         IsEnabled="{Binding AreNotificationsEnabled}">
                                 <TimePicker.Effects>
                                     <customEffects:BorderlessEffect />
                                 </TimePicker.Effects>
                             </TimePicker>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Tasks">
+                    <ViewCell Height="44">
+                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                            <Label Text="Carry-forward forgotten tasks" VerticalOptions="Center" />
+                            <ImageButton Command="{Binding ShowCarryForwardExplanation}" Source="QuestionIcon.png"
+                                         Scale=".7" VerticalOptions="Center" Margin="5,0,0,0" />
+                            <Switch IsToggled="{Binding IsCarryingForgottenTasksForward, Mode=TwoWay}" VerticalOptions="Center"
+                                    Scale=".9" HorizontalOptions="EndAndExpand" />
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

@@ -121,6 +121,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\AlertRed.png" />
     <AndroidResource Include="Resources\drawable-hdpi\AlertRed.png" />
     <AndroidResource Include="Resources\drawable\AlertRed.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icons8-question_mark.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icons8-question_mark.png" />
+    <AndroidResource Include="Resources\drawable\icons8-question_mark.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

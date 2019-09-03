@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using PlantAlarm.Enums;
 using PlantAlarm.Services;
 using Xamarin.Forms;
@@ -10,6 +11,7 @@ namespace PlantAlarm.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         private bool isInTheProcessOfShowingExplanationAlert = false;
+        private readonly Page view;
 
         private TimeSpan notificationTime { get; set; }
         public TimeSpan NotificationTime
@@ -70,8 +72,12 @@ namespace PlantAlarm.ViewModels
             }
         }
 
-        public SettingsViewModel()
+        public ICommand ShowReminderPresentationTimeExplanation { get; private set; }
+        public ICommand ShowCarryForwardExplanation { get; private set; }
+
+        public SettingsViewModel(Page page)
         {
+            view = page;
             areNotificationsEnabled = NotificationService.AreNotificationsEnabled() == NotificationPermissionState.Allowed;
             
             if (Application.Current.Properties.TryGetValue(NotificationService.NotificationTimeKey, out object notiTimeAsObject))
@@ -85,6 +91,16 @@ namespace PlantAlarm.ViewModels
             {
                 notificationTime = TimeSpan.FromHours(8);
             }
+
+            ShowCarryForwardExplanation = new Command(() =>
+            {
+                //TODO implement explanation
+            });
+
+            ShowReminderPresentationTimeExplanation = new Command(() =>
+            {
+                //TODO implement explanation
+            });
         }
 
         private void HandleFakePermissionSwitchChange()
