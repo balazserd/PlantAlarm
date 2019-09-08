@@ -10,66 +10,71 @@
         <ToolbarItem Text="Today" Clicked="BackToTodayTapped"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
-            <RelativeLayout>
-                <ListView x:Name="DaysListView"
-                          RowHeight="35"
-                          Rotation="270"
-                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-32}"
-                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=-0.5, Constant=32}"
-                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=50}"
-                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                          ItemsSource="{Binding CalendarDays}" SelectedItem="{Binding SelectedDay}" VerticalScrollBarVisibility="Never"
-                          SeparatorVisibility="None" ItemSelected="NewDaySelected">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <customControls:CalendarDayViewCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </RelativeLayout>
-                
-            <StackLayout Margin="0,65,0,0">
-                <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" />
-                <ListView ItemsSource="{Binding ActivitiesForDay}" HasUnevenRows="true" VerticalOptions="FillAndExpand" Margin="0,-6,0,0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell Height="100">
-                                <StackLayout>
-                                    <!--<BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" 
-                                             VerticalOptions="Start"/>-->
-                                    <StackLayout Orientation="Horizontal" Margin="10,10,10,5">
-                                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                            <Label Text="{Binding Name}" FontAttributes="Bold" Margin="0,0,0,5"/>
-                                            <CollectionView ItemsSource="{Binding Plants}" Margin="10,0,0,0" InputTransparent="true">
-                                                <CollectionView.ItemsLayout>
-                                                    <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"
-                                                                     HorizontalItemSpacing="5"/>
-                                                </CollectionView.ItemsLayout>    
-                                                <CollectionView.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackLayout>
-                                                            <Image Source="{Binding Photo.Url}" HeightRequest="50" WidthRequest="50"
-                                                                   Aspect="AspectFill">
-                                                                <Image.Effects>
-                                                                    <customEffects:RoundedCornerEffect Radius="5"/>
-                                                                </Image.Effects>
-                                                            </Image>
-                                                        </StackLayout>
-                                                    </DataTemplate>
-                                                </CollectionView.ItemTemplate>
-                                            </CollectionView>
+        <StackLayout>
+            <BoxView HeightRequest="3" HorizontalOptions="Fill" BackgroundColor="#456C84" Margin="0,0,0,-6"/>
+            <Grid VerticalOptions="FillAndExpand">
+                <RelativeLayout BackgroundColor="#F1F7FB">
+                    <ListView x:Name="DaysListView"
+                              RowHeight="35"
+                              Rotation="270"
+                              RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-32}"
+                              RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=-0.5, Constant=32}"
+                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=50}"
+                              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                              ItemsSource="{Binding CalendarDays}" SelectedItem="{Binding SelectedDay}" VerticalScrollBarVisibility="Never"
+                              SeparatorVisibility="None" ItemSelected="NewDaySelected" BackgroundColor="#F1F7FB">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <customControls:CalendarDayViewCell />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativeLayout>
+                    
+                <StackLayout Margin="0,65,0,0" BackgroundColor="#F6FAFC">
+                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" />
+                    <ListView ItemsSource="{Binding ActivitiesForDay}" HasUnevenRows="true" VerticalOptions="FillAndExpand" Margin="0,-6,0,0"
+                              SeparatorColor="Silver" CachingStrategy="RecycleElement">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell Height="100">
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal" Margin="10,10,10,5">
+                                            <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                                <Label Text="{Binding Name}" FontAttributes="Bold" Margin="0,0,0,5"/>
+                                                <CollectionView ItemsSource="{Binding Plants}" Margin="10,0,0,0" InputTransparent="true">
+                                                    <CollectionView.ItemsLayout>
+                                                        <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"
+                                                                         HorizontalItemSpacing="5"/>
+                                                    </CollectionView.ItemsLayout>    
+                                                    <CollectionView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackLayout>
+                                                                <Image Source="{Binding Photo.Url}" HeightRequest="50" WidthRequest="50"
+                                                                       Aspect="AspectFill">
+                                                                    <Image.Effects>
+                                                                        <customEffects:RoundedCornerEffect Radius="5"/>
+                                                                    </Image.Effects>
+                                                                </Image>
+                                                            </StackLayout>
+                                                        </DataTemplate>
+                                                    </CollectionView.ItemTemplate>
+                                                </CollectionView>
+                                            </StackLayout>
+                                            <CheckBox IsChecked="{Binding PlantActivityItem.IsCompleted, Mode=TwoWay}" HorizontalOptions="End" />
                                         </StackLayout>
-                                        <CheckBox IsChecked="{Binding PlantActivityItem.IsCompleted, Mode=TwoWay}" HorizontalOptions="End" />
                                     </StackLayout>
-                                    <!--<BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" 
-                                             VerticalOptions="End" />-->
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-        </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" Margin="0,-7,0,0" />
+                    <StackLayout Margin="10,4,10,10">
+                        <Button Text="Mark all tasks completed" BackgroundColor="#456C84" TextColor="White" FontAttributes="Bold"
+                                Command="{Binding CompleteAllCommand}"/>
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
@@ -56,10 +57,9 @@ namespace PlantAlarm.ViewModels
 
             SelectedDayChangedCommand = new Command(async(dateTimeObject) =>
             {
-                ActivitiesForDay.Clear();
-
                 var date = (dateTimeObject as CalendarDay).Date;
                 var activityList = await PlantActivityService.GetUpcomingActivitiesAsync(date);
+                var actLi = new List<TodayPageActivityItem>(1);
 
                 foreach (var activity in activityList)
                 {
@@ -83,9 +83,10 @@ namespace PlantAlarm.ViewModels
                     .ToList();
 
                     todayPageActivity.Name = (await PlantActivityService.GetTaskOfActivity(activity)).Name;
-
-                    ActivitiesForDay.Add(todayPageActivity);
+                    actLi.Add(todayPageActivity);
                 }
+
+                ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>(actLi);
             });
         }
 
@@ -98,17 +99,22 @@ namespace PlantAlarm.ViewModels
     }
 
     //WARNING! Only for internal use.
-    public class TodayPageActivityItem
+    public class TodayPageActivityItem : BindableObject
     {
         public PlantActivityItem PlantActivityItem { get; set; }
         public string Name { get; set; }
         public List<TodayPagePlantItem> Plants { get; set; }
     }
 
-    public class TodayPagePlantItem
+    public class TodayPagePlantItem : BindableObject
     {
         public Plant Plant { get; set; }
         public PlantPhoto Photo { get; set; }
+
+        public void CallOnPropertChangedForPhoto()
+        {
+            OnPropertyChanged(nameof(Photo));
+        }
     }
 
     public class CalendarDay
