@@ -8,6 +8,7 @@ using PlantAlarm.Services;
 using UIKit;
 using UserNotifications;
 using Xamarin.Forms;
+using VideoToolbox;
 
 namespace PlantAlarm.iOS
 {

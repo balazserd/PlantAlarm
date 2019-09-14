@@ -36,5 +36,10 @@ namespace PlantAlarm.Views
             DaysListView.SelectedItem = vm.CalendarDays[121];
             DaysListView.ScrollTo(vm.CalendarDays[121], ScrollToPosition.Center, true);
         }
+
+        void ActivityTapped(object sender, SelectedItemChangedEventArgs e)
+        {
+            vm.ActivitySelectedCommand.Execute(e.SelectedItem);
+        }
     }
 }

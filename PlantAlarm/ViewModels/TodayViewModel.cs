@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.Services;
+using PlantAlarm.Views;
 using Xamarin.Forms;
 
 namespace PlantAlarm.ViewModels
@@ -40,6 +41,8 @@ namespace PlantAlarm.ViewModels
         }
 
         public ICommand SelectedDayChangedCommand { get; private set; }
+        public ICommand ActivitySelectedCommand { get; private set; }
+        public ICommand PlantImageTappedCommand { get; private set; }
 
         public TodayViewModel()
         {
@@ -55,7 +58,7 @@ namespace PlantAlarm.ViewModels
             CalendarDays = listOfDays.ToList();
             SelectedDay = CalendarDays.Single(cd => cd.Date.Date == DateTime.Today.Date); //Default selection should be today.
 
-            SelectedDayChangedCommand = new Command(async(dateTimeObject) =>
+            SelectedDayChangedCommand = new Command(async (dateTimeObject) =>
             {
                 var date = (dateTimeObject as CalendarDay).Date;
                 var activityList = await PlantActivityService.GetUpcomingActivitiesAsync(date);
@@ -77,6 +80,8 @@ namespace PlantAlarm.ViewModels
                             var photosOfPlants = await PlantService.GetPhotosOfPlantAsync(plant, true);
                             plantItem.Photo = photosOfPlants.FirstOrDefault();
 
+                            plantItem.PlantImageTappedCommand = this.PlantImageTappedCommand;
+
                             return plantItem;
                         })
                     ))
@@ -87,6 +92,17 @@ namespace PlantAlarm.ViewModels
                 }
 
                 ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>(actLi);
+            });
+
+            ActivitySelectedCommand = new Command(async(_plantActivityItem) =>
+            {
+                var plantActivityItem = _plantActivityItem as PlantActivityItem;
+            });
+
+            PlantImageTappedCommand = new Command(async (_plant) =>
+            {
+                var plant = _plant as Plant;
+                await Application.Current.MainPage.Navigation.PushAsync(new PlantDetailsPage(plant));
             });
         }
 
@@ -110,6 +126,7 @@ namespace PlantAlarm.ViewModels
     {
         public Plant Plant { get; set; }
         public PlantPhoto Photo { get; set; }
+        public ICommand PlantImageTappedCommand { get; set; }
 
         public void CallOnPropertChangedForPhoto()
         {
