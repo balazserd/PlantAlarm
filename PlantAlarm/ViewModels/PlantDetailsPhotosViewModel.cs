@@ -9,7 +9,7 @@ using SkiaSharp;
 
 namespace PlantAlarm.ViewModels
 {
-    public class PlantDetailsViewModel : INotifyPropertyChanged
+    public class PlantDetailsPhotosViewModel : INotifyPropertyChanged
     {
         private Plant plant { get; set; }
         public Plant Plant
@@ -18,6 +18,29 @@ namespace PlantAlarm.ViewModels
             set
             {
                 plant = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string title { get; set; }
+        public string Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private PlantPhoto selectedPhoto { get; set; }
+        public PlantPhoto SelectedPhoto
+        {
+            get => selectedPhoto;
+            set
+            {
+                selectedPhoto = value;
+                Title = $"Photo {Photos.IndexOf(selectedPhoto)} / {Photos.Count}";
                 OnPropertyChanged();
             }
         }
@@ -33,12 +56,14 @@ namespace PlantAlarm.ViewModels
             }
         }
 
-        public PlantDetailsViewModel(Plant plant)
+        public PlantDetailsPhotosViewModel(Plant plant, PlantPhoto _selectedPhoto)
         {
             this.Plant = plant;
 
             var photoList = PlantService.GetPhotosOfPlant(plant);
             this.Photos = new ObservableCollection<PlantPhoto>(photoList);
+
+            this.SelectedPhoto = _selectedPhoto;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

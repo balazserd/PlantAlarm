@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.ViewModels;
 using Xamarin.Forms;
@@ -13,7 +15,9 @@ namespace PlantAlarm.Views
         public PlantDetailsPage(Plant plant)
         {
             InitializeComponent();
-            vm = new PlantDetailsViewModel(plant);
+
+            this.BindingContext = new PlantDetailsViewModel(plant);
+            vm = this.BindingContext as PlantDetailsViewModel;
         }
     }
 }

@@ -94,24 +94,42 @@ namespace PlantAlarm.Services
             return plantCategoryList;
         }
 
-        public static async Task<List<PlantPhoto>> GetPhotosOfPlantAsync(Plant p, bool onlyPrimaryPhoto = false)
+        public static List<PlantPhoto> GetPhotosOfPlant(Plant plant, bool onlyPrimaryPhoto = false)
+        {
+            var photos = Db.Table<PlantPhoto>()
+                .ToList();
+
+            var photosOfPlant = photos
+                .Where(photo => onlyPrimaryPhoto ?
+                    photo.PlantFk == plant.Id && photo.IsPrimary :
+                    photo.PlantFk == plant.Id)
+                .CorrectUrlForAll(); //We do not store the constant part of the url.
+
+            return photosOfPlant.ToList();
+        }
+
+        public static async Task<List<PlantPhoto>> GetPhotosOfPlantAsync(Plant plant, bool onlyPrimaryPhoto = false)
         {
             var photos = await asyncDb.Table<PlantPhoto>()
                 .ToListAsync();
 
             var photosOfPlant = photos
                 .Where(photo => onlyPrimaryPhoto ?
-                    photo.PlantFk == p.Id && photo.IsPrimary :
-                    photo.PlantFk == p.Id);
+                    photo.PlantFk == plant.Id && photo.IsPrimary :
+                    photo.PlantFk == plant.Id)
+                .CorrectUrlForAll(); //We do not store the constant part of the url.
 
-            //We do not store the constant part of the url.
-            var urlCorrectedPhotos = photosOfPlant
+            return photosOfPlant.ToList();
+        }
+
+        private static IEnumerable<PlantPhoto> CorrectUrlForAll<T>(this T plantPhotoList) where T : IEnumerable<PlantPhoto>
+        {
+            var urlCorrectedPhotos = plantPhotoList
                 .Select(photo =>
                 {
                     photo.Url = AppendLocalAppDataFolderToPhotoName(photo.Url);
                     return photo;
-                })
-                .ToList();
+                });
 
             return urlCorrectedPhotos;
         }
@@ -121,4 +139,6 @@ namespace PlantAlarm.Services
     {
         public PlantServiceException(string message) : base(message) { }
     }
+
+
 }

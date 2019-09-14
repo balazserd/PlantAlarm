@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlantAlarm.Helpers;
 using PlantAlarm.ViewModels;
 using Xamarin.Forms;
 
@@ -33,13 +34,16 @@ namespace PlantAlarm.Views
 
         private void ScrollToToday()
         {
-            DaysListView.SelectedItem = vm.CalendarDays[121];
-            DaysListView.ScrollTo(vm.CalendarDays[121], ScrollToPosition.Center, true);
+            DaysListView.SelectedItem = vm.CalendarDays[120];
+            DaysListView.ScrollTo(vm.CalendarDays[120], ScrollToPosition.Center, true);
         }
 
         void ActivityTapped(object sender, SelectedItemChangedEventArgs e)
         {
-            vm.ActivitySelectedCommand.Execute(e.SelectedItem);
+            var selection = e.SelectedItem;
+            (sender as ListView).SelectedItem = null; //Remove selection immediately after.
+
+            if (selection != null) vm.ActivitySelectedCommand.Execute(selection);
         }
     }
 }

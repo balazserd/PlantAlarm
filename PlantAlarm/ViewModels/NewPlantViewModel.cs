@@ -105,9 +105,12 @@ namespace PlantAlarm.ViewModels
                 var photoItem = new PlantPhotoItem(
                     plantPhoto_fullUrl,
                     this.ShowPhotoOptionsCommand);
-                
+
                 //Add the created object to the collection of photos.
-                Photos.Add(photoItem);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Photos.Add(photoItem);
+                });
             });
             ShowPhotoOptionsCommand = new Command(async (ppi) =>
             {

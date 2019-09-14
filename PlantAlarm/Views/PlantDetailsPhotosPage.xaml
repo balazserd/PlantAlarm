@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlantAlarm.Views.PlantDetailsPage"
+             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+             xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <CarouselView ItemsSource="{Binding Photos}" NumberOfSideItems="0" PeekAreaInsets="20" VerticalOptions="Start"
+                          IsBounceEnabled="True" x:Name="PhotosCarousel" HorizontalScrollBarVisibility="Never"
+                          CurrentItem="{Binding SelectedPhoto, Mode=TwoWay}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <customControls:SquaredImageContainerStack>
+                                <customControls:SquaredImage Source="{Binding Url}" Margin="0,20" Aspect="AspectFill"
+                                                             HorizontalOptions="Center" VerticalOptions="Center">
+                                    <customControls:SquaredImage.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </customControls:SquaredImage.Effects>
+                                </customControls:SquaredImage>
+                            </customControls:SquaredImageContainerStack>
+                        </StackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+                <CarouselView.ItemsLayout>
+                    <ListItemsLayout Orientation="Horizontal" SnapPointsType="Mandatory" SnapPointsAlignment="Center"
+                                     ItemSpacing="10"/>
+                </CarouselView.ItemsLayout>
+            </CarouselView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

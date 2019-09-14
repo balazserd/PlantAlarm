@@ -34,7 +34,8 @@
                 <StackLayout Margin="0,65,0,0" BackgroundColor="#F6FAFC">
                     <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" />
                     <ListView ItemsSource="{Binding ActivitiesForDay}" HasUnevenRows="true" VerticalOptions="FillAndExpand" Margin="0,-6,0,0"
-                              SeparatorColor="Silver" CachingStrategy="RecycleElement" SeparatorVisibility="None" ItemSelected="ActivityTapped">
+                              SeparatorColor="Silver" CachingStrategy="RecycleElement" SeparatorVisibility="None" ItemSelected="ActivityTapped"
+                              x:Name="ActivityListView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell Height="100">

@@ -258,7 +258,7 @@ namespace PlantAlarm.Services
             try
             {
                 plantTask = await asyncDb.Table<PlantTask>()
-                .FirstAsync(task => task.Id == activity.PlantTaskFk);
+                    .FirstAsync(task => task.Id == activity.PlantTaskFk);
             }
             catch (Exception)
             {

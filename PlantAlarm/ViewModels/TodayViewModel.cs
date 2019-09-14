@@ -17,6 +17,7 @@ namespace PlantAlarm.ViewModels
 {
     public class TodayViewModel : INotifyPropertyChanged
     {
+        private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
         public List<CalendarDay> CalendarDays { get; private set; }
 
         private ObservableCollection<TodayPageActivityItem> activitiesForDay { get; set; }
@@ -94,15 +95,18 @@ namespace PlantAlarm.ViewModels
                 ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>(actLi);
             });
 
-            ActivitySelectedCommand = new Command(async(_plantActivityItem) =>
+            ActivitySelectedCommand = new Command(async(_todayPageActivityItem) =>
             {
-                var plantActivityItem = _plantActivityItem as PlantActivityItem;
+                var plantActivityItem = (_todayPageActivityItem as TodayPageActivityItem).PlantActivityItem;
+                var plantTask = await PlantActivityService.GetTaskOfActivity(plantActivityItem);
+
+                await NavigationStack.PushAsync(new TaskDetailsPage(plantTask));
             });
 
             PlantImageTappedCommand = new Command(async (_plant) =>
             {
                 var plant = _plant as Plant;
-                await Application.Current.MainPage.Navigation.PushAsync(new PlantDetailsPage(plant));
+                await NavigationStack.PushAsync(new PlantDetailsPage(plant));
             });
         }
 
