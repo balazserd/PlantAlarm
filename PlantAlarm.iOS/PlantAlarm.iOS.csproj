@@ -175,7 +175,7 @@
     </ProjectReference>
     <ProjectReference Include="..\PlantAlarm.WatchOS\PlantAlarm.WatchOS.WatchOSApp\PlantAlarm.WatchOS.WatchOSApp.csproj">
       <IsWatchApp>true</IsWatchApp>
-      <Project>{8C23CDA8-C656-4523-99CD-80EF9FF77717}</Project>
+      <Project>{08B28453-40C8-4406-BF30-B318B116D96E}</Project>
       <Name>PlantAlarm.WatchOS.WatchOSApp</Name>
     </ProjectReference>
   </ItemGroup>
