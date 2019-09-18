@@ -124,6 +124,18 @@
     <AndroidResource Include="Resources\drawable-xhdpi\icons8-question_mark.png" />
     <AndroidResource Include="Resources\drawable-hdpi\icons8-question_mark.png" />
     <AndroidResource Include="Resources\drawable\icons8-question_mark.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icons8-upload.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\icons8-upload.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\icons8-upload.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

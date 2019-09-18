@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
+using PlantAlarm.ViewModels;
 using SQLite;
+using Xamarin.Forms;
 
 namespace PlantAlarm.Services
 {
     public static class PlantActivityService
     {
         private static readonly SQLiteAsyncConnection asyncDb = App.LocalDbConnection.AsyncDb;
+        private static readonly SQLiteConnection Db = App.LocalDbConnection.Db;
 
         #region PUBLIC methods
         /// <summary>
@@ -227,6 +230,37 @@ namespace PlantAlarm.Services
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets (up to) 7 upcoming tasks for the plant, ordering earlier tasks higher.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static List<ExtendedPlantActivityViewModel> GetUpcomingActivitiesOfPlant(Plant p)
+        {
+            var taskConnectionsOfPlant = Db.Table<PlantTaskPlantConnection>()
+                .Where(ptpc => ptpc.PlantFk == p.Id)
+                .ToList();
+
+            var tasksOfPlant = Db.Table<PlantTask>()
+                .ToList()
+                .Where(pt => taskConnectionsOfPlant.Any(tc => tc.PlantTaskFk == pt.Id))
+                .ToList();
+
+            var upcomingActivities = Db.Table<PlantActivityItem>()
+                .ToList()
+                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id))
+                .Select(pai =>
+                {
+                    return new ExtendedPlantActivityViewModel()
+                    {
+                        PlantTask = tasksOfPlant.First(t => t.Id == pai.PlantTaskFk),
+                        PlantActivityItem = pai
+                    };
+                });
+
+            return upcomingActivities.Take(7).OrderBy(extAct => extAct.PlantActivityItem.Time).ToList();
         }
 
         /// <summary>

@@ -142,6 +142,10 @@
     <ImageAsset Include="Assets.xcassets\QuestionIcon.imageset\icons8-question_mark.png" />
     <ImageAsset Include="Assets.xcassets\QuestionIcon.imageset\icons8-question_mark-1.png" />
     <ImageAsset Include="Assets.xcassets\QuestionIcon.imageset\icons8-question_mark-2.png" />
+    <ImageAsset Include="Assets.xcassets\ShareIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ShareIcon.imageset\icons8-upload.png" />
+    <ImageAsset Include="Assets.xcassets\ShareIcon.imageset\icons8-upload-1.png" />
+    <ImageAsset Include="Assets.xcassets\ShareIcon.imageset\icons8-upload-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -193,5 +197,6 @@
     <Folder Include="Assets.xcassets\RecurringIconGold.imageset\" />
     <Folder Include="Assets.xcassets\AlertRed.imageset\" />
     <Folder Include="Assets.xcassets\QuestionIcon.imageset\" />
+    <Folder Include="Assets.xcassets\ShareIcon.imageset\" />
   </ItemGroup>
 </Project>

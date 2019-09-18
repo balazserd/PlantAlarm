@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.Services;
@@ -40,7 +41,7 @@ namespace PlantAlarm.ViewModels
             set
             {
                 selectedPhoto = value;
-                Title = $"Photo {Photos.IndexOf(selectedPhoto)} / {Photos.Count}";
+                Title = $"Photo {Photos.IndexOf(Photos.First(p => p.Id == selectedPhoto.Id)) + 1} / {Photos.Count}";
                 OnPropertyChanged();
             }
         }
