@@ -130,7 +130,7 @@ namespace PlantAlarm.ViewModels
                     default: throw new InvalidOperationException("Unknown action chosen in ActionSheet.");
                 }
             });
-            DeletePhotoCommand = new Command(async (ppi) =>
+            DeletePhotoCommand = new Command((ppi) =>
             {
                 var plantPhotoItem = ppi as PlantPhotoItem;
 

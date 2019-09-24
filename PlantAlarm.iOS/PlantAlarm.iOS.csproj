@@ -78,6 +78,8 @@
     <Compile Include="CustomRenderers\RoundedCorneredStackLayoutRenderer_iOS.cs" />
     <Compile Include="CustomRenderers\RoundedImageRenderer_iOS.cs" />
     <Compile Include="Effects\RoundedCornerEffect_iOS.cs" />
+    <Compile Include="Effects\BorderEffect_iOS.cs" />
+    <Compile Include="Effects\OverlappingEffect_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -156,7 +158,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.3.0.778476-pre1" />
+    <PackageReference Include="Xamarin.Forms" Version="4.3.0.819712-pre2" />
     <PackageReference Include="Xamarin.Essentials" Version="1.3.0" />
     <PackageReference Include="TouchTracking.Forms">
       <Version>1.1.0</Version>
@@ -176,11 +178,6 @@
     <ProjectReference Include="..\PlantAlarm\PlantAlarm.csproj">
       <Project>{FF13C1A0-7E4A-4202-8C6D-10655753A369}</Project>
       <Name>PlantAlarm</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlantAlarm.WatchOS\PlantAlarm.WatchOS.WatchOSApp\PlantAlarm.WatchOS.WatchOSApp.csproj">
-      <IsWatchApp>true</IsWatchApp>
-      <Project>{08B28453-40C8-4406-BF30-B318B116D96E}</Project>
-      <Name>PlantAlarm.WatchOS.WatchOSApp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -7,11 +7,12 @@
              xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
              Title="{Binding Plant.Name}">
     <ContentPage.Content>
-        <ScrollView Margin="10">
-            <StackLayout>
-                <Label Text="Progress Pictures" FontAttributes="Bold" FontSize="Header" VerticalOptions="Start"/>
-                <CollectionView ItemsSource="{Binding PhotoViewModels}" VerticalOptions="Start" Margin="0,5,-5,10"
-                                ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never">
+        <ScrollView Margin="0,10">
+            <StackLayout Margin="10,0,10,10">
+                <Label Text="Progress Pictures" FontAttributes="Bold" FontSize="22" VerticalOptions="Start" Margin="0,10,0,5"/>
+                <BoxView Color="Black" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="-5,0,-5,0"/>
+                <CollectionView ItemsSource="{Binding PhotoViewModels}" VerticalOptions="Start" Margin="0,5,-5,15"
+                                ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="90">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Padding="0,0,5,0">
@@ -27,19 +28,50 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Label Text="Upcoming tasks" FontAttributes="Bold" FontSize="Header" VerticalOptions="Start"/>
-                <CollectionView ItemsSource="{Binding UpcomingActivities}" VerticalOptions="Start" Margin="0,10,0,0">
+                <Label Text="Upcoming tasks" FontAttributes="Bold" FontSize="22" VerticalOptions="Start" Margin="0,0,0,5"/>
+                <BoxView Color="Black" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="-5,0,-5,0"/>
+                <CollectionView ItemsSource="{Binding UpcomingActivities}" VerticalOptions="Start" HeightRequest="275" VerticalScrollBarVisibility="Never">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="7" />
+                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid  Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="6*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding PlantTask.Name}" Grid.Column="0" FontSize="13"/>
-                                <Label Text="{Binding PlantActivityItem.Time, StringFormat='{0:MMM dd}'}" Grid.Column="1"
-                                        FontSize="12" FontAttributes="Italic"/>
-                            </Grid>
+                            <StackLayout>
+                                <Grid HeightRequest="42" VerticalOptions="StartAndExpand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="2*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0">
+                                        <Label Text="{Binding PlantTask.Name}" FontSize="15" LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding PlantActivityItem.Time, StringFormat='{0:MMM dd}'}" FontSize="13"
+                                               FontAttributes="Italic" TextColor="Gray"/>
+                                    </StackLayout>
+                                    <CollectionView ItemsSource="{Binding PrimaryPhotoOfPlantsInTask}" VerticalOptions="FillAndExpand" Grid.Column="1"
+                                                    HeightRequest="42">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout WidthRequest="40" HeightRequest="40" VerticalOptions="Center">
+                                                    <customControls:SquaredImage Source="{Binding Url}" Margin="0,0,0,0" HeightRequest="30" BackgroundColor="Green"
+                                                                                 VerticalOptions="Center" Aspect="AspectFill">
+                                                        <customControls:SquaredImage.Effects>
+                                                            <customEffects:RoundedCornerEffect Radius="20"/>
+                                                            <customEffects:BorderEffect Thickness="0.5" />
+                                                        </customControls:SquaredImage.Effects>
+                                                    </customControls:SquaredImage>
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout Orientation="Horizontal" />
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.Effects>
+                                            <customEffects:OverlappingEffect Size="25"/>
+                                        </CollectionView.Effects>
+                                    </CollectionView>
+                                </Grid>
+                                <BoxView Color="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="1" />
+                            </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

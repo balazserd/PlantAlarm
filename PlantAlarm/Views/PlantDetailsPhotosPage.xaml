@@ -28,10 +28,6 @@
                         </StackLayout>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
-                <CarouselView.ItemsLayout>
-                    <ListItemsLayout Orientation="Horizontal" SnapPointsType="Mandatory" SnapPointsAlignment="Center"
-                                        ItemSpacing="10"/>
-                </CarouselView.ItemsLayout>
             </CarouselView>
             <StackLayout Margin="20,20,20,10" VerticalOptions="FillAndExpand">
                 <Button Text="Delete" Command="{Binding DeletePhotoCommand}" TextColor="Red" FontAttributes="Bold"

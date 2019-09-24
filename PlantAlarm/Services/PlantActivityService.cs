@@ -250,7 +250,7 @@ namespace PlantAlarm.Services
 
             var upcomingActivities = Db.Table<PlantActivityItem>()
                 .ToList()
-                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id))
+                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) && pai.Time.Date >= DateTime.Today)
                 .Select(pai =>
                 {
                     return new ExtendedPlantActivityViewModel()
@@ -260,17 +260,17 @@ namespace PlantAlarm.Services
                     };
                 });
 
-            return upcomingActivities.Take(7).OrderBy(extAct => extAct.PlantActivityItem.Time).ToList();
+            return upcomingActivities.OrderBy(extAct => extAct.PlantActivityItem.Time).Take(5).ToList();
         }
 
         /// <summary>
-        /// Gets the list of plants the given Activity must be performed on.
+        /// Gets the list of plants the given Activity must be performed on, asynchronously.
         /// </summary>
         /// <param name="activity">The Activity for which the associated plants must be returned.</param>
         /// <returns></returns>
-        public static async Task<List<Plant>> GetPlantsOfActivity(PlantActivityItem activity)
+        public static async Task<List<Plant>> GetPlantsOfActivityAsync(PlantActivityItem activity)
         {
-            var plantTask = await GetTaskOfActivity(activity);
+            var plantTask = await GetTaskOfActivityAsync(activity);
 
             var plantConnections = await asyncDb.Table<PlantTaskPlantConnection>()
                 .Where(ptpc => ptpc.PlantTaskFk == plantTask.Id)
@@ -286,13 +286,52 @@ namespace PlantAlarm.Services
                 .ToList();
         }
 
-        public static async Task<PlantTask> GetTaskOfActivity(PlantActivityItem activity)
+        /// <summary>
+        /// Gets the list of plants the given Activity must be performed on.
+        /// </summary>
+        /// <param name="activity">The Activity for which the associated plants must be returned.</param>
+        /// <returns></returns>
+        public static List<Plant> GetPlantsOfActivity(PlantActivityItem activity)
+        {
+            var plantTask = GetTaskOfActivity(activity);
+
+            var plantConnections = Db.Table<PlantTaskPlantConnection>()
+                .Where(ptpc => ptpc.PlantTaskFk == plantTask.Id)
+                .ToList();
+
+            var plants = Db.Table<Plant>()
+                .ToList();
+
+            return plants
+                .Where(p => plantConnections
+                    .Select(pc => pc.PlantFk)
+                    .Contains(p.Id))
+                .ToList();
+        }
+
+        public static async Task<PlantTask> GetTaskOfActivityAsync(PlantActivityItem activity)
         {
             PlantTask plantTask;
             try
             {
                 plantTask = await asyncDb.Table<PlantTask>()
                     .FirstAsync(task => task.Id == activity.PlantTaskFk);
+            }
+            catch (Exception)
+            {
+                throw new PlantActivityServiceException("Could not retrieve the single PlantTask from which this PlantActivityItem was created.");
+            }
+
+            return plantTask;
+        }
+
+        public static PlantTask GetTaskOfActivity(PlantActivityItem activity)
+        {
+            PlantTask plantTask;
+            try
+            {
+                plantTask = Db.Table<PlantTask>()
+                    .First(task => task.Id == activity.PlantTaskFk);
             }
             catch (Exception)
             {

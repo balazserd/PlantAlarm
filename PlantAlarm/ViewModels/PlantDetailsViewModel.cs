@@ -68,7 +68,18 @@ namespace PlantAlarm.ViewModels
             this.PhotoViewModels = new ObservableCollection<ProgressPhotoViewModel>(photoVmList);
 
             var activities = PlantActivityService.GetUpcomingActivitiesOfPlant(plant);
-            this.UpcomingActivities = new ObservableCollection<ExtendedPlantActivityViewModel>(activities);
+            var extendedActivities = activities
+                .Select(act =>
+                {
+                    var plantsOfActivity = PlantActivityService.GetPlantsOfActivity(act.PlantActivityItem);
+                    var primaryPhotosOfPlants = PlantService.GetPrimaryPhotosOfPlants(plantsOfActivity);
+
+                    act.PrimaryPhotoOfPlantsInTask = primaryPhotosOfPlants;
+                    return act;
+                })
+                .ToList();
+
+            this.UpcomingActivities = new ObservableCollection<ExtendedPlantActivityViewModel>(extendedActivities);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -91,9 +102,10 @@ namespace PlantAlarm.ViewModels
         }
     }
 
-    public class ExtendedPlantActivityViewModel
+    public class ExtendedPlantActivityViewModel : BindableObject
     {
         public PlantActivityItem PlantActivityItem { get; set; }
         public PlantTask PlantTask { get; set; }
+        public List<PlantPhoto> PrimaryPhotoOfPlantsInTask { get; set; }
     }
 }

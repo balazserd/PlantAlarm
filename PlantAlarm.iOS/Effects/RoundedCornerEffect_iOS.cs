@@ -14,7 +14,9 @@ namespace PlantAlarm.iOS.Effects
         protected override void OnAttached()
         {
             var effect = (PclRoundedEffect)Element.Effects.FirstOrDefault(e => e is PclRoundedEffect);
-            Control.Layer.CornerRadius = effect.Radius;
+            Control.Layer.CornerRadius = Math.Abs(effect.Radius) > 0.01 ? effect.Radius : Control.Layer.Frame.Width / 2;
+            Control.Layer.MasksToBounds = false;
+            Control.ClipsToBounds = true;
         }
 
         protected override void OnDetached()

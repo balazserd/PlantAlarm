@@ -12,7 +12,7 @@ namespace PlantAlarm.CustomControls
         protected override void OnSizeAllocated(double width, double height)
         {
             this.HeightRequest = width;
-            base.OnSizeAllocated(width, height);
+            base.OnSizeAllocated(width, width);
         }
     }
 }

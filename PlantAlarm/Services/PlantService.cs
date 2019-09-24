@@ -122,6 +122,24 @@ namespace PlantAlarm.Services
             return photosOfPlant.ToList();
         }
 
+        public static List<PlantPhoto> GetPrimaryPhotosOfPlants(List<Plant> plants)
+        {
+            var photos = Db.Table<PlantPhoto>()
+                .Where(pp => pp.IsPrimary)
+                .ToList();
+
+            var plantIds = plants
+                .Select(p => p.Id)
+                .ToList();
+
+            var primaryPhotosOfPlants = photos
+                .Where(photo => plantIds.Any(pId => pId == photo.PlantFk))
+                .CorrectUrlForAll()
+                .ToList();
+
+            return primaryPhotosOfPlants;
+        }
+
         private static IEnumerable<PlantPhoto> CorrectUrlForAll<T>(this T plantPhotoList) where T : IEnumerable<PlantPhoto>
         {
             var urlCorrectedPhotos = plantPhotoList

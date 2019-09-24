@@ -70,7 +70,7 @@ namespace PlantAlarm.ViewModels
                     var todayPageActivity = new TodayPageActivityItem();
                     todayPageActivity.PlantActivityItem = activity;
 
-                    var plantsOfActivity = await PlantActivityService.GetPlantsOfActivity(activity);
+                    var plantsOfActivity = await PlantActivityService.GetPlantsOfActivityAsync(activity);
                     todayPageActivity.Plants = (await Task.WhenAll(
                         plantsOfActivity
                         .Select(async (plant) =>
@@ -88,7 +88,7 @@ namespace PlantAlarm.ViewModels
                     ))
                     .ToList();
 
-                    todayPageActivity.Name = (await PlantActivityService.GetTaskOfActivity(activity)).Name;
+                    todayPageActivity.Name = (await PlantActivityService.GetTaskOfActivityAsync(activity)).Name;
                     actLi.Add(todayPageActivity);
                 }
 
@@ -98,7 +98,7 @@ namespace PlantAlarm.ViewModels
             ActivitySelectedCommand = new Command(async(_todayPageActivityItem) =>
             {
                 var plantActivityItem = (_todayPageActivityItem as TodayPageActivityItem).PlantActivityItem;
-                var plantTask = await PlantActivityService.GetTaskOfActivity(plantActivityItem);
+                var plantTask = await PlantActivityService.GetTaskOfActivityAsync(plantActivityItem);
 
                 await NavigationStack.PushAsync(new TaskDetailsPage(plantTask));
             });
