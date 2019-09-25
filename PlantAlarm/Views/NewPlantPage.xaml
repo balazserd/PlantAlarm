@@ -3,72 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PlantAlarm.Views.NewPlantPage"
              xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
-             xmlns:customEffects="clr-namespace:PlantAlarm.Effects">
+             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+             Title="New Plant">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddPlantCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView>
-            <TableView Intent="Form" HasUnevenRows="true">
-                <TableSection>
-                    <ViewCell Height="44">
-                        <Grid Margin="15,0,15,0" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="8*" />
-                            </Grid.ColumnDefinitions>
-                            <Label Text="Name" FontSize="18" VerticalOptions="Center"/>
-                            <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
-                                   Text="{Binding PlantName}" FontAttributes="Italic">
-                                <Entry.Effects>
-                                    <customEffects:BorderlessEffect />
-                                </Entry.Effects>
-                            </Entry>
-                        </Grid>
-                    </ViewCell>
-                    <ViewCell Height="44" Tapped="ShowAddCategoryPage">
-                        <Grid Margin="15,0,15,0" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="8*" />
-                            </Grid.ColumnDefinitions>
-                            <Label Text="Categories" VerticalOptions="Center" FontSize="18" Grid.Column="0"/>
-                            <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center" 
-                                   Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
-                                   HorizontalOptions="End"/>
-                        </Grid>
-                    </ViewCell>
-                </TableSection>
-                <TableSection Title="Photos">
-                    <ViewCell>
-                        <StackLayout>
-                            <Button Text="Add Photo" HorizontalOptions="Fill" FontSize="17"
-                                    Command="{Binding AddPhotoCommand}"/>
-                        </StackLayout>
-                    </ViewCell>
-                    <ViewCell x:Name="PhotosCell">
-                        <CollectionView ItemsSource="{Binding Photos}" Margin="3" x:Name="ImageCollectionView"
-                                        SizeChanged="SetCollectionViewHeight" HorizontalOptions="FillAndExpand">
-                            <CollectionView.ItemsLayout>
-                                <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="3"
-                                                 HorizontalItemSpacing="3"/>
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <customControls:SquaredImageContainerStack>
-                                        <customControls:SquaredImage Source="{Binding Photo.Url}" HorizontalOptions="Fill"
-                                                                     Aspect="AspectFill" VerticalOptions="Fill">
-                                            <customControls:SquaredImage.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ShowOptions}" />
-                                            </customControls:SquaredImage.GestureRecognizers>
-                                        </customControls:SquaredImage>
-                                    </customControls:SquaredImageContainerStack>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </ViewCell>
-                </TableSection>
-            </TableView>
-        </ScrollView>
+        <StackLayout Margin="15">
+            <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" />
+            <BoxView HeightRequest="1" Color="Black" Margin="-5,0,-5,5" />
+            <Grid HeightRequest="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="8*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="Name" VerticalOptions="Center" FontAttributes="Bold"/>
+                <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
+                        Text="{Binding PlantName}" FontAttributes="Italic">
+                    <Entry.Effects>
+                        <customEffects:BorderlessEffect />
+                    </Entry.Effects>
+                </Entry>
+            </Grid>
+            <BoxView HeightRequest="1" Color="LightGray"/>
+            <Grid HeightRequest="30">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowCategorySelectorPageCommand}" />
+                </Grid.GestureRecognizers>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="8*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="Categories" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold"/>
+                <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center" 
+                        Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
+                        HorizontalOptions="End"/>
+            </Grid>
+            <Label Text="Picture" FontSize="22" FontAttributes="Bold"
+                    VerticalOptions="Center" Margin="0,20,0,0" />
+            <BoxView HeightRequest="1" Margin="-5,0,-5,0" Color="Black" />
+            <Label Text="You will be able to add more pictures later to track your progress." TextColor="Gray" FontAttributes="Italic"
+                   Margin="0,5,0,0" FontSize="11"/>
+            <customControls:SquaredImageContainerStack VerticalOptions="StartAndExpand">
+                <Grid>
+                    <ImageButton Source="AddButtonGreen.png" VerticalOptions="Center" HorizontalOptions="Center"
+                                 Command="{Binding AddPhotoCommand}"/>
+                    <customControls:SquaredImage Source="{Binding PhotoItem.Photo.Url}" HorizontalOptions="Fill"
+                                                    Aspect="AspectFill" VerticalOptions="Fill">
+                        <customControls:SquaredImage.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PhotoItem.ShowOptions}" />
+                        </customControls:SquaredImage.GestureRecognizers>
+                    </customControls:SquaredImage>
+                </Grid>
+            </customControls:SquaredImageContainerStack>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -15,8 +15,8 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.3.0" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
-    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
     <PackageReference Include="TouchTracking.Forms" Version="1.1.0" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />

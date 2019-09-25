@@ -55,8 +55,8 @@ namespace PlantAlarm.ViewModels
         public ICommand AddPlantCommand { get; set; }
 
         //This is a backing store, without absolute path to the photos.
-        private List<PlantPhoto> photosToAdd { get; set; }
-        public ObservableCollection<PlantPhotoItem> Photos { get; set; }
+        private PlantPhoto photoToAdd { get; set; }
+        public PlantPhotoItem PhotoItem { get; set; }
 
         public NewPlantViewModel(INavigation navigation, Page viewForViewModel)
         {
@@ -64,8 +64,6 @@ namespace PlantAlarm.ViewModels
             Navigation = navigation;
 
             Categories = new List<PlantCategory>();
-            Photos = new ObservableCollection<PlantPhotoItem>();
-            photosToAdd = new List<PlantPhoto>();
 
             ShowCategorySelectorPageCommand = new Command(async () =>
             {
@@ -92,9 +90,9 @@ namespace PlantAlarm.ViewModels
                     TakenAt = DateTime.Now,
                     Url = photoName
                 };
-                photosToAdd.Add(plantPhoto_noFullUrl);
+                photoToAdd = plantPhoto_noFullUrl;
 
-                //Goes to ObservableCollection.
+                //Goes to full item.
                 var plantPhoto_fullUrl = new PlantPhoto
                 {
                     IsPrimary = false,
@@ -107,11 +105,9 @@ namespace PlantAlarm.ViewModels
                     this.ShowPhotoOptionsCommand);
 
                 //Add the created object to the collection of photos.
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Photos.Add(photoItem);
-                });
+                PhotoItem = photoItem;
             });
+
             ShowPhotoOptionsCommand = new Command(async (ppi) =>
             {
                 string action = await View.DisplayActionSheet("Select an option", "Cancel", "Delete photo", "Change photo");
@@ -137,10 +133,8 @@ namespace PlantAlarm.ViewModels
                 File.Delete(plantPhotoItem.Photo.Url);
 
                 //Remove from BOTH backing store and observed store.
-                Photos.Remove(plantPhotoItem);
-                photosToAdd.Remove(
-                    photosToAdd.First(
-                        ph => plantPhotoItem.Photo.Url.Contains(ph.Url)));
+                PhotoItem = null;
+                photoToAdd = null;
             });
             ChangePhotoCommand = new Command(async (ppi) =>
             {
@@ -148,15 +142,13 @@ namespace PlantAlarm.ViewModels
                 if (image == null) return;
 
                 var plantPhotoItem = ppi as PlantPhotoItem;
-                var index = Photos.IndexOf(plantPhotoItem);
 
                 File.Delete(plantPhotoItem.Photo.Url);
                 await image.GetStreamWithImageRotatedForExternalStorage().CopyToAsync(File.Create(plantPhotoItem.Photo.Url));
 
                 //No need to re-add for backing store, as this is a step only to visually represent the change.
                 plantPhotoItem.Photo.TakenAt = DateTime.Now;
-                Photos.Remove(plantPhotoItem);
-                Photos.Insert(index, plantPhotoItem);
+                PhotoItem = plantPhotoItem;
             });
             AddPlantCommand = new Command(async() =>
             {
@@ -167,14 +159,10 @@ namespace PlantAlarm.ViewModels
                 };
                 await PlantService.AddPlantAsync(plantToAdd);
 
-                if (Photos.Count > 0) photosToAdd[0].IsPrimary = true;
-                var photosOfPlant = photosToAdd.Select(plantPhoto =>
-                {
-                    plantPhoto.PlantFk = plantToAdd.Id;
-                    return plantPhoto;
-                });
+                photoToAdd.IsPrimary = true;
+                photoToAdd.PlantFk = plantToAdd.Id;
 
-                await PlantService.AddPlantPhotosAsync(photosOfPlant);
+                await PlantService.AddPlantPhotosAsync(new List<PlantPhoto>{ photoToAdd });
 
                 MessagingCenter.Send(this as object, "PlantAdded");
                 await Navigation.PopAsync();
@@ -233,9 +221,18 @@ namespace PlantAlarm.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
-    public class PlantPhotoItem
+    public class PlantPhotoItem : BindableObject
     {
-        public PlantPhoto Photo { get; set; }
+        private PlantPhoto photo { get; set; }
+        public PlantPhoto Photo
+        {
+            get => photo;
+            set
+            {
+                photo = value;
+                OnPropertyChanged();
+            }
+        }
         public ICommand ShowOptions { get; set; }
 
         public PlantPhotoItem(PlantPhoto plantPhoto, ICommand ShowOptionsCommand)
