@@ -43,18 +43,19 @@
                                         <StackLayout Orientation="Horizontal" Margin="10,10,10,3">
                                             <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                                 <Label Text="{Binding Name}" FontAttributes="Bold" Margin="0,0,0,5"/>
-                                                <CollectionView ItemsSource="{Binding Plants}" Margin="10,0,0,0" InputTransparent="false">
+                                                <CollectionView ItemsSource="{Binding Plants}" InputTransparent="false">
                                                     <CollectionView.ItemsLayout>
                                                         <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"
                                                                          HorizontalItemSpacing="5"/>
-                                                    </CollectionView.ItemsLayout>    
+                                                    </CollectionView.ItemsLayout>
                                                     <CollectionView.ItemTemplate>
                                                         <DataTemplate>
                                                             <StackLayout>
                                                                 <Image Source="{Binding Photo.Url}" HeightRequest="50" WidthRequest="50"
                                                                        Aspect="AspectFill">
                                                                     <Image.Effects>
-                                                                        <customEffects:RoundedCornerEffect Radius="5"/>
+                                                                        <customEffects:RoundedCornerEffect Radius="5" />
+                                                                        <customEffects:BorderEffect Thickness="0.5" />
                                                                     </Image.Effects>
                                                                     <Image.GestureRecognizers>
                                                                         <TapGestureRecognizer Command="{Binding PlantImageTappedCommand}" 
@@ -68,7 +69,7 @@
                                             </StackLayout>
                                             <CheckBox IsChecked="{Binding PlantActivityItem.IsCompleted, Mode=TwoWay}" HorizontalOptions="End" />
                                         </StackLayout>
-                                        <BoxView HeightRequest="1" Color="Silver" HorizontalOptions="Fill" VerticalOptions="End"/>
+                                        <BoxView HeightRequest="1" Color="Silver" HorizontalOptions="Fill" VerticalOptions="End" Margin="10,0,0,0"/>
                                     </StackLayout>
                                 </ViewCell>
                             </DataTemplate>

@@ -21,6 +21,8 @@ namespace PlantAlarm.ViewModels
         private readonly INavigation Navigation = Application.Current.MainPage.Navigation;
         private Page View { get; set; }
 
+        public string PlantName { get; set; }
+
         private const string DefaultCategoriesMessage = "Tap to select categories";
         public string SelectedCategoriesMessage
         {
@@ -45,8 +47,6 @@ namespace PlantAlarm.ViewModels
             get => PhotoToAdd != null;
         }
 
-        public string PlantName { get; set; }
-
         private List<PlantCategory> categories { get; set; }
         public List<PlantCategory> Categories
         {
@@ -60,13 +60,6 @@ namespace PlantAlarm.ViewModels
             }
         }
 
-        public ICommand ShowCategorySelectorPageCommand { get; private set; }
-        public ICommand AddPhotoCommand { get; set; }
-        public ICommand ShowPhotoOptionsCommand { get; set; }
-        public ICommand DeletePhotoCommand { get; set; }
-        public ICommand ChangePhotoCommand { get; set; }
-        public ICommand AddPlantCommand { get; set; }
-
         //This is a backing store, without absolute path to the photos.
         private PlantPhoto _truncatedUrlPlantPhoto { get; set; }
         private PlantPhoto photoToAdd { get; set; }
@@ -76,10 +69,17 @@ namespace PlantAlarm.ViewModels
             set
             {
                 photoToAdd = value;
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(HasPhoto));
+                OnPropertyChanged();
             }
         }
+
+        public ICommand ShowCategorySelectorPageCommand { get; private set; }
+        public ICommand AddPhotoCommand { get; set; }
+        public ICommand ShowPhotoOptionsCommand { get; set; }
+        public ICommand DeletePhotoCommand { get; set; }
+        public ICommand ChangePhotoCommand { get; set; }
+        public ICommand AddPlantCommand { get; set; }
 
         public NewPlantViewModel(Page viewForViewModel)
         {
@@ -123,18 +123,17 @@ namespace PlantAlarm.ViewModels
                 };
                 PhotoToAdd = plantPhoto_fullUrl;
             });
-            ShowPhotoOptionsCommand = new Command(async (pp) =>
+            ShowPhotoOptionsCommand = new Command(async () =>
             {
                 string action = await View.DisplayActionSheet("Select an option", "Cancel", "Delete photo", "Change photo");
 
-                var plantPhoto = pp as PlantPhoto;
                 switch (action)
                 {
                     case "Delete photo":
-                        DeletePhotoCommand.Execute(plantPhoto);
+                        DeletePhotoCommand.Execute(PhotoToAdd);
                         break;
                     case "Change photo":
-                        ChangePhotoCommand.Execute(plantPhoto);
+                        ChangePhotoCommand.Execute(PhotoToAdd);
                         break;
                     case "Cancel":
                         break;

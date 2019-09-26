@@ -5,31 +5,33 @@
              xmlns:controls="clr-namespace:PlantAlarm.CustomControls"
              Title="Garden">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="New item" Command="{Binding ShowNewPlantPageCommand}" />
+        <ToolbarItem Text="New item" Command="{Binding ShowNewPlantPageCommand}" Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <CollectionView ItemsSource="{Binding PlantItems}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout>
-                                <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" 
-                                         VerticalOptions="Start"/>
-                                <StackLayout Orientation="Horizontal" Margin="10,5,10,5">
-                                    <Image WidthRequest="70" HeightRequest="70" Source="{Binding MainPhoto.Url}"  
-                                           Aspect="AspectFill" VerticalOptions="Center" />
-                                    <StackLayout HorizontalOptions="FillAndExpand">
-                                        <Label Text="{Binding Plant.Name}" FontSize="17" />
-                                    </StackLayout>
+        <StackLayout>
+            <CollectionView ItemsSource="{Binding PlantItems}" VerticalOptions="FillAndExpand">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPlantDetailsPageCommand}" />
+                            </StackLayout.GestureRecognizers>
+
+                            <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" 
+                                        VerticalOptions="Start" Margin="10,0,0,0" />
+                            <StackLayout Orientation="Horizontal" Margin="10,0">
+                                <Image WidthRequest="70" HeightRequest="70" Source="{Binding MainPhoto.Url}"  
+                                        Aspect="AspectFill" VerticalOptions="Center" />
+                                <StackLayout HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Plant.Name}" FontSize="17" />
                                 </StackLayout>
-                                <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" 
-                                         VerticalOptions="End" />
                             </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-        </ScrollView>
+                            <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Silver" Opacity="0.7"
+                                        VerticalOptions="End" Margin="10,0,0,0" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

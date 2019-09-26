@@ -15,7 +15,7 @@ namespace PlantAlarm.ViewModels
 {
     public class PlantsViewModel : INotifyPropertyChanged
     {
-        private INavigation Navigation { get; set; }
+        private INavigation Navigation = Application.Current.MainPage.Navigation;
 
         private ObservableCollection<PlantItem> plantItems { get; set; }
         public ObservableCollection<PlantItem> PlantItems
@@ -29,15 +29,20 @@ namespace PlantAlarm.ViewModels
         }
 
         public ICommand ShowNewPlantPageCommand { get; private set; }
+        private ICommand ShowPlantDetailsPageCommandBase { get; set; }
 
-        public PlantsViewModel(INavigation navigation)
+        public PlantsViewModel()
         {
-            Navigation = navigation;
             this.RefreshSource();
 
             ShowNewPlantPageCommand = new Command(async () =>
             {
                 await Navigation.PushAsync(new NewPlantPage());
+            });
+            ShowPlantDetailsPageCommandBase = new Command(async (_plant) =>
+            {
+                var plant = _plant as Plant;
+                await Navigation.PushAsync(new PlantDetailsPage(plant));
             });
 
             MessagingCenter.Subscribe<object>(this, "PlantAdded", (vm) =>
@@ -67,6 +72,7 @@ namespace PlantAlarm.ViewModels
 
                 plantItem.Plant = plant;
                 plantItem.MainPhoto = plantMainPhoto;
+                plantItem.ShowPlantDetailsPageCommand = new Command(() => this.ShowPlantDetailsPageCommandBase.Execute(plant));
 
                 _plantItems.Add(plantItem);
             }
@@ -77,6 +83,7 @@ namespace PlantAlarm.ViewModels
 
     public class PlantItem
     {
+        public ICommand ShowPlantDetailsPageCommand { get; set; }
         public Plant Plant { get; set; }
         public PlantPhoto MainPhoto { get; set; }
     }

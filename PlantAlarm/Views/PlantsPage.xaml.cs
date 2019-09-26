@@ -11,7 +11,7 @@ namespace PlantAlarm.Views
         public PlantsPage()
         {
             InitializeComponent();
-            this.BindingContext = new PlantsViewModel(Application.Current.MainPage.Navigation);
+            this.BindingContext = new PlantsViewModel();
         }
     }
 }
