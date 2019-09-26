@@ -58,7 +58,7 @@ namespace PlantAlarm.ViewModels
             var plantList = PlantService.GetPlants();
             var photoList = PlantService.GetAllPhotos();
 
-            PlantItems = new ObservableCollection<PlantItem>();
+            var _plantItems = new ObservableCollection<PlantItem>();
 
             foreach (var plant in plantList)
             {
@@ -68,8 +68,10 @@ namespace PlantAlarm.ViewModels
                 plantItem.Plant = plant;
                 plantItem.MainPhoto = plantMainPhoto;
 
-                PlantItems.Add(plantItem);
+                _plantItems.Add(plantItem);
             }
+
+            PlantItems = _plantItems;
         }
     }
 

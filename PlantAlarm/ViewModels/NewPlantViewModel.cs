@@ -18,7 +18,7 @@ namespace PlantAlarm.ViewModels
 {
     public class NewPlantViewModel : INotifyPropertyChanged
     {
-        private INavigation Navigation { get; set; }
+        private readonly INavigation Navigation = Application.Current.MainPage.Navigation;
         private Page View { get; set; }
 
         private const string DefaultCategoriesMessage = "Tap to select categories";
@@ -26,10 +26,23 @@ namespace PlantAlarm.ViewModels
         {
             get
             {
+                OnPropertyChanged(nameof(CategoriesTextColor));
                 return categories == null || categories.Count == 0 ?
                     DefaultCategoriesMessage :
                     string.Join(", ", categories.Select(c => c.Name));
             }
+        }
+
+        public Color CategoriesTextColor
+        {
+            get => categories == null || categories.Count == 0 ?
+                Color.Gray :
+                Color.Default;
+        }
+
+        public bool HasPhoto
+        {
+            get => PhotoToAdd != null;
         }
 
         public string PlantName { get; set; }
@@ -55,13 +68,22 @@ namespace PlantAlarm.ViewModels
         public ICommand AddPlantCommand { get; set; }
 
         //This is a backing store, without absolute path to the photos.
+        private PlantPhoto _truncatedUrlPlantPhoto { get; set; }
         private PlantPhoto photoToAdd { get; set; }
-        public PlantPhotoItem PhotoItem { get; set; }
+        public PlantPhoto PhotoToAdd
+        {
+            get => photoToAdd;
+            set
+            {
+                photoToAdd = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasPhoto));
+            }
+        }
 
-        public NewPlantViewModel(INavigation navigation, Page viewForViewModel)
+        public NewPlantViewModel(Page viewForViewModel)
         {
             View = viewForViewModel;
-            Navigation = navigation;
 
             Categories = new List<PlantCategory>();
 
@@ -90,7 +112,7 @@ namespace PlantAlarm.ViewModels
                     TakenAt = DateTime.Now,
                     Url = photoName
                 };
-                photoToAdd = plantPhoto_noFullUrl;
+                _truncatedUrlPlantPhoto = plantPhoto_noFullUrl;
 
                 //Goes to full item.
                 var plantPhoto_fullUrl = new PlantPhoto
@@ -99,56 +121,49 @@ namespace PlantAlarm.ViewModels
                     TakenAt = DateTime.Now,
                     Url = PlantService.AppendLocalAppDataFolderToPhotoName(photoName)
                 };
-
-                var photoItem = new PlantPhotoItem(
-                    plantPhoto_fullUrl,
-                    this.ShowPhotoOptionsCommand);
-
-                //Add the created object to the collection of photos.
-                PhotoItem = photoItem;
+                PhotoToAdd = plantPhoto_fullUrl;
             });
-
-            ShowPhotoOptionsCommand = new Command(async (ppi) =>
+            ShowPhotoOptionsCommand = new Command(async (pp) =>
             {
                 string action = await View.DisplayActionSheet("Select an option", "Cancel", "Delete photo", "Change photo");
 
-                var plantPhotoItem = ppi as PlantPhotoItem;
+                var plantPhoto = pp as PlantPhoto;
                 switch (action)
                 {
                     case "Delete photo":
-                        DeletePhotoCommand.Execute(plantPhotoItem);
+                        DeletePhotoCommand.Execute(plantPhoto);
                         break;
                     case "Change photo":
-                        ChangePhotoCommand.Execute(plantPhotoItem);
+                        ChangePhotoCommand.Execute(plantPhoto);
                         break;
                     case "Cancel":
                         break;
                     default: throw new InvalidOperationException("Unknown action chosen in ActionSheet.");
                 }
             });
-            DeletePhotoCommand = new Command((ppi) =>
+            DeletePhotoCommand = new Command((pp) =>
             {
-                var plantPhotoItem = ppi as PlantPhotoItem;
+                var plantPhoto = pp as PlantPhoto;
 
-                File.Delete(plantPhotoItem.Photo.Url);
+                File.Delete(plantPhoto.Url);
 
                 //Remove from BOTH backing store and observed store.
-                PhotoItem = null;
-                photoToAdd = null;
+                _truncatedUrlPlantPhoto = null;
+                PhotoToAdd = null;
             });
-            ChangePhotoCommand = new Command(async (ppi) =>
+            ChangePhotoCommand = new Command(async (pp) =>
             {
                 var image = await GetNewPhoto();
                 if (image == null) return;
 
-                var plantPhotoItem = ppi as PlantPhotoItem;
+                var plantPhoto = pp as PlantPhoto;
 
-                File.Delete(plantPhotoItem.Photo.Url);
-                await image.GetStreamWithImageRotatedForExternalStorage().CopyToAsync(File.Create(plantPhotoItem.Photo.Url));
+                File.Delete(plantPhoto.Url);
+                await image.GetStreamWithImageRotatedForExternalStorage().CopyToAsync(File.Create(plantPhoto.Url));
 
                 //No need to re-add for backing store, as this is a step only to visually represent the change.
-                plantPhotoItem.Photo.TakenAt = DateTime.Now;
-                PhotoItem = plantPhotoItem;
+                plantPhoto.TakenAt = DateTime.Now;
+                PhotoToAdd = plantPhoto;
             });
             AddPlantCommand = new Command(async() =>
             {
@@ -159,10 +174,10 @@ namespace PlantAlarm.ViewModels
                 };
                 await PlantService.AddPlantAsync(plantToAdd);
 
-                photoToAdd.IsPrimary = true;
-                photoToAdd.PlantFk = plantToAdd.Id;
+                _truncatedUrlPlantPhoto.IsPrimary = true;
+                _truncatedUrlPlantPhoto.PlantFk = plantToAdd.Id;
 
-                await PlantService.AddPlantPhotosAsync(new List<PlantPhoto>{ photoToAdd });
+                await PlantService.AddPlantPhotosAsync(new List<PlantPhoto>{ _truncatedUrlPlantPhoto });
 
                 MessagingCenter.Send(this as object, "PlantAdded");
                 await Navigation.PopAsync();
@@ -219,29 +234,5 @@ namespace PlantAlarm.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-    }
-
-    public class PlantPhotoItem : BindableObject
-    {
-        private PlantPhoto photo { get; set; }
-        public PlantPhoto Photo
-        {
-            get => photo;
-            set
-            {
-                photo = value;
-                OnPropertyChanged();
-            }
-        }
-        public ICommand ShowOptions { get; set; }
-
-        public PlantPhotoItem(PlantPhoto plantPhoto, ICommand ShowOptionsCommand)
-        {
-            Photo = plantPhoto;
-            ShowOptions = new Command(() =>
-            {
-                ShowOptionsCommand.Execute(this);
-            });
-        }
     }
 }

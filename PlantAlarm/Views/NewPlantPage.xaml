@@ -36,23 +36,26 @@
                 </Grid.ColumnDefinitions>
                 <Label Text="Categories" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold"/>
                 <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center" 
-                        Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
-                        HorizontalOptions="End"/>
+                       Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
+                       HorizontalOptions="End" TextColor="{Binding CategoriesTextColor}"/>
             </Grid>
             <Label Text="Picture" FontSize="22" FontAttributes="Bold"
                     VerticalOptions="Center" Margin="0,20,0,0" />
             <BoxView HeightRequest="1" Margin="-5,0,-5,0" Color="Black" />
             <Label Text="You will be able to add more pictures later to track your progress." TextColor="Gray" FontAttributes="Italic"
                    Margin="0,5,0,0" FontSize="11"/>
-            <customControls:SquaredImageContainerStack VerticalOptions="StartAndExpand">
+            <customControls:SquaredImageContainerStack HorizontalOptions="FillAndExpand">
                 <Grid>
                     <ImageButton Source="AddButtonGreen.png" VerticalOptions="Center" HorizontalOptions="Center"
-                                 Command="{Binding AddPhotoCommand}"/>
-                    <customControls:SquaredImage Source="{Binding PhotoItem.Photo.Url}" HorizontalOptions="Fill"
-                                                    Aspect="AspectFill" VerticalOptions="Fill">
+                                 Command="{Binding AddPhotoCommand}" />
+                    <customControls:SquaredImage Source="{Binding PhotoToAdd.Url}" HorizontalOptions="FillAndExpand"
+                                                 Aspect="AspectFill" IsVisible="{Binding HasPhoto}">
                         <customControls:SquaredImage.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding PhotoItem.ShowOptions}" />
+                            <TapGestureRecognizer Command="{Binding ShowPhotoOptionsCommand}" />
                         </customControls:SquaredImage.GestureRecognizers>
+                        <customControls:SquaredImage.Effects>
+                            <customEffects:RoundedCornerEffect Radius="7" />
+                        </customControls:SquaredImage.Effects>
                     </customControls:SquaredImage>
                 </Grid>
             </customControls:SquaredImageContainerStack>

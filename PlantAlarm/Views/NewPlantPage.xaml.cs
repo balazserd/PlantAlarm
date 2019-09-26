@@ -12,7 +12,7 @@ namespace PlantAlarm.Views
         {
             InitializeComponent();
 
-            this.BindingContext = new NewPlantViewModel(Application.Current.MainPage.Navigation, this);
+            this.BindingContext = new NewPlantViewModel(this);
             vm = this.BindingContext as NewPlantViewModel;
         }
 
