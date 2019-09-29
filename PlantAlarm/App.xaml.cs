@@ -15,6 +15,7 @@ namespace PlantAlarm
         {
             InitializeComponent();
 
+            //Database connections
             LocalDbConnection = new LocalDbConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantAlarmSQLite.db3"));
 
             string localFolderUrl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantPhotos");
@@ -22,6 +23,13 @@ namespace PlantAlarm
             {
                 Directory.CreateDirectory(localFolderUrl);
             }
+
+            //Create missing activities
+            _ = PlantActivityService.CreateAllMissingActivitiesForNext60Days();
+
+            Application.Current.Properties.TryGetValue(NotificationService.kNotificationTime, out object sNotiTime);
+            TimeSpan? notiTime = TimeSpan.TryParse(sNotiTime.ToString(), out TimeSpan _notiTime) ? _notiTime : (TimeSpan?)null;
+            _ = NotificationService.AddDailyNotifications(notiTime);
 
             MainPage = new AppShell();
         }

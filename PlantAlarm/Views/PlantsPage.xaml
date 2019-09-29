@@ -59,14 +59,20 @@
 
                             <StackLayout.Effects>
                                 <customEffects:RoundedCornerEffect Radius="8" />
-                                <!--<customEffects:BorderEffect Color="#59C39E" Thickness="0.5" />-->
                             </StackLayout.Effects>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                    <GridItemsLayout VerticalItemSpacing="8" HorizontalItemSpacing="8" Orientation="Vertical">
+                        <GridItemsLayout.Span>
+                            <OnIdiom x:TypeArguments="x:Int32">
+                                <OnIdiom.Default>1</OnIdiom.Default>
+                                <OnIdiom.Tablet>2</OnIdiom.Tablet>
+                            </OnIdiom>
+                        </GridItemsLayout.Span>
+                    </GridItemsLayout>
                 </CollectionView.ItemsLayout>
             </CollectionView>
         </StackLayout>

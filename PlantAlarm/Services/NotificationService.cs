@@ -33,7 +33,7 @@ namespace PlantAlarm.Services
 
         public static async Task AddDailyNotifications(TimeSpan? timeOfDay = null)
         {
-            var activities = await PlantActivityService.GetUpcomingActivitiesByDayAsync(DateTime.Today, DateTime.Today.AddDays(30));
+            var activities = await PlantActivityService.GetUpcomingActivitiesByDayAsync(DateTime.Today, DateTime.Today.AddDays(60));
 
             Task remindersTask = timeOfDay != null ?
                 platformNotiSvc.CreateDailyReminders(activities, (byte)timeOfDay?.Hours, (byte)timeOfDay?.Minutes) :

@@ -24,7 +24,7 @@ namespace PlantAlarm.Services
         public static async Task AddPlantTaskAsync(PlantTask task)
         {
             await asyncDb.InsertAsync(task);
-            await AddActivitiesFromTaskAsync(task);
+            await AddActivitiesFromTaskAsync(task, DateTime.Today);
         }
 
         /// <summary>
@@ -88,56 +88,98 @@ namespace PlantAlarm.Services
         }
 
         /// <summary>
-        /// Adds activities to the local storage from the specified Task for the next 2 months, last day inclusive.
+        /// Adds activities to the local storage from the specified Task for the next 61 days, last day inclusive, today inclusive.
+        /// Tasks after firstDay will be deleted, even if they are marked as completed.
         /// </summary>
         /// <param name="task">The PlantTask to create the activities for.</param>
-        public static async Task AddActivitiesFromTaskAsync(PlantTask task)
+        /// <param name="firstDay">The first (possible) day to add an activity for.</param>
+        public static async Task AddActivitiesFromTaskAsync(PlantTask task, DateTime firstDay)
         {
-            //First, we need to delete all activities that are in the future.
+            var allActivities = await GetUpcomingActivitiesAsync(DateTime.Today, DateTime.Today.AddDays(60));
+
+            //First, we need to delete all activities that are after 'firstDay'.
             await asyncDb.Table<PlantActivityItem>()
-                .Where(act => act.PlantTaskFk == task.Id)
+                .Where(act => act.PlantTaskFk == task.Id && act.Time >= firstDay)
                 .DeleteAsync();
 
-            //Now add for the next 2 months.
+            //Now add for the next 61 days.
             List<PlantActivityItem> resultList = new List<PlantActivityItem>();
 
-            int days = (int)Math.Ceiling((DateTime.Now.AddDays(30) - DateTime.Now).TotalDays);
-            for (int i = 0; i < days; i++)
+            for (DateTime day = firstDay; day <= DateTime.Today.AddDays(60); day = day.AddDays(1))
             {
-                var thisDay = task.FirstOccurrenceDate.AddDays(i);
-
                 if (task.IsRepeating)
                 {
                     //Check the task's each recurring option.
                     //If any of the options indicate that the task should be performed this day, it gets added to the list.
 
                     //Single Days.
-                    if ((thisDay.DayOfWeek == DayOfWeek.Monday && task.OnMonday) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Tuesday && task.OnTuesday) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Wednesday && task.OnWednesday) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Thursday && task.OnThursday) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Friday && task.OnFriday) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Saturday && task.OnSaturday) ||
-                        (thisDay.DayOfWeek == DayOfWeek.Sunday && task.OnSunday) ||
+                    if ((day.DayOfWeek == DayOfWeek.Monday && task.OnMonday) ||
+                        (day.DayOfWeek == DayOfWeek.Tuesday && task.OnTuesday) ||
+                        (day.DayOfWeek == DayOfWeek.Wednesday && task.OnWednesday) ||
+                        (day.DayOfWeek == DayOfWeek.Thursday && task.OnThursday) ||
+                        (day.DayOfWeek == DayOfWeek.Friday && task.OnFriday) ||
+                        (day.DayOfWeek == DayOfWeek.Saturday && task.OnSaturday) ||
+                        (day.DayOfWeek == DayOfWeek.Sunday && task.OnSunday) ||
 
                         //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
-                        (task.EveryXDays > 0 && (thisDay - task.FirstOccurrenceDate).Days % task.EveryXDays == 0) ||
+                        (task.EveryXDays > 0 && (day - task.FirstOccurrenceDate).Days % task.EveryXDays == 0) ||
 
                         //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
-                        (task.EveryXMonths > 0 && ((thisDay.Year - task.FirstOccurrenceDate.Year) * 12) + thisDay.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
-                           thisDay.Day == task.FirstOccurrenceDate.Day))
+                        (task.EveryXMonths > 0 && ((day.Year - task.FirstOccurrenceDate.Year) * 12) + day.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
+                           day.Day == task.FirstOccurrenceDate.Day))
                     {
-                        AddActivityItemForDay(resultList, task.Id, thisDay);
+                        AddActivityItemForDay(resultList, task.Id, day);
                     }
                 }
                 else
                 {
-                    if (thisDay.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, task.Id, thisDay);
+                    if (day.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, task.Id, day);
                 }
             }
 
             await asyncDb.InsertAllAsync(resultList);
             await RecreateDailyReminders();
+        }
+
+        /// <summary>
+        /// Creates all activities for the next 60 days that haven't been created yet.
+        /// You should NOT call this method when the task has changed since the last AddActivitiesFromTaskAsync() call.
+        /// </summary>
+        /// <returns></returns>
+        public static async Task CreateAllMissingActivitiesForNext60Days()
+        {
+            var tasks = await asyncDb.Table<PlantTask>().ToListAsync();
+            var allActivities = await GetUpcomingActivitiesAsync(DateTime.Today, DateTime.Today.AddDays(60));
+
+            //Select latest activities per task.
+            var latestActivitiesTimePerTask = allActivities
+                .GroupBy(act => act.PlantTaskFk)
+                .Select(actOfTask => new {
+                    PlantTask = GetTaskOfActivity(actOfTask.Select(act => act).First()),
+                    Time = actOfTask.Max(act => act.Time).AddDays(1)
+                })
+                .ToList();
+
+            //Select task Ids that have no activities in future - these will not be found in GetUpcomingActivitieAsync()
+            // - then create an item from these, adding today as the first day to create an activity for.
+            var tasksWithNoActivitiesInFuture = tasks
+                .Where(t => !latestActivitiesTimePerTask
+                    .Select(ac => ac.PlantTask.Id)
+                    .Any(id => id == t.Id))
+                .Select(t => new
+                {
+                    PlantTask = t,
+                    Time = DateTime.Today
+                });
+
+            //Combine the two lists.
+            var tasksToCreateActivitiesForCombined = tasksWithNoActivitiesInFuture
+                .Union(latestActivitiesTimePerTask);
+
+            foreach (var activity in tasksToCreateActivitiesForCombined)
+            {
+                await AddActivitiesFromTaskAsync(activity.PlantTask, activity.Time);
+            }
         }
 
         /// <summary>
@@ -363,5 +405,18 @@ namespace PlantAlarm.Services
     public class PlantActivityServiceException : Exception
     {
         public PlantActivityServiceException(string message) : base(message) { }
+    }
+
+    public class PlantTaskEqualityComparer : EqualityComparer<PlantTask>
+    {
+        public override bool Equals(PlantTask x, PlantTask y)
+        {
+            return x.Id == y.Id;
+        }
+
+        public override int GetHashCode(PlantTask obj)
+        {
+            return obj.Id.GetHashCode();
+        }
     }
 }
