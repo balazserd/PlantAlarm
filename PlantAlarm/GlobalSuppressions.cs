@@ -4,3 +4,4 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0133:Parameter name differs in base declaration", Justification = "<Pending>", Scope = "member", Target = "~M:PlantAlarm.Behaviors.FadingBehavior.OnAttachedTo(Xamarin.Forms.VisualElement)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Potential Code Quality Issues", "RECS0165:Asynchronous methods should return a Task instead of void", Justification = "<Pending>", Scope = "member", Target = "~M:PlantAlarm.ViewModels.SettingsViewModel.#ctor(Xamarin.Forms.Page)")]

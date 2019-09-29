@@ -38,13 +38,20 @@ namespace PlantAlarm.ViewModels
         public Color CategoriesTextColor
         {
             get => categories == null || categories.Count == 0 ?
-                Color.Gray :
-                Color.Default;
+                Color.FromHex("#D3E5B7") :
+                Color.White;
         }
 
         public bool HasPhoto
         {
             get => PhotoToAdd != null;
+        }
+
+        public string PhotoOptionsText
+        {
+            get => PhotoToAdd == null ?
+                "Upload / Take" :
+                "Change / Delete";
         }
 
         private List<PlantCategory> categories { get; set; }
@@ -70,6 +77,7 @@ namespace PlantAlarm.ViewModels
             {
                 photoToAdd = value;
                 OnPropertyChanged(nameof(HasPhoto));
+                OnPropertyChanged(nameof(PhotoOptionsText));
                 OnPropertyChanged();
             }
         }
@@ -93,35 +101,35 @@ namespace PlantAlarm.ViewModels
             });
             AddPhotoCommand = new Command(async () =>
             {
-                var image = await GetNewPhoto();
-                if (image == null) return;
-
-                //Save the created image to the local folder. Must be done, or it can be removed by the user from their public picture folder.
-                var photoName = Guid.NewGuid().ToString().Replace("-", "");
-
-                await image
-                .GetStreamWithImageRotatedForExternalStorage()
-                .CopyToAsync(
-                    File.Create(
-                        PlantService.AppendLocalAppDataFolderToPhotoName(photoName)));
-
-                //Goes to backing store.
-                var plantPhoto_noFullUrl = new PlantPhoto
+                if (PhotoToAdd != null)
                 {
-                    IsPrimary = false,
-                    TakenAt = DateTime.Now,
-                    Url = photoName
-                };
-                _truncatedUrlPlantPhoto = plantPhoto_noFullUrl;
-
-                //Goes to full item.
-                var plantPhoto_fullUrl = new PlantPhoto
+                    ShowPhotoOptionsCommand.Execute(null);
+                }
+                else
                 {
-                    IsPrimary = false,
-                    TakenAt = DateTime.Now,
-                    Url = PlantService.AppendLocalAppDataFolderToPhotoName(photoName)
-                };
-                PhotoToAdd = plantPhoto_fullUrl;
+                    var image = await viewForViewModel.GetNewPhoto();
+                    if (image == null) return;
+
+                    var photoName = await MediaService.SavePhotoToLocalFolder(image);
+
+                    //Goes to backing store.
+                    var plantPhoto_noFullUrl = new PlantPhoto
+                    {
+                        IsPrimary = false,
+                        TakenAt = DateTime.Now,
+                        Url = photoName
+                    };
+                    _truncatedUrlPlantPhoto = plantPhoto_noFullUrl;
+
+                    //Goes to full item.
+                    var plantPhoto_fullUrl = new PlantPhoto
+                    {
+                        IsPrimary = false,
+                        TakenAt = DateTime.Now,
+                        Url = MediaService.AppendLocalAppDataFolderToPhotoName(photoName)
+                    };
+                    PhotoToAdd = plantPhoto_fullUrl;
+                }
             });
             ShowPhotoOptionsCommand = new Command(async () =>
             {
@@ -152,7 +160,7 @@ namespace PlantAlarm.ViewModels
             });
             ChangePhotoCommand = new Command(async (pp) =>
             {
-                var image = await GetNewPhoto();
+                var image = await View.GetNewPhoto();
                 if (image == null) return;
 
                 var plantPhoto = pp as PlantPhoto;
@@ -186,45 +194,6 @@ namespace PlantAlarm.ViewModels
             {
                 Categories = categoryList;
             });
-        }
-
-        private async Task<MediaFile> GetNewPhoto()
-        {
-            //Create the actions for the add photo dialog.
-            var actions = new List<string>();
-
-            if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported) actions.Add("Take photo");
-            if (CrossMedia.Current.IsPickPhotoSupported) actions.Add("Pick from device");
-
-            string actionToTake = await View.DisplayActionSheet("Select an option", "Back", null, actions.ToArray());
-
-            MediaFile image;
-            switch (actionToTake)
-            {
-                case "Take photo":
-                    {
-                        image = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
-                        {
-                            PhotoSize = PhotoSize.Medium,
-                            CompressionQuality = 75,
-                            SaveToAlbum = true
-                        });
-                        break;
-                    }
-                case "Pick from device":
-                    {
-                        image = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
-                        {
-                            PhotoSize = PhotoSize.Medium,
-                            CompressionQuality = 75,
-                        });
-                        break;
-                    }
-                case "Back": return null;
-                default: throw new InvalidOperationException("Unknown action chosen in ActionSheet.");
-            }
-
-            return image;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

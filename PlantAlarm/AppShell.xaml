@@ -3,18 +3,18 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
        x:Class="PlantAlarm.AppShell"
        xmlns:pages="clr-namespace:PlantAlarm.Views">
-    <TabBar Shell.TabBarTitleColor="#FFFFFF" Shell.TabBarUnselectedColor="#88FFFFFF">
-        <Tab Title="Today" Shell.TabBarBackgroundColor="#73B5DD" Icon="TodayPageIcon.png" >
+    <TabBar>
+        <Tab Title="Today" Icon="TodayPageIcon.png" >
             <ShellContent ContentTemplate="{DataTemplate pages:TodayPage}" />
         </Tab>
-        <Tab Title="Garden" Shell.TabBarBackgroundColor="#37C72A" Icon="GardenPageIcon.png">
+        <Tab Title="Garden" Icon="GardenPageIcon.png">
             <ShellContent Title="Plants" ContentTemplate="{DataTemplate pages:PlantsPage}" />
 <!--            <ShellContent Title="Accessories" ContentTemplate="{DataTemplate pages:AccessoriesPage}" />-->
         </Tab>
-        <Tab Title="Tasks" Shell.TabBarBackgroundColor="#FDA600" Icon="ActivitiesPageIcon.png">
+        <Tab Title="Tasks" Icon="ActivitiesPageIcon.png">
             <ShellContent ContentTemplate="{DataTemplate pages:TasksPage}" />
         </Tab>
-        <Tab Title="Settings" Shell.TabBarBackgroundColor="#E33942" Icon="SettingsPageIcon.png" >
+        <Tab Title="Settings" Icon="SettingsPageIcon.png" >
             <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
         </Tab>
     </TabBar>

@@ -13,18 +13,23 @@ namespace PlantAlarm.Services
 {
     //This is the service that should be called instead of DependencyService.Get<INotificationServiceProvider>().
     public static class NotificationService
-    {
+    { 
         private static readonly INotificationServiceProvider platformNotiSvc = DependencyService.Get<INotificationServiceProvider>();
 
         /// <summary>
         /// The key which stores in the App Properties dictionary whether notifications are enabled.
         /// </summary>
-        public static string NotificationsEnabledKey = "AreNotificationsEnabled";
+        public static string kNotificationsEnabled = "AreNotificationsEnabled";
 
         /// <summary>
         /// The key which stores in the App Properties dictionary the time at which notifications are shown during the day.
         /// </summary>
-        public static string NotificationTimeKey = "NotificationTime";
+        public static string kNotificationTime = "NotificationTime";
+
+        /// <summary>
+        /// The key which stores in the App Properties dictionary whether forgotten tasks should be carried over.
+        /// </summary>
+        public static string kIsCarryingForgottenTasksForward = "IsCarryingForgottenTasksForward";
 
         public static async Task AddDailyNotifications(TimeSpan? timeOfDay = null)
         {

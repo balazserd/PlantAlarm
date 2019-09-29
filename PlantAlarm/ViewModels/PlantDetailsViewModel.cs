@@ -16,6 +16,7 @@ namespace PlantAlarm.ViewModels
     public class PlantDetailsViewModel : INotifyPropertyChanged
     {
         private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
+        private readonly Page View;
 
         private Plant plant { get; set; }
         public Plant Plant
@@ -51,13 +52,35 @@ namespace PlantAlarm.ViewModels
         }
 
         public ICommand OpenPhotoCarouselCommand { get; private set; }
+        public ICommand AddNewPhotoCommand { get; private set; }
 
-        public PlantDetailsViewModel(Plant plant)
+        public PlantDetailsViewModel(Plant plant, Page view)
         {
+            View = view;
+
             OpenPhotoCarouselCommand = new Command(async (_tappedPhoto) =>
             {
                 var tappedPhoto = _tappedPhoto as PlantPhoto;
                 await NavigationStack.PushAsync(new PlantDetailsPhotosPage(this.plant, tappedPhoto));
+            });
+            AddNewPhotoCommand = new Command(async () =>
+            {
+                var newPhoto = await View.GetNewPhoto();
+                if (newPhoto == null) return; //User cancelled.
+
+                var photoName = await MediaService.SavePhotoToLocalFolder(newPhoto);
+
+                var newPlantPhoto = new PlantPhoto
+                {
+                    IsPrimary = false,
+                    PlantFk = Plant.Id,
+                    TakenAt = DateTime.Now,
+                    Url = photoName
+                };
+                await PlantService.AddPlantPhotoAsync(newPlantPhoto); //Id gets populated here.
+                newPlantPhoto.Url = MediaService.AppendLocalAppDataFolderToPhotoName(newPlantPhoto.Url); //Url modified to be absolute.
+
+                PhotoViewModels.Add(new ProgressPhotoViewModel(newPlantPhoto, OpenPhotoCarouselCommand));
             });
 
             this.Plant = plant;

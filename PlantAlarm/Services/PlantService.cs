@@ -13,9 +13,6 @@ namespace PlantAlarm.Services
         private static readonly SQLiteAsyncConnection asyncDb = App.LocalDbConnection.AsyncDb;
         private static readonly SQLiteConnection Db = App.LocalDbConnection.Db;
 
-        public readonly static string LocalPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantPhotos");
-        public static string AppendLocalAppDataFolderToPhotoName(string photoName) => Path.Combine(LocalPhotoFolder, photoName);
-
         public static async Task AddPlantAsync(Plant newPlant)
         {
             await asyncDb.InsertAsync(newPlant);
@@ -80,7 +77,7 @@ namespace PlantAlarm.Services
             photoList = photoList
                 .Select(photo =>
                 {
-                    photo.Url = AppendLocalAppDataFolderToPhotoName(photo.Url);
+                    photo.Url = MediaService.AppendLocalAppDataFolderToPhotoName(photo.Url);
                     return photo;
                 })
                 .ToList();
@@ -145,7 +142,7 @@ namespace PlantAlarm.Services
             var urlCorrectedPhotos = plantPhotoList
                 .Select(photo =>
                 {
-                    photo.Url = AppendLocalAppDataFolderToPhotoName(photo.Url);
+                    photo.Url = MediaService.AppendLocalAppDataFolderToPhotoName(photo.Url);
                     return photo;
                 });
 

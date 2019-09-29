@@ -13,10 +13,12 @@ namespace PlantAlarm.iOS.Effects
     {
         protected override void OnAttached()
         {
+            UIView view = this.Control ?? this.Container;
+
             var effect = (PclRoundedEffect)Element.Effects.FirstOrDefault(e => e is PclRoundedEffect);
-            Control.Layer.CornerRadius = Math.Abs(effect.Radius) > 0.01 ? effect.Radius : Control.Layer.Frame.Width / 2;
-            Control.Layer.MasksToBounds = false;
-            Control.ClipsToBounds = true;
+            view.Layer.CornerRadius = Math.Abs(effect.Radius) > 0.01 ? effect.Radius : view.Layer.Frame.Width / 2;
+            view.Layer.MasksToBounds = false;
+            view.ClipsToBounds = true;
         }
 
         protected override void OnDetached()

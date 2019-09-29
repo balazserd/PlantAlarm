@@ -10,64 +10,81 @@
         <ToolbarItem Text="Add" Command="{Binding AddPlantCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Margin="15">
-            <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" />
-            <BoxView HeightRequest="1" Color="Black" Margin="-5,0,-5,5" />
-            <Grid HeightRequest="30">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="8*" />
-                </Grid.ColumnDefinitions>
-                <Label Text="Name" VerticalOptions="Center" FontAttributes="Bold"/>
-                <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End"
-                        Text="{Binding PlantName}" FontAttributes="Italic">
-                    <Entry.Effects>
-                        <customEffects:BorderlessEffect />
-                    </Entry.Effects>
-                </Entry>
-            </Grid>
-            <BoxView HeightRequest="1" Color="LightGray"/>
-            <Grid HeightRequest="30">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ShowCategorySelectorPageCommand}" />
-                </Grid.GestureRecognizers>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="8*" />
-                </Grid.ColumnDefinitions>
-                <Label Text="Categories" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold"/>
-                <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center" 
-                       Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
-                       HorizontalOptions="End" TextColor="{Binding CategoriesTextColor}"/>
-            </Grid>
-            <Label Text="Picture" FontSize="22" FontAttributes="Bold"
-                    VerticalOptions="Center" Margin="0,20,0,0" />
-            <BoxView HeightRequest="1" Margin="-5,0,-5,0" Color="Black" />
-            <Label Text="You will be able to add more pictures later to track your progress." TextColor="Gray" FontAttributes="Italic"
-                   Margin="0,5,0,5" FontSize="11" />
-            <customControls:SquaredImageContainerStack HorizontalOptions="FillAndExpand">
-                <Grid>
-                    <ImageButton Source="AddButtonGreen.png" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"
-                                 Command="{Binding AddPhotoCommand}" />
-                    <StackLayout IsVisible="{Binding HasPhoto}">
-                        <customControls:SquaredImage Source="{Binding PhotoToAdd.Url}" HorizontalOptions="FillAndExpand"
-                                                     Aspect="AspectFill">
-                            <customControls:SquaredImage.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowPhotoOptionsCommand}" />
-                            </customControls:SquaredImage.GestureRecognizers>
-                            <customControls:SquaredImage.Effects>
-                                <customEffects:RoundedCornerEffect Radius="7" />
-                            </customControls:SquaredImage.Effects>
-                        </customControls:SquaredImage>
-                        <Label Text="You can change the photo by tapping it." TextColor="Gray" FontAttributes="Italic"
-                               Margin="0,5,0,5" FontSize="11" />
+        <StackLayout Margin="10">
 
-                        <StackLayout.Behaviors>
-                            <customBehaviors:FadingBehavior />
-                        </StackLayout.Behaviors>
-                    </StackLayout>
+            <StackLayout BackgroundColor="#9CC45D" Padding="8">
+                <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,5" />
+                <Grid HeightRequest="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Name" VerticalOptions="Center" FontAttributes="Bold" TextColor="White"/>
+                    <Entry HorizontalOptions="Fill" Grid.Column="1" HorizontalTextAlignment="End" TextColor="White"
+                           Text="{Binding PlantName}" FontAttributes="Italic" BackgroundColor="Transparent">
+                        <Entry.Effects>
+                            <customEffects:BorderlessEffect />
+                        </Entry.Effects>
+                    </Entry>
                 </Grid>
-            </customControls:SquaredImageContainerStack>
+                <BoxView HeightRequest="1" Color="#BDD893"/>
+                <Grid HeightRequest="30">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowCategorySelectorPageCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Categories" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold" TextColor="White"/>
+                    <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center"
+                           Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
+                           HorizontalOptions="End" TextColor="{Binding CategoriesTextColor}"/>
+                </Grid>
+
+                <StackLayout.Effects>
+                    <customEffects:RoundedCornerEffect Radius="8" />
+                </StackLayout.Effects>
+            </StackLayout>
+
+            <StackLayout BackgroundColor="#7AA835" Padding="8">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Picture" FontSize="22" FontAttributes="Bold" TextColor="White"
+                       VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                    <Button Text="{Binding PhotoOptionsText}" Command="{Binding AddPhotoCommand}" HorizontalOptions="End" FontSize="13" FontAttributes="Bold" VerticalOptions="Center"
+                            TextColor="#4A6520" BackgroundColor="#C8DEA5" BorderRadius="5" Padding="5,0,5,0" HeightRequest="25"/>
+                </StackLayout>
+                <BoxView HeightRequest="1" Margin="-3,0,-3,0" Color="White" />
+                <Label Text="You can add more pictures later to track progress." TextColor="#BDD893" FontAttributes="Italic"
+                       Margin="0,5,0,5" FontSize="11" LineBreakMode="WordWrap" />
+                <customControls:SquaredImageContainerStack HorizontalOptions="FillAndExpand">
+                    <Grid>
+                        <StackLayout IsVisible="{Binding HasPhoto}">
+                            <customControls:SquaredImage Source="{Binding PhotoToAdd.Url}" HorizontalOptions="FillAndExpand"
+                                                         Aspect="AspectFill">
+                                <customControls:SquaredImage.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowPhotoOptionsCommand}" />
+                                </customControls:SquaredImage.GestureRecognizers>
+                                <customControls:SquaredImage.Effects>
+                                    <customEffects:RoundedCornerEffect Radius="7" />
+                                    <customEffects:BorderEffect Color="White" Thickness="2" />
+                                </customControls:SquaredImage.Effects>
+                            </customControls:SquaredImage>
+
+                            <StackLayout.Behaviors>
+                                <customBehaviors:FadingBehavior />
+                            </StackLayout.Behaviors>
+                        </StackLayout>
+                    </Grid>
+                </customControls:SquaredImageContainerStack>
+
+                
+                <StackLayout.Effects>
+                    <customEffects:RoundedCornerEffect Radius="8" />
+                </StackLayout.Effects>
+            </StackLayout>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

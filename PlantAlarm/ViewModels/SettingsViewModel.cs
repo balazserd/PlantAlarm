@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace PlantAlarm.ViewModels
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public sealed class SettingsViewModel : INotifyPropertyChanged
     {
         private bool isInTheProcessOfShowingExplanationAlert = false;
         private readonly Page view;
@@ -22,9 +22,9 @@ namespace PlantAlarm.ViewModels
                 if (value != notificationTime)
                 {
                     notificationTime = value;
-                    Application.Current.Properties[NotificationService.NotificationTimeKey] = value.ToString();
+                    Application.Current.Properties[NotificationService.kNotificationTime] = value.ToString();
 
-                    bool.TryParse(Application.Current.Properties[NotificationService.NotificationsEnabledKey].ToString(), out bool notiAllowed);
+                    bool.TryParse(Application.Current.Properties[NotificationService.kNotificationsEnabled].ToString(), out bool notiAllowed);
                     if (notiAllowed)
                     {
                         _ = NotificationService.AddDailyNotifications(notificationTime);
@@ -33,15 +33,9 @@ namespace PlantAlarm.ViewModels
             }
         }
 
-        private double reminderLinesOpacity { get; set; }
         public double ReminderLinesOpacity
         {
-            get => reminderLinesOpacity;
-            set
-            {
-                reminderLinesOpacity = value;
-                OnPropertyChanged();
-            }
+            get => AreNotificationsEnabled ? 1.0 : 0.5;
         }
 
         private bool areNotificationsEnabled { get; set; }
@@ -51,14 +45,13 @@ namespace PlantAlarm.ViewModels
             set
             {
                 areNotificationsEnabled = value;
-                ReminderLinesOpacity = value ? 1.0 : 0.5;
 
                 if (!isInTheProcessOfShowingExplanationAlert)
                 {
                     HandleFakePermissionSwitchChange();
                 }
 
-                Application.Current.Properties[NotificationService.NotificationsEnabledKey] = value.ToString();
+                Application.Current.Properties[NotificationService.kNotificationsEnabled] = value.ToString();
                 if (value)
                 {
                     _ = NotificationService.AddDailyNotifications();
@@ -67,6 +60,20 @@ namespace PlantAlarm.ViewModels
                 {
                     _ = NotificationService.RemoveDailyNotifications();
                 }
+
+                OnPropertyChanged(nameof(ReminderLinesOpacity));
+                OnPropertyChanged();
+            }
+        }
+
+        private bool isCarryingForgottenTasksForward { get; set; }
+        public bool IsCarryingForgottenTasksForward
+        {
+            get => isCarryingForgottenTasksForward;
+            set
+            {
+                isCarryingForgottenTasksForward = value;
+                Application.Current.Properties[NotificationService.kIsCarryingForgottenTasksForward] = value.ToString();
 
                 OnPropertyChanged();
             }
@@ -79,8 +86,9 @@ namespace PlantAlarm.ViewModels
         {
             view = page;
             areNotificationsEnabled = NotificationService.AreNotificationsEnabled() == NotificationPermissionState.Allowed;
+            OnPropertyChanged(nameof(ReminderLinesOpacity));
             
-            if (Application.Current.Properties.TryGetValue(NotificationService.NotificationTimeKey, out object notiTimeAsObject))
+            if (Application.Current.Properties.TryGetValue(NotificationService.kNotificationTime, out object notiTimeAsObject))
             {
                 if (TimeSpan.TryParse(notiTimeAsObject.ToString(), out TimeSpan timeOfNotification))
                 {
@@ -92,14 +100,20 @@ namespace PlantAlarm.ViewModels
                 notificationTime = TimeSpan.FromHours(8);
             }
 
-            ShowCarryForwardExplanation = new Command(() =>
+            ShowCarryForwardExplanation = new Command(async () =>
             {
-                //TODO implement explanation
+                await view.DisplayAlert(
+                    "Carry-forwarding Tasks",
+                    "When you miss a task, the next time you log in, it will be carried over to that day's tasks (if that given day hasn't already got a task like that).",
+                    "OK");
             });
 
-            ShowReminderPresentationTimeExplanation = new Command(() =>
+            ShowReminderPresentationTimeExplanation = new Command(async () =>
             {
-                //TODO implement explanation
+                await view.DisplayAlert(
+                    "Reminder time",
+                    "You will receive a push notification at this time of the day if you have tasks to complete.",
+                    "OK");
             });
         }
 
@@ -131,7 +145,7 @@ namespace PlantAlarm.ViewModels
 
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

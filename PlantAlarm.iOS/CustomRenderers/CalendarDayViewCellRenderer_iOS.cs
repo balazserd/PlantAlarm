@@ -21,7 +21,7 @@ namespace PlantAlarm.iOS.CustomRenderers
             backgroundView.Layer.BackgroundColor = UIColor.Clear.CGColor;
 
             backgroundView.Layer.CornerRadius = 5;
-            backgroundView.Layer.BorderColor = UIColor.FromRGB(92, 144, 176).CGColor;
+            backgroundView.Layer.BorderColor = Color.FromHex("#ff5852").ToCGColor();
             backgroundView.Layer.BorderWidth = 2;
 
             cell.SelectedBackgroundView = backgroundView;

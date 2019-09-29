@@ -16,7 +16,7 @@ namespace PlantAlarm.Views
         {
             InitializeComponent();
 
-            this.BindingContext = new PlantDetailsViewModel(plant);
+            this.BindingContext = new PlantDetailsViewModel(plant, this);
             vm = this.BindingContext as PlantDetailsViewModel;
         }
     }

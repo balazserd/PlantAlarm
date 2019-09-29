@@ -13,9 +13,11 @@ namespace PlantAlarm.iOS.Effects
     {
         protected override void OnAttached()
         {
+            UIView view = this.Control ?? this.Container;
+
             var effect = (PclBorderEffect)Element.Effects.FirstOrDefault(e => e is PclBorderEffect);
-            Control.Layer.BorderWidth = effect.Thickness;
-            Control.Layer.BorderColor = UIColor.Black.CGColor;
+            view.Layer.BorderWidth = effect.Thickness;
+            view.Layer.BorderColor = effect.Color.ToCGColor();
         }
 
         protected override void OnDetached()

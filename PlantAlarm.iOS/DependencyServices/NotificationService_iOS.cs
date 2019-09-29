@@ -74,10 +74,16 @@ namespace PlantAlarm.iOS.DependencyServices
 
             switch (settings.AuthorizationStatus)
             {
-                case UNAuthorizationStatus.Authorized: return NotificationPermissionState.Allowed;
-                case UNAuthorizationStatus.Denied: return NotificationPermissionState.Denied;
+                case UNAuthorizationStatus.Authorized:
+                    return NotificationPermissionState.Allowed;
+
+                case UNAuthorizationStatus.Denied:
+                    return NotificationPermissionState.Denied;
+
                 case UNAuthorizationStatus.NotDetermined: 
-                case UNAuthorizationStatus.Provisional: return NotificationPermissionState.Unknown;
+                case UNAuthorizationStatus.Provisional:
+                    return NotificationPermissionState.Unknown;
+
                 default: throw new IndexOutOfRangeException("Unrecognized Notification Permission state.");
             }
         }

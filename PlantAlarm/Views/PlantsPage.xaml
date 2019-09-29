@@ -2,35 +2,72 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="PlantAlarm.Views.PlantsPage"
-             xmlns:controls="clr-namespace:PlantAlarm.CustomControls"
+             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+             xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
              Title="Garden">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="New item" Command="{Binding ShowNewPlantPageCommand}" Order="Primary"/>
+        <ToolbarItem Text="New Plant" Command="{Binding ShowNewPlantPageCommand}" Order="Primary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding PlantItems}" VerticalOptions="FillAndExpand">
+            <CollectionView ItemsSource="{Binding PlantItems}" VerticalOptions="FillAndExpand" Margin="15,5" VerticalScrollBarVisibility="Never">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowPlantDetailsPageCommand}" />
-                            </StackLayout.GestureRecognizers>
+                        <StackLayout BackgroundColor="#D5F0E6">
+                            <StackLayout>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowPlantDetailsPageCommand}" />
+                                </StackLayout.GestureRecognizers>
 
-                            <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" 
-                                        VerticalOptions="Start" Margin="10,0,0,0" />
-                            <StackLayout Orientation="Horizontal" Margin="10,0">
-                                <Image WidthRequest="70" HeightRequest="70" Source="{Binding MainPhoto.Url}"  
-                                        Aspect="AspectFill" VerticalOptions="Center" />
-                                <StackLayout HorizontalOptions="FillAndExpand">
-                                    <Label Text="{Binding Plant.Name}" FontSize="17" />
+                                <StackLayout Orientation="Horizontal">
+                                    <Image WidthRequest="100" HeightRequest="100" Source="{Binding MainPhoto.Url}" Aspect="AspectFill" VerticalOptions="Center" Margin="2,0,-3,0">
+                                        <Image.Effects>
+                                            <customEffects:RoundedCornerEffect Radius="5"/>
+                                        </Image.Effects>
+                                    </Image>
+                                    <StackLayout HorizontalOptions="FillAndExpand" Padding="8">
+                                        <StackLayout Orientation="Horizontal" Margin="0,0,0,-3">
+                                            <Label Text="{Binding Plant.Name}" FontSize="16" FontAttributes="Bold" HorizontalOptions="StartAndExpand"
+                                                   VerticalOptions="End"/>
+                                            <Button Text="Track" BackgroundColor="#1CAD7A" TextColor="White" CornerRadius="5" Command="{Binding TakeProgressPictureCommand}"
+                                                    Padding="5,0,5,0" HeightRequest="22" FontSize="12" FontAttributes="Bold" VerticalOptions="Center"
+                                                    Margin="0,-2,0,0"/>
+                                        </StackLayout>
+                                        <BoxView HeightRequest="0.5" Color="Black" />
+                                        <StackLayout Margin="2,0,0,0" VerticalOptions="FillAndExpand">
+                                              
+                                            <StackLayout Orientation="Horizontal" IsVisible="{Binding HasMissedTasks}">
+                                                <Image Source="AlertRed.png" HeightRequest="16" VerticalOptions="Center" />
+                                                <Label Text="Missed tasks!" FontSize="12" VerticalOptions="Center"/>
+                                            </StackLayout>
+
+                                            <StackLayout Orientation="Horizontal" IsVisible="{Binding HasTasksDueToday}">
+                                                <Image Source="WarningYellow.png" HeightRequest="16" VerticalOptions="Center" />
+                                                <Label Text="Tasks are due today!" FontSize="12" VerticalOptions="Center"/>
+                                            </StackLayout>
+
+                                            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsOnStreak}">
+                                                <Image Source="TickGreen.png" HeightRequest="16" VerticalOptions="Center" />
+                                                <Label Text="Streak: 71 days" FontSize="12" VerticalOptions="Center"/>
+                                            </StackLayout>
+
+                                        </StackLayout>
+                                    </StackLayout>
                                 </StackLayout>
                             </StackLayout>
-                            <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Silver" Opacity="0.7"
-                                        VerticalOptions="End" Margin="10,0,0,0" />
+
+                            <StackLayout.Effects>
+                                <customEffects:RoundedCornerEffect Radius="8" />
+                                <!--<customEffects:BorderEffect Color="#59C39E" Thickness="0.5" />-->
+                            </StackLayout.Effects>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
             </CollectionView>
         </StackLayout>
     </ContentPage.Content>
