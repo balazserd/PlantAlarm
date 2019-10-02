@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<rootpages:RootPage  xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
+                     xmlns="http://xamarin.com/schemas/2014/forms" 
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     x:Class="PlantAlarm.Views.RootPages.TasksPage"
+                     xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+                     xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+                     xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
+                     Title="Tasks">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New Task" Command="{Binding ShowNewTaskPageCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <customControls:GradientStackLayout VerticalOptions="Fill" HorizontalOptions="Fill"
+                                            GradientDirection="ToTopRight" GradientFromColor="Red" GradientToColor="Blue">
+            <!--<CollectionView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                                
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>-->
+        </customControls:GradientStackLayout>
+    </ContentPage.Content>
+</rootpages:RootPage>

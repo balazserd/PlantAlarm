@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="PlantAlarm.Views.SettingsPage"
-             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
-             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
-             xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
-             Title="Settings">
+<rootpages:RootPage  xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
+                     xmlns="http://xamarin.com/schemas/2014/forms" 
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                     x:Class="PlantAlarm.Views.RootPages.SettingsPage"
+                     xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+                     xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+                     xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
+                     Title="Settings">
     <ContentPage.Content>
         <ScrollView>
             <TableView Intent="Form" HasUnevenRows="true">
@@ -33,13 +34,22 @@
                         </StackLayout>
                     </ViewCell>
                 </TableSection>
-                <TableSection Title="Tasks">
+                <TableSection>
                     <ViewCell Height="44">
                         <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
                             <Label Text="Carry-forward forgotten tasks" VerticalOptions="Center" />
                             <ImageButton Command="{Binding ShowCarryForwardExplanation}" Source="QuestionIcon.png"
                                          Scale=".7" VerticalOptions="Center" Margin="5,0,0,0" />
                             <Switch IsToggled="{Binding IsCarryingForgottenTasksForward, Mode=TwoWay}" VerticalOptions="Center"
+                                    Scale=".9" HorizontalOptions="EndAndExpand" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                <TableSection>
+                    <ViewCell Height="44">
+                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                            <Label Text="Save taken photos to Camera Roll" VerticalOptions="Center" />
+                            <Switch IsToggled="{Binding IsSavingPhotosToCameraRoll, Mode=TwoWay}" VerticalOptions="Center"
                                     Scale=".9" HorizontalOptions="EndAndExpand" />
                         </StackLayout>
                     </ViewCell>
@@ -65,4 +75,4 @@
             </TableView>
         </ScrollView>
     </ContentPage.Content>
-</ContentPage>
+</rootpages:RootPage>

@@ -30,6 +30,7 @@
     <Folder Include="Helpers\" />
     <Folder Include="Behaviors\" />
     <Folder Include="Enums\" />
+    <Folder Include="Views\RootPages\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Services\NotificationService\Notification.cs" />

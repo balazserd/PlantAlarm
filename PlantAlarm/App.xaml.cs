@@ -27,9 +27,11 @@ namespace PlantAlarm
             //Create missing activities
             _ = PlantActivityService.CreateAllMissingActivitiesForNext60Days();
 
-            Application.Current.Properties.TryGetValue(NotificationService.kNotificationTime, out object sNotiTime);
-            TimeSpan? notiTime = TimeSpan.TryParse(sNotiTime.ToString(), out TimeSpan _notiTime) ? _notiTime : (TimeSpan?)null;
-            _ = NotificationService.AddDailyNotifications(notiTime);
+            if (Application.Current.Properties.TryGetValue(NotificationService.kNotificationTime, out object sNotiTime))
+            {
+                TimeSpan? notiTime = TimeSpan.TryParse(sNotiTime.ToString(), out TimeSpan _notiTime) ? _notiTime : (TimeSpan?)null;
+                _ = NotificationService.AddDailyNotifications(notiTime);
+            }
 
             MainPage = new AppShell();
         }

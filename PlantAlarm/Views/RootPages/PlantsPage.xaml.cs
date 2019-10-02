@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using PlantAlarm.ViewModels;
 using Xamarin.Forms;
 
-namespace PlantAlarm.Views
+namespace PlantAlarm.Views.RootPages
 {
-    public partial class PlantsPage : ContentPage
+    public partial class PlantsPage : RootPage
     {
         public PlantsPage()
         {

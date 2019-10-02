@@ -8,103 +8,134 @@
              Title="{Binding Plant.Name}">
     <ContentPage.Content>
         <ScrollView BackgroundColor="#EAF7F2">
-            <StackLayout Padding="10">
+            <StackLayout Padding="10,0,10,10">
+                <!--TOOLBAR-->
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Margin="-10,0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" HeightRequest="35" Margin="0,0,0,15" Padding="11,2">
 
-                <StackLayout BackgroundColor="#21D395" Padding="8,8,8,0">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Progress Pictures" FontAttributes="Bold" FontSize="22" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
-                               TextColor="White"/>
-                        <Button Text="Add" Command="{Binding AddNewPhotoCommand}" HorizontalOptions="End" FontSize="13" FontAttributes="Bold" VerticalOptions="Center"
-                                TextColor="White" BackgroundColor="#199A6D" BorderRadius="5" Padding="5,0,5,0" HeightRequest="25"/>
-                    </StackLayout>
-                    <BoxView Color="White" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="-3,0,-3,0"/>
-                    <CollectionView ItemsSource="{Binding PhotoViewModels}" VerticalOptions="Start" Margin="0,5,0,0"
-                                    ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="118">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout Padding="0,0,5,0">
-                                    <Image HeightRequest="90" WidthRequest="90" Aspect="AspectFill" Source="{Binding Photo.Url}">
-                                        <Image.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                            <customEffects:BorderEffect Thickness="1.5" Color="White" />
-                                        </Image.Effects>
-                                        <Image.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding TappedCommand}" CommandParameter="{Binding Photo}" />
-                                        </Image.GestureRecognizers>
-                                    </Image>
-                                    <Label Text="{Binding Photo.TakenAt, StringFormat='{0:MMM dd}'}" FontSize="12" TextColor="#EAF7F2" FontAttributes="Italic"
-                                           HorizontalOptions="Center" Margin="0,-2,0,0"/>
-                                </StackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-
-                    <StackLayout.Effects>
-                        <customEffects:RoundedCornerEffect Radius="8" />
-                    </StackLayout.Effects>
-                </StackLayout>
-
-                <StackLayout Margin="0,0,0,0" BackgroundColor="#199A6D" Padding="8">
-                    <Label Text="Upcoming tasks" FontAttributes="Bold" FontSize="22" VerticalOptions="Start" TextColor="White"/>
-                    <BoxView Color="White" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="-3,0,-3,2"/>
-                    <CollectionView ItemsSource="{Binding UpcomingActivities}" VerticalOptions="Start" HeightRequest="275" VerticalScrollBarVisibility="Never"
-                                    x:Name="UpcomingTasksColView">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="7" />
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout>
-                                    <Grid HeightRequest="42" VerticalOptions="StartAndExpand">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="3*" />
-                                            <ColumnDefinition Width="2*" />
-                                        </Grid.ColumnDefinitions>
-                                        <StackLayout Grid.Column="0">
-                                            <Label Text="{Binding PlantTask.Name}" FontSize="15" LineBreakMode="TailTruncation" TextColor="White"/>
-                                            <Label Text="{Binding PlantActivityItem.Time, StringFormat='{0:MMM dd}'}" FontSize="13"
-                                                   FontAttributes="Italic" TextColor="#71E3BB"/>
-                                        </StackLayout>
-                                        <CollectionView ItemsSource="{Binding PrimaryPhotoOfPlantsInTask}" VerticalOptions="FillAndExpand" Grid.Column="1"
-                                                        HeightRequest="42">
-                                            <CollectionView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackLayout WidthRequest="40" HeightRequest="40" VerticalOptions="Center">
-                                                        <customControls:SquaredImage Source="{Binding Url}" Margin="0,0,0,0" HeightRequest="30" BackgroundColor="Green"
-                                                                                     VerticalOptions="Center" Aspect="AspectFill">
-                                                            <customControls:SquaredImage.Effects>
-                                                                <customEffects:RoundedCornerEffect Radius="20"/>
-                                                                <customEffects:BorderEffect Thickness="1.5" Color="White" />
-                                                            </customControls:SquaredImage.Effects>
-                                                        </customControls:SquaredImage>
-                                                    </StackLayout>
-                                                </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                            <CollectionView.ItemsLayout>
-                                                <LinearItemsLayout Orientation="Horizontal" />
-                                            </CollectionView.ItemsLayout>
-                                            <CollectionView.Effects>
-                                                <customEffects:OverlappingEffect Size="25"/>
-                                            </CollectionView.Effects>
-                                        </CollectionView>
-                                    </Grid>
-                                    <BoxView Color="#1CAD7A" HorizontalOptions="FillAndExpand" HeightRequest="1" />
-                                </StackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                        <CollectionView.EmptyView>
-                            <StackLayout>
-                                <Label Text="You haven't assigned any tasks to this plant yet." FontAttributes="Italic" FontSize="12"
-                                       TextColor="#AEEFD8" />
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <!--LEFT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                                <Button Text="← Back" FontSize="17" Command="{Binding BackCommand}" HorizontalOptions="Start" CornerRadius="4"
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
                             </StackLayout>
-                        </CollectionView.EmptyView>
-                    </CollectionView>
 
-                    <StackLayout.Effects>
-                        <customEffects:RoundedCornerEffect Radius="8" />
-                    </StackLayout.Effects>
-                </StackLayout>
+                            <!--MIDDLE PART-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="{Binding Plant.Name}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                            </StackLayout>
+
+                            <!--RIGHT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+
+                            </StackLayout>
+                        </Grid>
+                        
+                    </StackLayout>
+                </customControls:ShadowLayout>
+
+                <!--PAGE-->
+                <customControls:ShadowLayout OffsetY="2" ShadowRadius="8" ShadowOpacity="0.6" Padding="1,0,1,2">
+                    <customControls:GradientStackLayout GradientFromColor="#199A6D" GradientToColor="#21D395" GradientDirection="ToTopRight" Padding="8,8,8,0">
+
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Progress Pictures" FontAttributes="Bold" FontSize="22" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
+                                   TextColor="White"/>
+                            <Button Text="Add" Command="{Binding AddNewPhotoCommand}" HorizontalOptions="End" FontSize="13" FontAttributes="Bold" VerticalOptions="Center"
+                                    TextColor="White" BackgroundColor="#199A6D" BorderRadius="5" Padding="5,0,5,0" HeightRequest="25"/>
+                        </StackLayout>
+
+                        <BoxView Color="White" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="-3,0,-3,0"/>
+
+                        <CollectionView ItemsSource="{Binding PhotoViewModels}" VerticalOptions="Start" Margin="0,5,0,0"
+                                        ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="118">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Padding="0,0,5,0">
+                                        <Image HeightRequest="90" WidthRequest="90" Aspect="AspectFill" Source="{Binding Photo.Url}">
+                                            <Image.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                                <customEffects:BorderEffect Thickness="1.5" Color="White" />
+                                            </Image.Effects>
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding TappedCommand}" CommandParameter="{Binding Photo}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                        <Label Text="{Binding Photo.TakenAt, StringFormat='{0:MMM dd}'}" FontSize="12" TextColor="#EAF7F2" FontAttributes="Italic"
+                                               HorizontalOptions="Center" Margin="0,-2,0,0"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <StackLayout.Effects>
+                            <customEffects:RoundedCornerEffect Radius="8" />
+                        </StackLayout.Effects>
+                    </customControls:GradientStackLayout>
+                </customControls:ShadowLayout>
                 
+                <customControls:ShadowLayout OffsetY="2" ShadowRadius="8" ShadowOpacity="0.6" Padding="1,0,1,2">
+                    <customControls:GradientStackLayout Margin="0,5,0,0" GradientFromColor="#0F6044" GradientToColor="#199A6D" GradientDirection="ToTopRight" Padding="8">
+                        <Label Text="Upcoming tasks" FontAttributes="Bold" FontSize="22" VerticalOptions="Start" TextColor="White"/>
+                        <BoxView Color="White" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="-3,0,-3,2"/>
+                        <CollectionView ItemsSource="{Binding UpcomingActivities}" VerticalOptions="Start" HeightRequest="275" VerticalScrollBarVisibility="Never"
+                                        x:Name="UpcomingTasksColView">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="7" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout>
+                                        <Grid HeightRequest="42" VerticalOptions="StartAndExpand">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*" />
+                                                <ColumnDefinition Width="2*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout Grid.Column="0">
+                                                <Label Text="{Binding PlantTask.Name}" FontSize="15" LineBreakMode="TailTruncation" TextColor="White"/>
+                                                <Label Text="{Binding PlantActivityItem.Time, StringFormat='{0:MMM dd}'}" FontSize="13"
+                                                       FontAttributes="Italic" TextColor="#1EC088"/>
+                                            </StackLayout>
+                                            <CollectionView ItemsSource="{Binding PrimaryPhotoOfPlantsInTask}" VerticalOptions="FillAndExpand" Grid.Column="1"
+                                                            HeightRequest="42">
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout WidthRequest="40" HeightRequest="40" VerticalOptions="Center">
+                                                            <customControls:SquaredImage Source="{Binding Url}" Margin="0,0,0,0" HeightRequest="30" BackgroundColor="Green"
+                                                                                         VerticalOptions="Center" Aspect="AspectFill">
+                                                                <customControls:SquaredImage.Effects>
+                                                                    <customEffects:RoundedCornerEffect Radius="20"/>
+                                                                    <customEffects:BorderEffect Thickness="1.5" Color="White" />
+                                                                </customControls:SquaredImage.Effects>
+                                                            </customControls:SquaredImage>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                                <CollectionView.ItemsLayout>
+                                                    <LinearItemsLayout Orientation="Horizontal" />
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.Effects>
+                                                    <customEffects:OverlappingEffect Size="25"/>
+                                                </CollectionView.Effects>
+                                            </CollectionView>
+                                        </Grid>
+                                        <BoxView Color="#199A6D" HorizontalOptions="FillAndExpand" HeightRequest="1" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <StackLayout>
+                                    <Label Text="You haven't assigned any tasks to this plant yet." FontAttributes="Italic" FontSize="12"
+                                           TextColor="#AEEFD8" />
+                                </StackLayout>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+
+                        <StackLayout.Effects>
+                            <customEffects:RoundedCornerEffect Radius="8" />
+                        </StackLayout.Effects>
+                    </customControls:GradientStackLayout>
+                </customControls:ShadowLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

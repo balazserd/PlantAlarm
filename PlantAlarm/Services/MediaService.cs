@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using PlantAlarm.DependencyServices;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Xamarin.Forms;
@@ -17,8 +18,11 @@ namespace PlantAlarm.Services
 
     public static class MediaService
     {
+        public const string kIsSavingPhotosToPhotoLibrary = "kIsSavingPhotosToPhotoLibrary";
+
         public static string LocalPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantPhotos");
         public static string AppendLocalAppDataFolderToPhotoName(string photoName) => Path.Combine(LocalPhotoFolder, photoName);
+        public static IMediaManagementService MediaManagementService = DependencyService.Get<IMediaManagementService>();
 
         /// <summary>
         /// Saves a photo to the local folder, then returns its name. You can use AppendLocalAppDataFolderToPhotoName to create a full path.
@@ -36,7 +40,28 @@ namespace PlantAlarm.Services
                 File.Create(
                     AppendLocalAppDataFolderToPhotoName(photoName)));
 
+            if (IsSavingPhotosToPhotoLibrary())
+            {
+                SavePhotoToCameraRoll(photo);
+            }
+
             return photoName;
+        }
+
+        public static void SavePhotoToCameraRoll(MediaFile file) => MediaManagementService.SavePhotoToCameraRoll(file);
+
+        public static void RequestPermissionToPhotoLibraries() => MediaManagementService.RequestAccessToCameraRoll();
+
+        public static bool IsPermittedToAccessPhotoLibraries() => MediaManagementService.IsSavingPhotosToCameraRollPermitted();
+
+        public static void ShowExplanatoryTextAfterDenyingPhotoLibraryRequest() => MediaManagementService.ShowExplanatoryTextForDenyingPhotoAlbumRequest();
+
+        public static bool IsSavingPhotosToPhotoLibrary() {
+            if (Application.Current.Properties.TryGetValue(kIsSavingPhotosToPhotoLibrary, out object _isSavingPhotos))
+            {
+                return (bool)_isSavingPhotos;
+            }
+            return false;
         }
 
         /// <summary>

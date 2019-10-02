@@ -53,6 +53,7 @@ namespace PlantAlarm.ViewModels
 
         public ICommand OpenPhotoCarouselCommand { get; private set; }
         public ICommand AddNewPhotoCommand { get; private set; }
+        public ICommand BackCommand { get; set; }
 
         public PlantDetailsViewModel(Plant plant, Page view)
         {
@@ -82,6 +83,7 @@ namespace PlantAlarm.ViewModels
 
                 PhotoViewModels.Add(new ProgressPhotoViewModel(newPlantPhoto, OpenPhotoCarouselCommand));
             });
+            BackCommand = new Command(async() => await NavigationStack.PopAsync());
 
             this.Plant = plant;
 

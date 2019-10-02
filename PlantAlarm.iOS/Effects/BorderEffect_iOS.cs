@@ -16,6 +16,7 @@ namespace PlantAlarm.iOS.Effects
             UIView view = this.Control ?? this.Container;
 
             var effect = (PclBorderEffect)Element.Effects.FirstOrDefault(e => e is PclBorderEffect);
+
             view.Layer.BorderWidth = effect.Thickness;
             view.Layer.BorderColor = effect.Color.ToCGColor();
         }

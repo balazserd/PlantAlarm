@@ -2,20 +2,19 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms" 
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
        x:Class="PlantAlarm.AppShell"
-       xmlns:pages="clr-namespace:PlantAlarm.Views">
-    <TabBar>
-        <Tab Title="Today" Icon="TodayPageIcon.png" >
-            <ShellContent ContentTemplate="{DataTemplate pages:TodayPage}" />
+       xmlns:rootPages="clr-namespace:PlantAlarm.Views.RootPages">
+    <TabBar Shell.NavBarIsVisible="False">
+        <Tab Title="Today" Icon="TodayPageIcon.png">
+            <ShellContent ContentTemplate="{DataTemplate rootPages:TodoPage}" />
         </Tab>
         <Tab Title="Garden" Icon="GardenPageIcon.png">
-            <ShellContent Title="Plants" ContentTemplate="{DataTemplate pages:PlantsPage}" />
-<!--            <ShellContent Title="Accessories" ContentTemplate="{DataTemplate pages:AccessoriesPage}" />-->
+            <ShellContent Title="Plants" ContentTemplate="{DataTemplate rootPages:PlantsPage}" />
         </Tab>
         <Tab Title="Tasks" Icon="ActivitiesPageIcon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:TasksPage}" />
+            <ShellContent ContentTemplate="{DataTemplate rootPages:TasksPage}" />
         </Tab>
         <Tab Title="Settings" Icon="SettingsPageIcon.png" >
-            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
+            <ShellContent ContentTemplate="{DataTemplate rootPages:SettingsPage}" />
         </Tab>
     </TabBar>
 </Shell>

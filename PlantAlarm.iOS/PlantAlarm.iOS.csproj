@@ -80,6 +80,9 @@
     <Compile Include="Effects\RoundedCornerEffect_iOS.cs" />
     <Compile Include="Effects\BorderEffect_iOS.cs" />
     <Compile Include="Effects\OverlappingEffect_iOS.cs" />
+    <Compile Include="CustomRenderers\GradientStackLayoutRenderer_iOS.cs" />
+    <Compile Include="CustomRenderers\ShadowLayoutRenderer_iOS.cs" />
+    <Compile Include="DependencyServices\MediaManagementService_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

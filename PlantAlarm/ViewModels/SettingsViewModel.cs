@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -12,6 +13,7 @@ namespace PlantAlarm.ViewModels
     {
         private bool isInTheProcessOfShowingExplanationAlert = false;
         private readonly Page view;
+        private readonly IDictionary<string, object> GlobalProps = Application.Current.Properties;
 
         private TimeSpan notificationTime { get; set; }
         public TimeSpan NotificationTime
@@ -22,9 +24,9 @@ namespace PlantAlarm.ViewModels
                 if (value != notificationTime)
                 {
                     notificationTime = value;
-                    Application.Current.Properties[NotificationService.kNotificationTime] = value.ToString();
+                    GlobalProps[NotificationService.kNotificationTime] = value.ToString();
 
-                    bool.TryParse(Application.Current.Properties[NotificationService.kNotificationsEnabled].ToString(), out bool notiAllowed);
+                    bool.TryParse(GlobalProps[NotificationService.kNotificationsEnabled].ToString(), out bool notiAllowed);
                     if (notiAllowed)
                     {
                         _ = NotificationService.AddDailyNotifications(notificationTime);
@@ -51,7 +53,7 @@ namespace PlantAlarm.ViewModels
                     HandleFakePermissionSwitchChange();
                 }
 
-                Application.Current.Properties[NotificationService.kNotificationsEnabled] = value.ToString();
+                GlobalProps[NotificationService.kNotificationsEnabled] = value.ToString();
                 if (value)
                 {
                     _ = NotificationService.AddDailyNotifications();
@@ -73,7 +75,41 @@ namespace PlantAlarm.ViewModels
             set
             {
                 isCarryingForgottenTasksForward = value;
-                Application.Current.Properties[NotificationService.kIsCarryingForgottenTasksForward] = value.ToString();
+                GlobalProps[NotificationService.kIsCarryingForgottenTasksForward] = value.ToString();
+
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsSavingPhotosToCameraRoll
+        {
+            get {
+                if (MediaService.IsPermittedToAccessPhotoLibraries())
+                {
+                    return MediaService.IsSavingPhotosToPhotoLibrary();
+                }
+                GlobalProps[MediaService.kIsSavingPhotosToPhotoLibrary] = false;
+                return false;
+            }
+            set
+            {
+                if (MediaService.IsPermittedToAccessPhotoLibraries())
+                {
+                    GlobalProps[MediaService.kIsSavingPhotosToPhotoLibrary] = value;
+                }
+                else
+                {
+                    MediaService.RequestPermissionToPhotoLibraries();
+
+                    if (MediaService.IsPermittedToAccessPhotoLibraries())
+                    {
+                        GlobalProps[MediaService.kIsSavingPhotosToPhotoLibrary] = value;
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() => MediaService.ShowExplanatoryTextAfterDenyingPhotoLibraryRequest());
+                    }
+                }
 
                 OnPropertyChanged();
             }
@@ -88,7 +124,7 @@ namespace PlantAlarm.ViewModels
             areNotificationsEnabled = NotificationService.AreNotificationsEnabled() == NotificationPermissionState.Allowed;
             OnPropertyChanged(nameof(ReminderLinesOpacity));
             
-            if (Application.Current.Properties.TryGetValue(NotificationService.kNotificationTime, out object notiTimeAsObject))
+            if (GlobalProps.TryGetValue(NotificationService.kNotificationTime, out object notiTimeAsObject))
             {
                 if (TimeSpan.TryParse(notiTimeAsObject.ToString(), out TimeSpan timeOfNotification))
                 {
@@ -98,6 +134,11 @@ namespace PlantAlarm.ViewModels
             else
             {
                 notificationTime = TimeSpan.FromHours(8);
+            }
+
+            if (!GlobalProps.TryGetValue(MediaService.kIsSavingPhotosToPhotoLibrary, out object _isSavingPhotosToCameraRoll))
+            {
+                GlobalProps[MediaService.kIsSavingPhotosToPhotoLibrary] = false;
             }
 
             ShowCarryForwardExplanation = new Command(async () =>
