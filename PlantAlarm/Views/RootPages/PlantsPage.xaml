@@ -1,18 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<rootpages:RootPage  xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
-                     xmlns="http://xamarin.com/schemas/2014/forms" 
-                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-                     x:Class="PlantAlarm.Views.RootPages.PlantsPage"
-                     xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
-                     xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
-                     xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
-                     Title="Garden">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="New Plant" Command="{Binding ShowNewPlantPageCommand}" Order="Primary"/>
-    </ContentPage.ToolbarItems>
+<rootpages:SafeAreaRespectingPage  xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
+                                   xmlns="http://xamarin.com/schemas/2014/forms" 
+                                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                                   x:Class="PlantAlarm.Views.RootPages.PlantsPage"
+                                   xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+                                   xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+                                   xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#EAF7F2" Margin="0,-50" Padding="0,50">
-            <CollectionView ItemsSource="{Binding PlantItems}" VerticalOptions="FillAndExpand" Margin="10,5" VerticalScrollBarVisibility="Never">
+            <!--TOOLBAR-->
+            <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2">
+                <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" HeightRequest="35" Padding="11,2">
+
+                    <Grid HorizontalOptions="FillAndExpand">
+                        <!--LEFT TOOLBAR-->
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                                
+                        </StackLayout>
+
+                        <!--MIDDLE PART-->
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                            <Label Text="Garden" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                        </StackLayout>
+
+                        <!--RIGHT TOOLBAR-->
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                            <Button Text="New Plant" FontSize="16" Command="{Binding ShowNewPlantPageCommand}" HorizontalOptions="End" CornerRadius="4"
+                                    FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
+                        </StackLayout>
+                    </Grid>
+                        
+                </StackLayout>
+            </customControls:ShadowLayout>
+
+            <CollectionView ItemsSource="{Binding PlantItems}" VerticalOptions="FillAndExpand" Margin="10,5,10,5" VerticalScrollBarVisibility="Never">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <customControls:ShadowLayout OffsetY="3" ShadowOpacity="0.3" ShadowRadius="2" Padding="1,0,2,3">
@@ -80,4 +101,4 @@
             </CollectionView>
         </StackLayout>
     </ContentPage.Content>
-</rootpages:RootPage>
+</rootpages:SafeAreaRespectingPage>

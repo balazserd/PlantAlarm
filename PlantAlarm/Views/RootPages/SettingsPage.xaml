@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<rootpages:RootPage  xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
-                     xmlns="http://xamarin.com/schemas/2014/forms" 
-                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-                     x:Class="PlantAlarm.Views.RootPages.SettingsPage"
-                     xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
-                     xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
-                     xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
-                     Title="Settings">
+<rootpages:SafeAreaRespectingPage  xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
+                                   xmlns="http://xamarin.com/schemas/2014/forms" 
+                                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                                   x:Class="PlantAlarm.Views.RootPages.SettingsPage"
+                                   xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+                                   xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+                                   xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
+                                   Title="Settings">
     <ContentPage.Content>
         <ScrollView>
             <TableView Intent="Form" HasUnevenRows="true">
@@ -75,4 +75,4 @@
             </TableView>
         </ScrollView>
     </ContentPage.Content>
-</rootpages:RootPage>
+</rootpages:SafeAreaRespectingPage>

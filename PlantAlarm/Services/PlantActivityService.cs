@@ -215,14 +215,24 @@ namespace PlantAlarm.Services
             await RecreateDailyReminders();
         }
 
+        public static async Task ModifyActivityAsync(PlantActivityItem activity, bool shouldRecreateDailyReminders = true)
+        {
+            await asyncDb.UpdateAsync(activity);
+
+            if (shouldRecreateDailyReminders)
+                await RecreateDailyReminders();
+        }
+
         /// <summary>
         /// Modifies the given activities in the database. For example, can mark them as done.
         /// </summary>
         /// <param name="activities">The list of activities to modify.</param>
-        public static async Task ModifyActivitiesAsync(List<PlantActivityItem> activities)
+        public static async Task ModifyActivitiesAsync(List<PlantActivityItem> activities, bool shouldRecreateDailyReminders = true)
         {
             await asyncDb.UpdateAllAsync(activities);
-            await RecreateDailyReminders();
+
+            if (shouldRecreateDailyReminders)
+                await RecreateDailyReminders();
         }
 
         /// <summary>

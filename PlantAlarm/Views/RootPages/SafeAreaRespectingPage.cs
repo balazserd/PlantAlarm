@@ -5,9 +5,9 @@ using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace PlantAlarm.Views.RootPages
 {
-    public class RootPage : ContentPage
+    public class SafeAreaRespectingPage : ContentPage
     {
-        public RootPage()
+        public SafeAreaRespectingPage()
         {
             On<iOS>().SetUseSafeArea(true);
         }

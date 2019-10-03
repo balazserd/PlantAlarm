@@ -69,6 +69,7 @@ namespace PlantAlarm.ViewModels
                 {
                     var todayPageActivity = new TodayPageActivityItem();
                     todayPageActivity.PlantActivityItem = activity;
+                    todayPageActivity.ActivityTappedCommand = new Command(() => this.ActivitySelectedCommand.Execute(todayPageActivity));
 
                     var plantsOfActivity = await PlantActivityService.GetPlantsOfActivityAsync(activity);
                     todayPageActivity.Plants = (await Task.WhenAll(
@@ -118,12 +119,33 @@ namespace PlantAlarm.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
-    //WARNING! Only for internal use.
+    #region mini-ViewModels
+    //WARNING! Only for internal use. 
     public class TodayPageActivityItem : BindableObject
     {
         public PlantActivityItem PlantActivityItem { get; set; }
         public string Name { get; set; }
         public List<TodayPagePlantItem> Plants { get; set; }
+
+        public Color ActivityStatusButtonBackgroundColor => this.PlantActivityItem.IsCompleted ? Color.FromHex("#7CC45D") : Color.FromHex("#FF7369");
+        public Color ActivityStatusButtonBorderColor => this.PlantActivityItem.IsCompleted ? Color.FromHex("#5B8F44") : Color.FromHex("#D1463B");
+        public string ActivityStatusText => this.PlantActivityItem.IsCompleted ? "Done" : "Due";
+
+        public ICommand ActivityTappedCommand { get; set; }
+        public ICommand IsCompletedChangedCommand { get; set; }
+
+        public TodayPageActivityItem()
+        {
+            IsCompletedChangedCommand = new Command(() =>
+            {
+                this.PlantActivityItem.IsCompleted = !this.PlantActivityItem.IsCompleted;
+                Task.Run(() => PlantActivityService.ModifyActivityAsync(this.PlantActivityItem));
+
+                OnPropertyChanged(nameof(ActivityStatusButtonBackgroundColor));
+                OnPropertyChanged(nameof(ActivityStatusButtonBorderColor));
+                OnPropertyChanged(nameof(ActivityStatusText));
+            });
+        }
     }
 
     public class TodayPagePlantItem : BindableObject
@@ -132,7 +154,7 @@ namespace PlantAlarm.ViewModels
         public PlantPhoto Photo { get; set; }
         public ICommand PlantImageTappedCommand { get; set; }
 
-        public void CallOnPropertChangedForPhoto()
+        public void CallOnPropertyChangedForPhoto()
         {
             OnPropertyChanged(nameof(Photo));
         }
@@ -161,4 +183,5 @@ namespace PlantAlarm.ViewModels
         public int Day { get; private set; }
         public string DayName { get; private set; }
     }
+    #endregion
 }

@@ -18,7 +18,7 @@ namespace PlantAlarm.ViewModels
 {
     public class NewPlantViewModel : INotifyPropertyChanged
     {
-        private readonly INavigation Navigation = Application.Current.MainPage.Navigation;
+        private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
         private Page View { get; set; }
 
         public string PlantName { get; set; }
@@ -88,6 +88,7 @@ namespace PlantAlarm.ViewModels
         public ICommand DeletePhotoCommand { get; set; }
         public ICommand ChangePhotoCommand { get; set; }
         public ICommand AddPlantCommand { get; set; }
+        public ICommand BackCommand { get; set; }
 
         public NewPlantViewModel(Page viewForViewModel)
         {
@@ -97,7 +98,7 @@ namespace PlantAlarm.ViewModels
 
             ShowCategorySelectorPageCommand = new Command(async () =>
             {
-                await Navigation.PushAsync(await CategorySelectorPage.CreateAsync(Categories));
+                await NavigationStack.PushAsync(await CategorySelectorPage.CreateAsync(Categories));
             });
             AddPhotoCommand = new Command(async () =>
             {
@@ -187,8 +188,9 @@ namespace PlantAlarm.ViewModels
                 await PlantService.AddPlantPhotosAsync(new List<PlantPhoto>{ _truncatedUrlPlantPhoto });
 
                 MessagingCenter.Send(this as object, "PlantAdded");
-                await Navigation.PopAsync();
+                await NavigationStack.PopAsync();
             });
+            BackCommand = new Command(async () => await NavigationStack.PopAsync());
 
             MessagingCenter.Subscribe<object, List<PlantCategory>>(this, "CategoriesSelected", (viewModel, categoryList) =>
             {

@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace PlantAlarm.Views.RootPages
 {
-    public partial class PlantsPage : RootPage
+    public partial class PlantsPage : SafeAreaRespectingPage
     {
         public PlantsPage()
         {

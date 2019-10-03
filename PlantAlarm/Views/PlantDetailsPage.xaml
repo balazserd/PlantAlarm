@@ -16,7 +16,7 @@
                         <Grid HorizontalOptions="FillAndExpand">
                             <!--LEFT TOOLBAR-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
-                                <Button Text="← Back" FontSize="17" Command="{Binding BackCommand}" HorizontalOptions="Start" CornerRadius="4"
+                                <Button Text="← Back" FontSize="16" Command="{Binding BackCommand}" HorizontalOptions="Start" CornerRadius="4"
                                         FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
                             </StackLayout>
 
