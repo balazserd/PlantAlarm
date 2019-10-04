@@ -183,6 +183,19 @@ namespace PlantAlarm.Services
         }
 
         /// <summary>
+        /// Removes a given PlantActivityItem. Then recreates all daily reminders if the activity is not completed.
+        /// </summary>
+        /// <param name="activity">The acitivity to remove.</param>
+        /// <returns></returns>
+        public static async Task RemoveActivityAsync(PlantActivityItem activity)
+        {
+            await asyncDb.DeleteAsync(activity);
+
+            if (!activity.IsCompleted)
+                await RecreateDailyReminders();
+        }
+
+        /// <summary>
         /// Removes all activities for the specified task from the local storage.
         /// </summary>
         /// <param name="task">The PlantTask which's activities should be removed.</param>
@@ -215,9 +228,35 @@ namespace PlantAlarm.Services
             await RecreateDailyReminders();
         }
 
+        /// <summary>
+        /// Modifies a single activity, asynchronously.
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <param name="shouldRecreateDailyReminders"></param>
+        /// <returns></returns>
         public static async Task ModifyActivityAsync(PlantActivityItem activity, bool shouldRecreateDailyReminders = true)
         {
-            await asyncDb.UpdateAsync(activity);
+            var dbSavedInsanceOfActivity = await asyncDb.Table<PlantActivityItem>()
+                .FirstAsync(pai => pai.Id == activity.Id);
+
+            if (dbSavedInsanceOfActivity.Time.Date != activity.Time.Date) //Time changed
+            {
+                //Check if there is a similar activity on new day
+                var identicalActivityOnNewDay = (await asyncDb.Table<PlantActivityItem>()
+                    .ToListAsync())
+                    .FirstOrDefault(pai => pai.Time.Date == activity.Time.Date && pai.PlantTaskFk == activity.PlantTaskFk);
+
+                bool hasSameActivityOnNewDay = identicalActivityOnNewDay != null;
+
+                if (hasSameActivityOnNewDay)
+                    await asyncDb.DeleteAsync(activity);
+                else
+                    await asyncDb.UpdateAsync(activity);
+            }
+            else
+            {
+                await asyncDb.UpdateAsync(activity);
+            }
 
             if (shouldRecreateDailyReminders)
                 await RecreateDailyReminders();

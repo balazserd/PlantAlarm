@@ -9,7 +9,7 @@ namespace PlantAlarm.Views.RootPages
     {
         public SafeAreaRespectingPage()
         {
-            On<iOS>().SetUseSafeArea(true);
+            //On<iOS>().SetUseSafeArea(true);
         }
     }
 }

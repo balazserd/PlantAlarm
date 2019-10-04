@@ -7,15 +7,22 @@
                                    xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
                                    xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#EAF7F2" Margin="0,-50" Padding="0,50">
+        <StackLayout BackgroundColor="#EAF7F2" Margin="0">
+            <StackLayout.Effects>
+                <customEffects:SafeAreaEffect />
+            </StackLayout.Effects>
+
             <!--TOOLBAR-->
             <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2">
-                <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" HeightRequest="35" Padding="11,2">
+                <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2" HeightRequest="39"><!--Modify this HeightRequest and you die -->
+                    <StackLayout.Effects>
+                        <customEffects:NotchEqualizerForColViewsEffect NotchHeightRequest="35" /><!--Modify this HeightRequest and you die -->
+                    </StackLayout.Effects>
 
                     <Grid HorizontalOptions="FillAndExpand">
                         <!--LEFT TOOLBAR-->
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
-                                
+                            
                         </StackLayout>
 
                         <!--MIDDLE PART-->
@@ -25,7 +32,7 @@
 
                         <!--RIGHT TOOLBAR-->
                         <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                            <Button Text="New Plant" FontSize="16" Command="{Binding ShowNewPlantPageCommand}" HorizontalOptions="End" CornerRadius="4"
+                            <Button Text="New Plant" FontSize="16" Command="{Binding ShowNewPlantPageCommand}" HorizontalOptions="End" 
                                     FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
                         </StackLayout>
                     </Grid>
@@ -33,72 +40,73 @@
                 </StackLayout>
             </customControls:ShadowLayout>
 
-            <CollectionView ItemsSource="{Binding PlantItems}" VerticalOptions="FillAndExpand" Margin="10,5,10,5" VerticalScrollBarVisibility="Never">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <customControls:ShadowLayout OffsetY="3" ShadowOpacity="0.3" ShadowRadius="2" Padding="1,0,2,3">
-                            <customControls:GradientStackLayout GradientFromColor="#97D9C2" GradientToColor="#D5F0E6" GradientDirection="ToTopRight">
-                                <StackLayout>
-                                    <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowPlantDetailsPageCommand}" />
-                                    </StackLayout.GestureRecognizers>
+                <CollectionView ItemsSource="{Binding PlantItems}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <customControls:ShadowLayout OffsetY="3" ShadowOpacity="0.3" ShadowRadius="2" Padding="11,0,12,3">
+                                <customControls:GradientStackLayout GradientFromColor="#97D9C2" GradientToColor="#D5F0E6" GradientDirection="ToTopRight">
+                                    <StackLayout>
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ShowPlantDetailsPageCommand}" />
+                                        </StackLayout.GestureRecognizers>
 
-                                    <StackLayout Orientation="Horizontal">
-                                        <Image WidthRequest="100" HeightRequest="100" Source="{Binding MainPhoto.Url}" Aspect="AspectFill" VerticalOptions="Center" Margin="2,0,-4,0">
-                                            <Image.Effects>
-                                                <customEffects:RoundedCornerEffect Radius="5"/>
-                                            </Image.Effects>
-                                        </Image>
-                                        <StackLayout HorizontalOptions="FillAndExpand" Padding="8">
-                                            <StackLayout Orientation="Horizontal" Margin="0,0,0,-3">
-                                                <Label Text="{Binding Plant.Name}" FontSize="16" FontAttributes="Bold" HorizontalOptions="StartAndExpand"
-                                                        VerticalOptions="End"/>
-                                                <Button Text="Track" BackgroundColor="#1CAD7A" TextColor="White" CornerRadius="5" Command="{Binding TakeProgressPictureCommand}"
-                                                        Padding="5,0,5,0" HeightRequest="22" FontSize="12" FontAttributes="Bold" VerticalOptions="Center"
-                                                        Margin="0,-2,0,0"/>
-                                            </StackLayout>
-                                            <BoxView HeightRequest="0.5" Color="Black" />
-                                            <StackLayout Margin="2,0,0,0" VerticalOptions="FillAndExpand">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Image WidthRequest="100" HeightRequest="100" Source="{Binding MainPhoto.Url}" Aspect="AspectFill" VerticalOptions="Center" Margin="2,0,-4,0">
+                                                <Image.Effects>
+                                                    <customEffects:RoundedCornerEffect Radius="5"/>
+                                                </Image.Effects>
+                                            </Image>
+                                            <StackLayout HorizontalOptions="FillAndExpand" Padding="8">
+                                                <StackLayout Orientation="Horizontal" Margin="0,0,0,-3">
+                                                    <Label Text="{Binding Plant.Name}" FontSize="16" FontAttributes="Bold" HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="End"/>
+                                                    <Button Text="Track" BackgroundColor="#1CAD7A" TextColor="White" CornerRadius="5" Command="{Binding TakeProgressPictureCommand}"
+                                                            Padding="5,0,5,0" HeightRequest="22" FontSize="12" FontAttributes="Bold" VerticalOptions="Center"
+                                                            Margin="0,-2,0,0"/>
+                                                </StackLayout>
+                                                <BoxView HeightRequest="0.5" Color="Black" />
+                                                <StackLayout Margin="2,0,0,0" VerticalOptions="FillAndExpand">
                                               
-                                                <StackLayout Orientation="Horizontal" IsVisible="{Binding HasMissedTasks}">
-                                                    <Image Source="AlertRed.png" HeightRequest="16" VerticalOptions="Center" />
-                                                    <Label Text="Missed tasks!" FontSize="12" VerticalOptions="Center"/>
-                                                </StackLayout>
+                                                    <StackLayout Orientation="Horizontal" IsVisible="{Binding HasMissedTasks}">
+                                                        <Image Source="AlertRed.png" HeightRequest="16" VerticalOptions="Center" />
+                                                        <Label Text="Missed tasks!" FontSize="12" VerticalOptions="Center"/>
+                                                    </StackLayout>
 
-                                                <StackLayout Orientation="Horizontal" IsVisible="{Binding HasTasksDueToday}">
-                                                    <Image Source="WarningYellow.png" HeightRequest="16" VerticalOptions="Center" />
-                                                    <Label Text="Tasks are due today!" FontSize="12" VerticalOptions="Center"/>
-                                                </StackLayout>
+                                                    <StackLayout Orientation="Horizontal" IsVisible="{Binding HasTasksDueToday}">
+                                                        <Image Source="WarningYellow.png" HeightRequest="16" VerticalOptions="Center" />
+                                                        <Label Text="Tasks are due today!" FontSize="12" VerticalOptions="Center"/>
+                                                    </StackLayout>
 
-                                                <StackLayout Orientation="Horizontal" IsVisible="{Binding IsOnStreak}">
-                                                    <Image Source="TickGreen.png" HeightRequest="16" VerticalOptions="Center" />
-                                                    <Label Text="Streak: 71 days" FontSize="12" VerticalOptions="Center"/>
-                                                </StackLayout>
+                                                    <StackLayout Orientation="Horizontal" IsVisible="{Binding IsOnStreak}">
+                                                        <Image Source="TickGreen.png" HeightRequest="16" VerticalOptions="Center" />
+                                                        <Label Text="Streak: 71 days" FontSize="12" VerticalOptions="Center"/>
+                                                    </StackLayout>
 
+                                                </StackLayout>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
-                                </StackLayout>
 
-                                <StackLayout.Effects>
-                                    <customEffects:RoundedCornerEffect Radius="8" />
-                                </StackLayout.Effects>
-                            </customControls:GradientStackLayout>
-                        </customControls:ShadowLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
 
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout VerticalItemSpacing="8" HorizontalItemSpacing="8" Orientation="Vertical">
-                        <GridItemsLayout.Span>
-                            <OnIdiom x:TypeArguments="x:Int32">
-                                <OnIdiom.Default>1</OnIdiom.Default>
-                                <OnIdiom.Tablet>2</OnIdiom.Tablet>
-                            </OnIdiom>
-                        </GridItemsLayout.Span>
-                    </GridItemsLayout>
-                </CollectionView.ItemsLayout>
-            </CollectionView>
-        </StackLayout>
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout VerticalItemSpacing="8" HorizontalItemSpacing="8" Orientation="Vertical">
+                            <GridItemsLayout.Span>
+                                <OnIdiom x:TypeArguments="x:Int32">
+                                    <OnIdiom.Default>1</OnIdiom.Default>
+                                    <OnIdiom.Tablet>2</OnIdiom.Tablet>
+                                </OnIdiom>
+                            </GridItemsLayout.Span>
+                        </GridItemsLayout>
+                    </CollectionView.ItemsLayout>
+                </CollectionView>
+            </StackLayout>
+
     </ContentPage.Content>
 </rootpages:SafeAreaRespectingPage>

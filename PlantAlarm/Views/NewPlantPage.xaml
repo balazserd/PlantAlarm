@@ -7,7 +7,11 @@
                                    xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
                                    xmlns:customBehaviors="clr-namespace:PlantAlarm.Behaviors">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#EAF7F2" Margin="0,-50" Padding="0,50">
+        <StackLayout BackgroundColor="#EAF7F2" Padding="0,0,0,50">
+            <StackLayout.Effects>
+                <customEffects:SafeAreaEffect />
+            </StackLayout.Effects>
+
             <!--TOOLBAR-->
             <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2">
                 <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" HeightRequest="35" Padding="11,2">

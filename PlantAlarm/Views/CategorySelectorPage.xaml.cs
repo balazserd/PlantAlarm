@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
 using PlantAlarm.ViewModels;
+using PlantAlarm.Views.RootPages;
 using Xamarin.Forms;
 
 namespace PlantAlarm.Views
 {
-    public partial class CategorySelectorPage : ContentPage
+    public partial class CategorySelectorPage : SafeAreaRespectingPage
     {
         private CategorySelectorViewModel vm;
         private CategorySelectorPage()

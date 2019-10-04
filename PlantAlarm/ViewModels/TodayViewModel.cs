@@ -17,6 +17,7 @@ namespace PlantAlarm.ViewModels
 {
     public class TodayViewModel : INotifyPropertyChanged
     {
+        private readonly Page View;
         private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
         public List<CalendarDay> CalendarDays { get; private set; }
 
@@ -45,8 +46,9 @@ namespace PlantAlarm.ViewModels
         public ICommand ActivitySelectedCommand { get; private set; }
         public ICommand PlantImageTappedCommand { get; private set; }
 
-        public TodayViewModel()
+        public TodayViewModel(Page view)
         {
+            this.View = view;
             ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>();
 
             var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus 4 months. TODO: maybe a better calendar option.
@@ -69,7 +71,29 @@ namespace PlantAlarm.ViewModels
                 {
                     var todayPageActivity = new TodayPageActivityItem();
                     todayPageActivity.PlantActivityItem = activity;
-                    todayPageActivity.ActivityTappedCommand = new Command(() => this.ActivitySelectedCommand.Execute(todayPageActivity));
+
+                    todayPageActivity.ActivityTappedCommand = new Command(() =>
+                    {
+                        this.ActivitySelectedCommand.Execute(todayPageActivity);
+                    });
+
+                    todayPageActivity.ShowSkipDelayActionSheetCommand = new Command(async () =>
+                    {
+                        string chosenAction = await view.DisplayActionSheet("Choose an option", "Cancel", null, "Skip", "Delay");
+                        switch (chosenAction)
+                        {
+                            case "Skip":
+                                todayPageActivity.SkipCommand.Execute(null);
+                                this.ActivitiesForDay.Remove(todayPageActivity);
+                                break;
+                            case "Delay":
+                                todayPageActivity.DelayCommand.Execute(null);
+                                this.ActivitiesForDay.Remove(todayPageActivity);
+                                break;
+                            default:
+                                break;
+                        }
+                    });
 
                     var plantsOfActivity = await PlantActivityService.GetPlantsOfActivityAsync(activity);
                     todayPageActivity.Plants = (await Task.WhenAll(
@@ -133,6 +157,9 @@ namespace PlantAlarm.ViewModels
 
         public ICommand ActivityTappedCommand { get; set; }
         public ICommand IsCompletedChangedCommand { get; set; }
+        public ICommand ShowSkipDelayActionSheetCommand { get; set; }
+        public ICommand SkipCommand { get; set; }
+        public ICommand DelayCommand { get; set; }
 
         public TodayPageActivityItem()
         {
@@ -144,6 +171,17 @@ namespace PlantAlarm.ViewModels
                 OnPropertyChanged(nameof(ActivityStatusButtonBackgroundColor));
                 OnPropertyChanged(nameof(ActivityStatusButtonBorderColor));
                 OnPropertyChanged(nameof(ActivityStatusText));
+            });
+
+            SkipCommand = new Command(() =>
+            {
+                Task.Run(() => PlantActivityService.RemoveActivityAsync(this.PlantActivityItem));
+            });
+
+            DelayCommand = new Command(() =>
+            {
+                this.PlantActivityItem.Time = this.PlantActivityItem.Time.AddDays(1);
+                Task.Run(() => PlantActivityService.ModifyActivityAsync(this.PlantActivityItem));
             });
         }
     }
