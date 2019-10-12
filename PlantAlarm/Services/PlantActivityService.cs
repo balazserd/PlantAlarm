@@ -354,6 +354,49 @@ namespace PlantAlarm.Services
             return upcomingActivities.OrderBy(extAct => extAct.PlantActivityItem.Time).Take(5).ToList();
         }
 
+        public static PlantActivityItem GetLatestMissedActivityOfPlant(Plant p)
+        {
+            var taskConnectionsOfPlant = Db.Table<PlantTaskPlantConnection>()
+                .Where(ptpc => ptpc.PlantFk == p.Id)
+                .ToList();
+
+            var tasksOfPlant = Db.Table<PlantTask>()
+                .ToList()
+                .Where(pt => taskConnectionsOfPlant.Any(tc => tc.PlantTaskFk == pt.Id))
+                .ToList();
+
+            var incompleteActivities = Db.Table<PlantActivityItem>()
+                .ToList()
+                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) &&
+                              pai.Time.Date < DateTime.Today &&
+                              !pai.IsCompleted)
+                .OrderByDescending(pai => pai.Time);
+
+            return incompleteActivities.FirstOrDefault();
+        }
+
+        public static PlantActivityItem GetLatestCompletedActivityOfPlant(Plant p)
+        {
+            var taskConnectionsOfPlant = Db.Table<PlantTaskPlantConnection>()
+                .Where(ptpc => ptpc.PlantFk == p.Id)
+                .ToList();
+
+            var tasksOfPlant = Db.Table<PlantTask>()
+                .ToList()
+                .Where(pt => taskConnectionsOfPlant.Any(tc => tc.PlantTaskFk == pt.Id))
+                .ToList();
+
+            var completedActivities = Db.Table<PlantActivityItem>()
+                .ToList()
+                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) &&
+                              pai.Time.Date < DateTime.Today &&
+                              pai.IsCompleted)
+                .OrderByDescending(pai => pai.Time)
+                .ToList();
+
+            return completedActivities.FirstOrDefault();
+        }
+
         /// <summary>
         /// Gets the list of plants the given Activity must be performed on, asynchronously.
         /// </summary>

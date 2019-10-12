@@ -45,6 +45,8 @@ namespace PlantAlarm.ViewModels
         public ICommand SelectedDayChangedCommand { get; private set; }
         public ICommand ActivitySelectedCommand { get; private set; }
         public ICommand PlantImageTappedCommand { get; private set; }
+        public ICommand DelayAllCommand { get; private set; }
+        public ICommand CompleteAllCommand { get; private set; }
 
         public TodayViewModel(Page view)
         {
@@ -132,6 +134,53 @@ namespace PlantAlarm.ViewModels
             {
                 var plant = _plant as Plant;
                 await NavigationStack.PushAsync(new PlantDetailsPage(plant));
+            });
+
+            DelayAllCommand = new Command(async () =>
+            {
+                var inCompleteActivities = this.ActivitiesForDay.Where(act => !act.PlantActivityItem.IsCompleted);
+
+                if (inCompleteActivities.Count() < 1)
+                {
+                    await this.View.DisplayAlert("Info", "There are no incomplete tasks for this day.", "OK");
+                }
+                else
+                {
+                    string action = await this.View.DisplayActionSheet("This action will delay all unfinished tasks.\nIt cannot be undone.", "Cancel", "Delay all");
+                    if (action == "Cancel") return;
+
+                    for (int i = this.ActivitiesForDay.Count - 1; i >= 0; i--)
+                    {
+                        if (!this.ActivitiesForDay[i].PlantActivityItem.IsCompleted)
+                        {
+                            this.ActivitiesForDay[i].DelayCommand.Execute(null);
+                            this.ActivitiesForDay.RemoveAt(i);
+                        }
+                    }
+                }
+            });
+
+            CompleteAllCommand = new Command(async () =>
+            {
+                if (this.ActivitiesForDay.Count < 1)
+                {
+                    await this.View.DisplayAlert("Info", "You've got no tasks to do on this day.", "OK");
+                }
+                else
+                {
+                    var inCompleteActivities = this.ActivitiesForDay.Where(act => !act.PlantActivityItem.IsCompleted);
+                    if (inCompleteActivities.Count() < 1)
+                    {
+                        await this.View.DisplayAlert("Info", "You've got no further tasks to do on this day.", "OK");
+                    }
+                    else
+                    {
+                        foreach (var activityItem in inCompleteActivities)
+                        {
+                            activityItem.IsCompletedChangedCommand.Execute(null);
+                        }
+                    }
+                }
             });
         }
 

@@ -24,7 +24,7 @@ namespace PlantAlarm.iOS.Effects
 
                 var effect = (PclEffect)element.Effects.First(eff => eff is PclEffect);
                 var insets = UIApplication.SharedApplication.Windows[0].SafeAreaInsets; // Can't use KeyWindow this early
-                if (insets.Top > (safeAreaEffect != null ? 20 : 0)) // We have a notch (20 was added in SafeAreaEff
+                if (insets.Top > (safeAreaEffect != null ? 20 : 0)) // We have a notch (20 was added in SafeAreaEff)
                 {
                     element.HeightRequest = effect.NotchHeightRequest;
                 }

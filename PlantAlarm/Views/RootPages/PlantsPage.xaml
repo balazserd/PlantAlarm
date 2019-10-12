@@ -5,7 +5,8 @@
                                    x:Class="PlantAlarm.Views.RootPages.PlantsPage"
                                    xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
                                    xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
-                                   xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
+                                   xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
+                                   Appearing="RefreshData">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#EAF7F2" Margin="0">
             <StackLayout.Effects>
@@ -16,7 +17,7 @@
             <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2">
                 <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2" HeightRequest="39"><!--Modify this HeightRequest and you die -->
                     <StackLayout.Effects>
-                        <customEffects:NotchEqualizerForColViewsEffect NotchHeightRequest="35" /><!--Modify this HeightRequest and you die -->
+                        <customEffects:NotchEqualizerForColViewsEffect NotchHeightRequest="42" /><!--Modify this HeightRequest and you die -->
                     </StackLayout.Effects>
 
                     <Grid HorizontalOptions="FillAndExpand">
@@ -51,7 +52,7 @@
                                         </StackLayout.GestureRecognizers>
 
                                         <StackLayout Orientation="Horizontal">
-                                            <Image WidthRequest="100" HeightRequest="100" Source="{Binding MainPhoto.Url}" Aspect="AspectFill" VerticalOptions="Center" Margin="2,0,-4,0">
+                                            <Image WidthRequest="100" HeightRequest="100" Source="{Binding MainPhoto.Url}" Aspect="AspectFill" VerticalOptions="Center" Margin="2,2,-4,2">
                                                 <Image.Effects>
                                                     <customEffects:RoundedCornerEffect Radius="5"/>
                                                 </Image.Effects>
@@ -79,7 +80,7 @@
 
                                                     <StackLayout Orientation="Horizontal" IsVisible="{Binding IsOnStreak}">
                                                         <Image Source="TickGreen.png" HeightRequest="16" VerticalOptions="Center" />
-                                                        <Label Text="Streak: 71 days" FontSize="12" VerticalOptions="Center"/>
+                                                        <Label Text="{Binding StreakDays, StringFormat='Streak: {0} days'}" FontSize="12" VerticalOptions="Center"/>
                                                     </StackLayout>
 
                                                 </StackLayout>

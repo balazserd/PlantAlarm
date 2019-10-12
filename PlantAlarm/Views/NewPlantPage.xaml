@@ -7,7 +7,7 @@
                                    xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
                                    xmlns:customBehaviors="clr-namespace:PlantAlarm.Behaviors">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#EAF7F2" Padding="0,0,0,50">
+        <StackLayout BackgroundColor="#EAF7F2">
             <StackLayout.Effects>
                 <customEffects:SafeAreaEffect />
             </StackLayout.Effects>
