@@ -64,7 +64,7 @@ namespace PlantAlarm.ViewModels
             var photoList = PlantService.GetAllPhotos();
             var lockObject = new object();
 
-            var _plantItems = new ObservableCollection<PlantItem>();
+            var _plantItems = new List<PlantItem>();
 
             foreach (var plant in plantList)
             {
@@ -80,7 +80,11 @@ namespace PlantAlarm.ViewModels
                 }
             }
 
-            PlantItems = _plantItems;
+            PlantItems = new ObservableCollection<PlantItem>(_plantItems
+                .OrderByDescending(pi => pi.HasMissedTasks)
+                .ThenByDescending(pi => pi.HasTasksDueToday)
+                .ThenByDescending(pi => pi.StreakDays > 0)
+                .ThenBy(pi => pi.StreakDays));
         }
     }
 
@@ -90,14 +94,17 @@ namespace PlantAlarm.ViewModels
         public Plant Plant { get; set; }
         public PlantPhoto MainPhoto { get; set; }
 
-        public bool HasMissedTasks => (LastMissedActivityTime ?? DateTime.MinValue) > (LastCompletedActivityTime ?? DateTime.MinValue);
-        public bool HasTasksDueToday { get; set; }
         public DateTime? LastMissedActivityTime { get; set; }
         public DateTime? LastCompletedActivityTime { get; set; }
+        public DateTime? FirstCompletedActivityTimeAfterLastMissedActivity { get; set; }
+
         public int StreakDays =>
             (LastCompletedActivityTime?.Date - LastMissedActivityTime?.Date)?.Days > 0 ?
-            ((DateTime.Today.Date - LastCompletedActivityTime?.Date)?.Days ?? 0) :
+            ((DateTime.Today.Date - FirstCompletedActivityTimeAfterLastMissedActivity?.Date)?.Days ?? 0) :
             0;
+
+        public bool HasMissedTasks => (LastMissedActivityTime ?? DateTime.MinValue) > (LastCompletedActivityTime ?? DateTime.MinValue);
+        public bool HasTasksDueToday { get; set; }
         public bool IsOnStreak => StreakDays > 0;
 
         public PlantItem(Plant plant)
@@ -113,6 +120,7 @@ namespace PlantAlarm.ViewModels
 
             this.LastMissedActivityTime = PlantActivityService.GetLatestMissedActivityOfPlant(plant)?.Time;
             this.LastCompletedActivityTime = PlantActivityService.GetLatestCompletedActivityOfPlant(plant)?.Time;
+            this.FirstCompletedActivityTimeAfterLastMissedActivity = PlantActivityService.GetFirstCompletedActivityAfterLastMissedActivity(plant)?.Time;
         }
     }
 }

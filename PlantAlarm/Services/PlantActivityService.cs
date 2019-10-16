@@ -142,6 +142,39 @@ namespace PlantAlarm.Services
         }
 
         /// <summary>
+        /// Returns a List with all the Plants this PlantTask should be performed on.
+        /// </summary>
+        /// <param name="plantTask">The PlantTask to perform</param>
+        /// <returns>The List of Plants</returns>
+        public static List<Plant> GetPlantsOfTask(PlantTask plantTask)
+        {
+            var plantConnections = Db.Table<PlantTaskPlantConnection>()
+                .Where(ptpc => ptpc.PlantTaskFk == plantTask.Id)
+                .ToList();
+
+            var plants = Db.Table<Plant>()
+                .ToList();
+
+            return plants
+                .Where(p => plantConnections
+                    .Select(pc => pc.PlantFk)
+                    .Contains(p.Id))
+                .ToList();
+        }
+
+        public static PlantActivityItem GetNextIncompleteActivityOfTask(PlantTask plantTask)
+        {
+            var activitiesOfTask = Db.Table<PlantActivityItem>()
+                .ToList()
+                .Where(pai => pai.PlantTaskFk == plantTask.Id &&
+                              pai.Time.Date >= DateTime.Today &&
+                              !pai.IsCompleted)
+                .FirstOrDefault();
+
+            return activitiesOfTask;
+        }
+
+        /// <summary>
         /// Creates all activities for the next 60 days that haven't been created yet.
         /// You should NOT call this method when the task has changed since the last AddActivitiesFromTaskAsync() call.
         /// </summary>
@@ -341,7 +374,9 @@ namespace PlantAlarm.Services
 
             var upcomingActivities = Db.Table<PlantActivityItem>()
                 .ToList()
-                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) && pai.Time.Date >= DateTime.Today)
+                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) &&
+                              pai.Time.Date >= DateTime.Today &&
+                              !pai.IsCompleted)
                 .Select(pai =>
                 {
                     return new ExtendedPlantActivityViewModel()
@@ -395,6 +430,51 @@ namespace PlantAlarm.Services
                 .ToList();
 
             return completedActivities.FirstOrDefault();
+        }
+
+        public static PlantActivityItem GetFirstCompletedActivityAfterLastMissedActivity(Plant p)
+        {
+            var taskConnectionsOfPlant = Db.Table<PlantTaskPlantConnection>()
+                .Where(ptpc => ptpc.PlantFk == p.Id)
+                .ToList();
+
+            var tasksOfPlant = Db.Table<PlantTask>()
+                .ToList()
+                .Where(pt => taskConnectionsOfPlant.Any(tc => tc.PlantTaskFk == pt.Id))
+                .ToList();
+
+            var latestIncompleteActivityTime = Db.Table<PlantActivityItem>()
+                .ToList()
+                .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) &&
+                              pai.Time.Date < DateTime.Today &&
+                              !pai.IsCompleted)
+                .OrderByDescending(pai => pai.Time)
+                .FirstOrDefault()
+                ?.Time.Date;
+
+            if (latestIncompleteActivityTime == null)
+            {
+                var completedActivities = Db.Table<PlantActivityItem>()
+                    .ToList()
+                    .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) &&
+                                  pai.Time.Date < DateTime.Today &&
+                                  pai.IsCompleted)
+                    .OrderBy(pai => pai.Time);
+
+                return completedActivities.FirstOrDefault();
+            }
+            else
+            {
+                var completedActivitiesAfter = Db.Table<PlantActivityItem>()
+                    .ToList()
+                    .Where(pai => tasksOfPlant.Any(t => pai.PlantTaskFk == t.Id) &&
+                                  pai.Time.Date < DateTime.Today &&
+                                  pai.Time.Date > latestIncompleteActivityTime &&
+                                  pai.IsCompleted)
+                    .OrderBy(pai => pai.Time);
+
+                return completedActivitiesAfter.FirstOrDefault();
+            }
         }
 
         /// <summary>
