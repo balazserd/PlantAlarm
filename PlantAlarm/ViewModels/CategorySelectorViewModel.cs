@@ -20,6 +20,8 @@ namespace PlantAlarm.ViewModels
     public class CategorySelectorViewModel : INotifyPropertyChanged
     {
         private List<CategoryItem> categoryList { get; set; }
+
+        private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
         private readonly Page View;
         private readonly List<PlantCategory> plantCategoryList;
 
@@ -60,6 +62,7 @@ namespace PlantAlarm.ViewModels
         public ICommand AppearingCommand { get; private set; }
         public ICommand SelectionChangedCommand { get; private set; }
         public ICommand AddCategoriesCommand { get; set; }
+        public ICommand BackCommand { get; set; }
 
         private CategorySelectorViewModel(Page view, List<PlantCategory> alreadySelectedCategories, List<PlantCategory> allCategories) 
         {
@@ -129,6 +132,7 @@ namespace PlantAlarm.ViewModels
                     }
                 }
             });
+            BackCommand = new Command(async () => await NavigationStack.PopAsync());
         }
 
         public static async Task<CategorySelectorViewModel> CreateAsync(Page view, List<PlantCategory> alreadySelected)

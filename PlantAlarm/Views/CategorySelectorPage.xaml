@@ -3,82 +3,111 @@
                                    xmlns="http://xamarin.com/schemas/2014/forms" 
                                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
                                    x:Class="PlantAlarm.Views.CategorySelectorPage"
-                                   xmlns:customControls="clr-namespace:PlantAlarm.CustomControls">
-    <ContentPage.Resources>
-        <Style TargetType="StackLayout">
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="White" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Selected">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="White" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-    </ContentPage.Resources>
+                                   xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+                                   xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+                                   xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
     <ContentPage.Content>
-        <StackLayout>
-            <!--TOOLBAR-->
-            <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2">
-                <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" HeightRequest="45" Padding="11,2">
-
-                    <Grid HorizontalOptions="FillAndExpand">
-                        <!--LEFT TOOLBAR-->
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
-                            
-                        </StackLayout>
-
-                        <!--MIDDLE PART-->
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                            <Label Text="Select categories" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
-                        </StackLayout>
-
-                        <!--RIGHT TOOLBAR-->
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                            <Button Text="Done" FontSize="16" Command="{Binding AddCategoriesCommand}" HorizontalOptions="End" 
-                                    FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
-                        </StackLayout>
-                    </Grid>
-                        
-                </StackLayout>
-            </customControls:ShadowLayout>
+        <StackLayout BackgroundColor="#EAF7F2" Margin="0">
+            <StackLayout.Effects>
+                <customEffects:SafeAreaEffect />
+            </StackLayout.Effects>
 
             <Grid>
-                <ScrollView>
-                    <StackLayout VerticalOptions="Fill">
-                        <SearchBar Placeholder="Search for categories..." SearchCommand="{Binding SearchCategoriesCommand}" x:Name="SearchBar"
-                               SearchCommandParameter="{Binding Source={x:Reference SearchBar}, Path=Value}" Margin="0,0,0,-6"/>
-                        <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem" x:Name="CategoryColView"
-                                        SelectionMode="Multiple" SelectionChangedCommand="{Binding SelectionChangedCommand}" 
-                                        SelectionChangedCommandParameter="{Binding Source={x:Reference CategoryColView}, Path=SelectedItems}"
-                                        SelectedItems="{Binding SelectedCategoryItems}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackLayout Orientation="Vertical" HeightRequest="44">
-                                        <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="White" VerticalOptions="Start"/>
-                                        <StackLayout Orientation="Horizontal" Margin="10,0,10,0" VerticalOptions="FillAndExpand">
-                                            <Label Text="{Binding PlantCategory.Name}" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                                            <Image Source="GreenDoneIcon.png" HorizontalOptions="End" IsVisible="{Binding IsSelected}" 
-                                                   VerticalOptions="Center" HeightRequest="15"/>
-                                        </StackLayout>
-                                        <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="Gainsboro" VerticalOptions="End"/>
-                                    </StackLayout>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--TOOLBAR-->
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Grid.Row="0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2">
+
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <!--LEFT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                                <Button Text="← Back" FontSize="16" Command="{Binding BackCommand}" HorizontalOptions="Start" CornerRadius="4"
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
+                            </StackLayout>
+
+                            <!--MIDDLE PART-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="Garden" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                            </StackLayout>
+
+                            <!--RIGHT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                <Button Text="Add" FontSize="16" Command="{Binding AddCategoryModalCommand}" HorizontalOptions="End" 
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3,15,3"/>
+                                <Button Text="Done" FontSize="16" Command="{Binding AddCategoriesCommand}" HorizontalOptions="End" 
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
+                            </StackLayout>
+                        </Grid>
+                        
                     </StackLayout>
-                </ScrollView>
-                <customControls:AddButton HorizontalOptions="End" VerticalOptions="End" Margin="0,0,20,60" 
-                                          TouchedCommand="{Binding AddCategoryModalCommand}"/>
+                </customControls:ShadowLayout>
+                    
+                <StackLayout VerticalOptions="Fill" Grid.Row="1">
+                    <SearchBar Placeholder="Search for categories..." SearchCommand="{Binding SearchCategoriesCommand}" x:Name="SearchBar"
+                               SearchCommandParameter="{Binding Source={x:Reference SearchBar}, Path=Value}" Margin="0,0,0,-6"/>
+                    <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem" x:Name="CategoryColView"
+                                    SelectionMode="Multiple" SelectionChangedCommand="{Binding SelectionChangedCommand}" 
+                                    SelectionChangedCommandParameter="{Binding Source={x:Reference CategoryColView}, Path=SelectedItems}"
+                                    SelectedItems="{Binding SelectedCategoryItems}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Vertical" HeightRequest="44" Style="{StaticResource NoSelectedBackgroundColor}">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroupList>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal" />
+                                                <VisualState x:Name="Selected">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor" Value="#EAF7F2" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateGroupList>
+                                    </VisualStateManager.VisualStateGroups>
+
+                                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="#EAF7F2" VerticalOptions="Start"/>
+                                    <StackLayout Orientation="Horizontal" Margin="10,0,15,0" VerticalOptions="FillAndExpand">
+                                        <Label Text="{Binding PlantCategory.Name}" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                        <Image Source="GreenDoneIcon.png" HorizontalOptions="End" IsVisible="{Binding IsSelected}" 
+                                               VerticalOptions="Center" HeightRequest="15"/>
+                                    </StackLayout>
+                                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="#C1E8DA" VerticalOptions="End" Margin="10,0,0,1"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
             </Grid>
         </StackLayout>
     </ContentPage.Content>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="NoSelectedBackgroundColor" TargetType="StackLayout" >
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
 </rootpages:SafeAreaRespectingPage>

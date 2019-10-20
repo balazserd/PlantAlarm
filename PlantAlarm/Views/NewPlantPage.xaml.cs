@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using PlantAlarm.ViewModels;
 using PlantAlarm.Views.RootPages;
 using Xamarin.Forms;
@@ -20,6 +21,14 @@ namespace PlantAlarm.Views
         void ShowAddCategoryPage(object sender, EventArgs e)
         {
             vm.ShowCategorySelectorPageCommand.Execute(null);
+        }
+
+        void CheckIfImageSourceChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(Image.Source))
+            {
+                this.ImageContainerStack.ForceLayout();
+            }
         }
     }
 }

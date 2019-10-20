@@ -7,21 +7,44 @@
                                    xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
                                    xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
                                    Title="Tasks">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="New Task" Command="{Binding ShowNewTaskPageCommand}" />
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <customControls:GradientStackLayout VerticalOptions="Fill" HorizontalOptions="Fill"
-                                            GradientDirection="ToTopRight" GradientFromColor="Red" GradientToColor="Blue">
-            <!--<CollectionView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout>
-                                
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>-->
-        </customControls:GradientStackLayout>
+        <StackLayout BackgroundColor="#FEFAEC" Margin="0">
+            <StackLayout.Effects>
+                <customEffects:SafeAreaEffect />
+            </StackLayout.Effects>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--TOOLBAR-->
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Grid.Row="0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#FEFAEC" Padding="11,2">
+
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <!--LEFT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                            
+                            </StackLayout>
+
+                            <!--MIDDLE PART-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="Tasks" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                            </StackLayout>
+
+                            <!--RIGHT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                <Button Text="New Task" FontSize="16" Command="{Binding ShowNewTaskPageCommand}" HorizontalOptions="End" 
+                                        FontAttributes="Bold" TextColor="#C8AA26" Margin="0,3"/>
+                            </StackLayout>
+                        </Grid>
+                        
+                    </StackLayout>
+                </customControls:ShadowLayout>
+
+            </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </rootpages:SafeAreaRespectingPage>

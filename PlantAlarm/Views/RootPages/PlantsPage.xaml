@@ -13,35 +13,38 @@
                 <customEffects:SafeAreaEffect />
             </StackLayout.Effects>
 
-            <!--TOOLBAR-->
-            <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2">
-                <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2" HeightRequest="39"><!--Modify this HeightRequest and you die -->
-                    <StackLayout.Effects>
-                        <customEffects:NotchEqualizerForColViewsEffect NotchHeightRequest="42" /><!--Modify this HeightRequest and you die -->
-                    </StackLayout.Effects>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                    <Grid HorizontalOptions="FillAndExpand">
-                        <!--LEFT TOOLBAR-->
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                <!--TOOLBAR-->
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Grid.Row="0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2">
+
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <!--LEFT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
                             
-                        </StackLayout>
+                            </StackLayout>
 
-                        <!--MIDDLE PART-->
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                            <Label Text="Garden" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
-                        </StackLayout>
+                            <!--MIDDLE PART-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="Garden" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                            </StackLayout>
 
-                        <!--RIGHT TOOLBAR-->
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                            <Button Text="New Plant" FontSize="16" Command="{Binding ShowNewPlantPageCommand}" HorizontalOptions="End" 
-                                    FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
-                        </StackLayout>
-                    </Grid>
+                            <!--RIGHT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                <Button Text="New Plant" FontSize="16" Command="{Binding ShowNewPlantPageCommand}" HorizontalOptions="End" 
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
+                            </StackLayout>
+                        </Grid>
                         
-                </StackLayout>
-            </customControls:ShadowLayout>
+                    </StackLayout>
+                </customControls:ShadowLayout>
 
-                <CollectionView ItemsSource="{Binding PlantItems}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand">
+                <CollectionView ItemsSource="{Binding PlantItems}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" Grid.Row="1">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <customControls:ShadowLayout OffsetY="3" ShadowOpacity="0.3" ShadowRadius="2" Padding="11,0,12,3">
@@ -107,7 +110,7 @@
                         </GridItemsLayout>
                     </CollectionView.ItemsLayout>
                 </CollectionView>
-            </StackLayout>
-
+            </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </rootpages:SafeAreaRespectingPage>

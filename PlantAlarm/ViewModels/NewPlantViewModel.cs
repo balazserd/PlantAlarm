@@ -76,9 +76,19 @@ namespace PlantAlarm.ViewModels
             set
             {
                 photoToAdd = value;
+
                 OnPropertyChanged(nameof(HasPhoto));
                 OnPropertyChanged(nameof(PhotoOptionsText));
                 OnPropertyChanged();
+
+                var updatedPage = new NewPlantPage();
+                updatedPage.BindingContext = this;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    NavigationStack.PushAsync(updatedPage);
+                    NavigationStack.RemovePage(this.View);
+                    this.View = updatedPage;
+                });
             }
         }
 
@@ -182,15 +192,18 @@ namespace PlantAlarm.ViewModels
                 };
                 await PlantService.AddPlantAsync(plantToAdd);
 
-                _truncatedUrlPlantPhoto.IsPrimary = true;
-                _truncatedUrlPlantPhoto.PlantFk = plantToAdd.Id;
+                if (_truncatedUrlPlantPhoto != null)
+                {
+                    _truncatedUrlPlantPhoto.IsPrimary = true;
+                    _truncatedUrlPlantPhoto.PlantFk = plantToAdd.Id;
 
-                await PlantService.AddPlantPhotosAsync(new List<PlantPhoto>{ _truncatedUrlPlantPhoto });
+                    await PlantService.AddPlantPhotosAsync(new List<PlantPhoto> { _truncatedUrlPlantPhoto });
+                }
 
                 MessagingCenter.Send(this as object, "PlantAdded");
                 await NavigationStack.PopAsync();
             });
-            BackCommand = new Command(async () => await NavigationStack.PopAsync());
+            BackCommand = new Command(async () => await NavigationStack.PopToRootAsync()); //Needs to be PopToRoot, otherwise NullReferenceException due to PhotoToAdd setter.
 
             MessagingCenter.Subscribe<object, List<PlantCategory>>(this, "CategoriesSelected", (viewModel, categoryList) =>
             {
