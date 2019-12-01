@@ -11,7 +11,7 @@ namespace PlantAlarm.Views.RootPages
         {
             InitializeComponent();
 
-            this.BindingContext = new TasksViewModel(this.Navigation);
+            this.BindingContext = new TasksViewModel(this.Navigation, this);
         }
     }
 }

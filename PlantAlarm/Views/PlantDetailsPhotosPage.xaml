@@ -19,7 +19,7 @@
                         <StackLayout>
                             <customControls:SquaredImageContainerStack>
                                 <customControls:SquaredImage Source="{Binding Url}" Margin="0,20" Aspect="AspectFill"
-                                                                HorizontalOptions="Center" VerticalOptions="Center">
+                                                             HorizontalOptions="Center" VerticalOptions="Center">
                                     <customControls:SquaredImage.Effects>
                                         <customEffects:RoundedCornerEffect Radius="8" />
                                     </customControls:SquaredImage.Effects>

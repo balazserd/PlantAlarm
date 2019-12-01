@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.DependencyServices;
@@ -20,6 +21,7 @@ namespace PlantAlarm.Views
         public static async Task<CategorySelectorPage> CreateAsync(List<PlantCategory> selectedPlantCategories)
         {
             var page = new CategorySelectorPage();
+
             page.BindingContext = await CategorySelectorViewModel.CreateAsync(page, selectedPlantCategories);
             page.vm = page.BindingContext as CategorySelectorViewModel;
 

@@ -42,6 +42,11 @@ namespace PlantAlarm.ViewModels
                 Color.White;
         }
 
+        public ScrollOrientation AllowedScrollOrientations
+        {
+            get => HasPhoto ? ScrollOrientation.Vertical : ScrollOrientation.Neither;
+        }
+
         public bool HasPhoto
         {
             get => PhotoToAdd != null;
@@ -78,6 +83,7 @@ namespace PlantAlarm.ViewModels
                 photoToAdd = value;
 
                 OnPropertyChanged(nameof(HasPhoto));
+                OnPropertyChanged(nameof(AllowedScrollOrientations));
                 OnPropertyChanged(nameof(PhotoOptionsText));
                 OnPropertyChanged();
 

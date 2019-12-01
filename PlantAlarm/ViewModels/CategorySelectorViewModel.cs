@@ -25,14 +25,26 @@ namespace PlantAlarm.ViewModels
         private readonly Page View;
         private readonly List<PlantCategory> plantCategoryList;
 
-        private ObservableCollection<object> selectedCategoryItems { get; set; }
-        public ObservableCollection<object> SelectedCategoryItems
+        private ObservableCollection<CategoryItem> selectedCategoryItems { get; set; }
+        public ObservableCollection<CategoryItem> SelectedCategoryItems
         {
             get => selectedCategoryItems;
             set
             {
                 selectedCategoryItems = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private string filterString { get; set; }
+        public string FilterString
+        {
+            get => filterString;
+            set
+            {
+                filterString = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Categories));
             }
         }
 
@@ -48,7 +60,10 @@ namespace PlantAlarm.ViewModels
                     return string.Compare(a.PlantCategory.Name, b.PlantCategory.Name, StringComparison.Ordinal);
                 }));
 
-                return _categories;
+                var filteredCategories = _categories
+                    .Where(cat => cat.PlantCategory.Name.ToLower().Contains(FilterString?.ToLower() ?? string.Empty));
+
+                return new ObservableCollection<CategoryItem>(filteredCategories);
             }  
             private set
             {
@@ -61,28 +76,11 @@ namespace PlantAlarm.ViewModels
         public ICommand AddCategoryModalCommand { get; private set; }
         public ICommand AppearingCommand { get; private set; }
         public ICommand SelectionChangedCommand { get; private set; }
-        public ICommand AddCategoriesCommand { get; set; }
-        public ICommand BackCommand { get; set; }
+        public ICommand AddCategoriesCommand { get; private set; }
+        public ICommand BackCommand { get; private set; }
 
         private CategorySelectorViewModel(Page view, List<PlantCategory> alreadySelectedCategories, List<PlantCategory> allCategories) 
         {
-            View = view;
-            plantCategoryList = allCategories;
-            var categoryItemList = plantCategoryList.Select(pc => new CategoryItem { PlantCategory = pc }).ToList();
-
-            categoryList = categoryItemList;
-            Categories = new ObservableCollection<CategoryItem>(categoryItemList);
-
-            foreach (var selCat in alreadySelectedCategories)
-            {
-                var categoryItem = categoryList.First(ci => ci.PlantCategory.Id == selCat.Id);
-                categoryItem.IsSelected = true;
-            }
-
-            var alreadySelectedCategoryItems = Categories.Where(ci => alreadySelectedCategories.FirstOrDefault(pc => pc.Id == ci.PlantCategory.Id) != null).Cast<object>();
-
-            SelectedCategoryItems = new ObservableCollection<object>(alreadySelectedCategoryItems);
-
             AddCategoriesCommand = new Command(async () =>
             {
                 var selectedCategories = categoryList
@@ -92,6 +90,21 @@ namespace PlantAlarm.ViewModels
 
                 MessagingCenter.Send(this as object, "CategoriesSelected", selectedCategories);
                 await Application.Current.MainPage.Navigation.PopAsync();
+            });
+            SelectionChangedCommand = new Command((itemTapped) =>
+            {
+                var catItemTapped = itemTapped as CategoryItem;
+
+                if (SelectedCategoryItems.IndexOf(catItemTapped) > -1)
+                {
+                    SelectedCategoryItems.Remove(catItemTapped);
+                    catItemTapped.IsSelected = false;
+                }
+                else
+                {
+                    SelectedCategoryItems.Add(catItemTapped);
+                    catItemTapped.IsSelected = true;
+                }
             });
             AddCategoryModalCommand = new Command(async () =>
             {
@@ -103,7 +116,10 @@ namespace PlantAlarm.ViewModels
                 {
                     await PlantService.AddPlantCategoryAsync(plantCategory);
 
-                    var categoryItem = new CategoryItem { PlantCategory = plantCategory };
+                    var categoryItem = new CategoryItem(this.SelectionChangedCommand)
+                    {
+                        PlantCategory = plantCategory
+                    };
 
                     Categories.Add(categoryItem);
                     categoryList.Add(categoryItem);
@@ -114,25 +130,31 @@ namespace PlantAlarm.ViewModels
                     return;
                 }
             });
-            SelectionChangedCommand = new Command((itemsSelected) =>
-            {
-                var selectedCategories = (itemsSelected as IList<object>).ToList().Cast<CategoryItem>();
-                var selectedIdsList = selectedCategories.Select(ci => ci.PlantCategory.Id).ToList();
-
-                foreach (var categoryItem in categoryList)
-                {
-                    //If we can find the current categoryItem's Id in the list of selected Id-s, then it is currently selected.
-                    if (selectedIdsList.FirstOrDefault(selId => selId == categoryItem.PlantCategory.Id) != default(int))
-                    {
-                        categoryItem.IsSelected = true;
-                    }
-                    else
-                    {
-                        categoryItem.IsSelected = false;
-                    }
-                }
-            });
             BackCommand = new Command(async () => await NavigationStack.PopAsync());
+
+            View = view;
+            plantCategoryList = allCategories;
+            var categoryItemList = plantCategoryList
+                .Select(pc => new CategoryItem(this.SelectionChangedCommand)
+                {
+                    PlantCategory = pc
+                })
+                .ToList();
+
+            categoryList = categoryItemList;
+            Categories = new ObservableCollection<CategoryItem>(categoryItemList);
+
+            foreach (var selCat in alreadySelectedCategories)
+            {
+                var categoryItem = categoryList.First(ci => ci.PlantCategory.Id == selCat.Id);
+                categoryItem.IsSelected = true;
+            }
+
+            var alreadySelectedCategoryItems = Categories.Where(ci => alreadySelectedCategories.FirstOrDefault(pc => pc.Id == ci.PlantCategory.Id) != null);
+
+            SelectedCategoryItems = new ObservableCollection<CategoryItem>(alreadySelectedCategoryItems);
+
+            
         }
 
         public static async Task<CategorySelectorViewModel> CreateAsync(Page view, List<PlantCategory> alreadySelected)
@@ -166,6 +188,13 @@ namespace PlantAlarm.ViewModels
                 isSelected = value;
                 OnPropertyChanged();
             }
+        }
+
+        public ICommand ItemTappedCommand { get; private set; }
+
+        public CategoryItem(ICommand itemTappedCommand)
+        {
+            ItemTappedCommand = itemTappedCommand;
         }
     }
 }

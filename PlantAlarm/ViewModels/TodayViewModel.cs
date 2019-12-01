@@ -105,8 +105,7 @@ namespace PlantAlarm.ViewModels
                             var plantItem = new TodayPagePlantItem();
                             plantItem.Plant = plant;
 
-                            var photosOfPlants = await PlantService.GetPhotosOfPlantAsync(plant, true);
-                            plantItem.Photo = photosOfPlants.FirstOrDefault();
+                            plantItem.Photo = await PlantService.GetPrimaryPhotoOfPlantAsync(plant);
 
                             plantItem.PlantImageTappedCommand = this.PlantImageTappedCommand;
 

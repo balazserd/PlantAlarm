@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Developer: balaazs17@citromail.hu (JWSX6AV586)</CodesignKey>
+    <CodesignKey>Apple Development: balaazs17@citromail.hu (JWSX6AV586)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignProvision>iOS Team Provisioning Profile: com.EBUniApps.PlantAlarm</CodesignProvision>

@@ -47,27 +47,14 @@
                 </customControls:ShadowLayout>
                     
                 <StackLayout VerticalOptions="Fill" Grid.Row="1">
-                    <SearchBar Placeholder="Search for categories..." SearchCommand="{Binding SearchCategoriesCommand}" x:Name="SearchBar"
-                               SearchCommandParameter="{Binding Source={x:Reference SearchBar}, Path=Value}" Margin="0,0,0,-6"/>
-                    <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem" x:Name="CategoryColView"
-                                    SelectionMode="Multiple" SelectionChangedCommand="{Binding SelectionChangedCommand}" 
-                                    SelectionChangedCommandParameter="{Binding Source={x:Reference CategoryColView}, Path=SelectedItems}"
-                                    SelectedItems="{Binding SelectedCategoryItems}">
+                    <SearchBar Placeholder="Search for categories..." Text="{Binding FilterString, Mode=TwoWay}" Margin="0,-7,0,-6" BackgroundColor="#16825B"/>
+                    <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem" x:Name="CategoryColView">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout Orientation="Vertical" HeightRequest="44" Style="{StaticResource NoSelectedBackgroundColor}">
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroupList>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal" />
-                                                <VisualState x:Name="Selected">
-                                                    <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor" Value="#EAF7F2" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateGroupList>
-                                    </VisualStateManager.VisualStateGroups>
+                                <StackLayout Orientation="Vertical" HeightRequest="44">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ItemTappedCommand}" CommandParameter="{Binding .}" />
+                                    </StackLayout.GestureRecognizers>
 
                                     <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="#EAF7F2" VerticalOptions="Start"/>
                                     <StackLayout Orientation="Horizontal" Margin="10,0,15,0" VerticalOptions="FillAndExpand">
@@ -85,29 +72,5 @@
             </Grid>
         </StackLayout>
     </ContentPage.Content>
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="NoSelectedBackgroundColor" TargetType="StackLayout" >
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="Transparent" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Selected">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="Transparent" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
 
 </rootpages:SafeAreaRespectingPage>

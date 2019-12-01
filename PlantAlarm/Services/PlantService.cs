@@ -91,15 +91,32 @@ namespace PlantAlarm.Services
             return plantCategoryList;
         }
 
-        public static List<PlantPhoto> GetPhotosOfPlant(Plant plant, bool onlyPrimaryPhoto = false)
+        public static PlantPhoto GetPrimaryPhotoOfPlant(Plant plant)
+        {
+            var primaryPhoto = Db.Table<PlantPhoto>()
+                .Where(photo => photo.PlantFk == plant.Id)
+                .CorrectUrlForAll();
+
+            return primaryPhoto.FirstOrDefault();
+        }
+
+        public static async Task<PlantPhoto> GetPrimaryPhotoOfPlantAsync(Plant plant)
+        {
+            var primaryPhoto = (await asyncDb.Table<PlantPhoto>()
+                .Where(photo => photo.PlantFk == plant.Id)
+                .ToListAsync())
+                .CorrectUrlForAll();
+
+            return primaryPhoto.FirstOrDefault();
+        }
+
+        public static List<PlantPhoto> GetPhotosOfPlant(Plant plant)
         {
             var photos = Db.Table<PlantPhoto>()
                 .ToList();
 
             var photosOfPlant = photos
-                .Where(photo => onlyPrimaryPhoto ?
-                    photo.PlantFk == plant.Id && photo.IsPrimary :
-                    photo.PlantFk == plant.Id)
+                .Where(photo => photo.PlantFk == plant.Id)
                 .CorrectUrlForAll(); //We do not store the constant part of the url.
 
             return photosOfPlant.ToList();

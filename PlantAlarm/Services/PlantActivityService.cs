@@ -80,11 +80,21 @@ namespace PlantAlarm.Services
         /// </summary>
         /// <param name="tasks">The tasks for which to remove all PlantConnection items.</param>
         /// <returns></returns>
-        private static async Task RemovePlantTaskPlantConnectionsForPlantTasksAsync(List<PlantTask> tasks)
+        public static async Task RemovePlantTaskPlantConnectionsForPlantTasksAsync(List<PlantTask> tasks)
         {
             await asyncDb.Table<PlantTaskPlantConnection>()
                 .Where(conn => tasks.Any(t => t.Id == conn.PlantTaskFk))
                 .DeleteAsync();
+        }
+
+        public static List<PlantTask> GetAllTasks()
+        {
+            return Db.Table<PlantTask>().ToList();
+        }
+
+        public static async Task UpdateTask(PlantTask plantTask)
+        {
+            await asyncDb.UpdateAsync(plantTask);
         }
 
         /// <summary>
@@ -357,7 +367,7 @@ namespace PlantAlarm.Services
         }
 
         /// <summary>
-        /// Gets (up to) 7 upcoming tasks for the plant, ordering earlier tasks higher.
+        /// Gets (up to) 5 upcoming tasks for the plant, ordering earlier tasks higher.
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
