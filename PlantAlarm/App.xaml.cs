@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
 using PlantAlarm.Services;
 using Xamarin.Forms;
@@ -23,6 +24,9 @@ namespace PlantAlarm
             {
                 Directory.CreateDirectory(localFolderUrl);
             }
+
+            //OPTIONAL - recreate all activites for each task - just for testing purposes
+            //_ = this.RecrateAllActivities();
 
             //Create missing activities
             _ = PlantActivityService.CreateAllMissingActivitiesForNext60Days();
@@ -49,6 +53,16 @@ namespace PlantAlarm
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        private async Task RecrateAllActivities()
+        {
+            var tasks = PlantActivityService.GetAllTasks();
+
+            foreach (var task in tasks)
+            {
+                await PlantActivityService.AddActivitiesFromTaskAsync(task, DateTime.Today);
+            }
         }
     }
 }

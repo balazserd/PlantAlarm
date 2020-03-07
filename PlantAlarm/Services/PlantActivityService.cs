@@ -95,6 +95,17 @@ namespace PlantAlarm.Services
         public static async Task UpdateTask(PlantTask plantTask)
         {
             await asyncDb.UpdateAsync(plantTask);
+
+            var activityItems = await asyncDb.Table<PlantActivityItem>()
+                .Where(act => act.PlantTaskFk == plantTask.Id)
+                .ToListAsync();
+            var activityForToday = activityItems
+                .FirstOrDefault(act => act.Time.Date == DateTime.Today);
+
+            //If today's activity is marked completed, we will remove it. Otherwise not.
+            var firstDateToRemove = (activityForToday?.IsCompleted ?? false) ? DateTime.Today.AddDays(1) : DateTime.Today;
+
+            await AddActivitiesFromTaskAsync(plantTask, firstDateToRemove);
         }
 
         /// <summary>
@@ -107,10 +118,13 @@ namespace PlantAlarm.Services
         {
             var allActivities = await GetUpcomingActivitiesAsync(DateTime.Today, DateTime.Today.AddDays(60));
 
-            //First, we need to delete all activities that are after 'firstDay'.
-            await asyncDb.Table<PlantActivityItem>()
-                .Where(act => act.PlantTaskFk == task.Id && act.Time >= firstDay)
-                .DeleteAsync();
+            //First, we need to delete all activities that are after 'firstDay'. (This can run on seperate thread - will be waited later on.)
+            Task deleteTask = Task.Run(async() =>
+            {
+                await asyncDb.Table<PlantActivityItem>()
+                    .Where(act => act.PlantTaskFk == task.Id && act.Time >= firstDay)
+                    .DeleteAsync();
+            });
 
             //Now add for the next 61 days.
             List<PlantActivityItem> resultList = new List<PlantActivityItem>();
@@ -132,11 +146,15 @@ namespace PlantAlarm.Services
                         (day.DayOfWeek == DayOfWeek.Sunday && task.OnSunday) ||
 
                         //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
-                        (task.EveryXDays > 0 && (day - task.FirstOccurrenceDate).Days % task.EveryXDays == 0) ||
+                        (task.EveryXDays > 0 &&
+                         day >= task.FirstOccurrenceDate &&
+                        (day - task.FirstOccurrenceDate).Days % task.EveryXDays == 0) ||
 
                         //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
-                        (task.EveryXMonths > 0 && ((day.Year - task.FirstOccurrenceDate.Year) * 12) + day.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
-                           day.Day == task.FirstOccurrenceDate.Day))
+                        (task.EveryXMonths > 0 &&
+                         day >= task.FirstOccurrenceDate &&
+                       ((day.Year - task.FirstOccurrenceDate.Year) * 12) + day.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
+                         day.Day == task.FirstOccurrenceDate.Day))
                     {
                         AddActivityItemForDay(resultList, task.Id, day);
                     }
@@ -147,6 +165,7 @@ namespace PlantAlarm.Services
                 }
             }
 
+            await deleteTask;
             await asyncDb.InsertAllAsync(resultList);
             await RecreateDailyReminders();
         }

@@ -9,8 +9,8 @@ using Xamarin.Forms.Platform.iOS;
 namespace PlantAlarm.iOS.CustomRenderers
 {
     public class CategoryCollectionViewRenderer_iOS : CollectionViewRenderer
-    {
-        protected override void OnElementChanged(ElementChangedEventArgs<ItemsView> e)
+    { 
+        protected override void OnElementChanged(ElementChangedEventArgs<GroupableItemsView> e)
         {
             var backgroundView = new UIView();
             backgroundView.BackgroundColor = UIColor.Clear;

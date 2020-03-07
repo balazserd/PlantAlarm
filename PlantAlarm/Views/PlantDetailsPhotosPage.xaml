@@ -11,7 +11,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <CarouselView ItemsSource="{Binding Photos}" NumberOfSideItems="0" PeekAreaInsets="20" VerticalOptions="Start"
+            <CarouselView ItemsSource="{Binding Photos}" PeekAreaInsets="20" VerticalOptions="Start"
                           IsBounceEnabled="True" x:Name="PhotosCarousel" HorizontalScrollBarVisibility="Never"
                           CurrentItem="{Binding SelectedPhoto, Mode=TwoWay}" CurrentItemChanged="ScrollToCurrentItem">
                 <CarouselView.ItemTemplate>

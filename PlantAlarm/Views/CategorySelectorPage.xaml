@@ -47,7 +47,9 @@
                 </customControls:ShadowLayout>
                     
                 <StackLayout VerticalOptions="Fill" Grid.Row="1">
-                    <SearchBar Placeholder="Search for categories..." Text="{Binding FilterString, Mode=TwoWay}" Margin="0,-7,0,-6" BackgroundColor="#16825B"/>
+                    <SearchBar Placeholder="Search for categories..." Text="{Binding FilterString, Mode=TwoWay}" Margin="0,-7,0,-6" BackgroundColor="Transparent"
+                               TextColor="#16825B" CancelButtonColor="#16825B"/>
+                    <BoxView HeightRequest="1" HorizontalOptions="Fill" BackgroundColor="#C1E8DA" VerticalOptions="Start" Margin="0,0,0,-5"/>
                     <CollectionView ItemsSource="{Binding Categories}" ItemSizingStrategy="MeasureFirstItem" x:Name="CategoryColView">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>

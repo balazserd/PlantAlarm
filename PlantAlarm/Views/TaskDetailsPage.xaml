@@ -87,7 +87,7 @@
                                 </customControls:GradientStackLayout.Effects>
 
                                 <Label Text="Performing on" FontAttributes="Bold" FontSize="20" />
-                                <BoxView HeightRequest="1" Margin="-2,0" Color="Black" />
+                                <BoxView HeightRequest="0.5" Margin="-2,0" Color="Black" />
                                 <CollectionView ItemsSource="{Binding Plants}" Margin="0,0,3,0">
                                     <CollectionView.ItemsLayout>
                                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="2" />
@@ -120,17 +120,17 @@
                             <customControls:ShadowLayout ShadowOpacity="0.3" ShadowRadius="3" OffsetY="2" Padding="0,0,0,2" VerticalOptions="FillAndExpand"
                                                          Grid.Row="0">
                                 <customControls:GradientStackLayout GradientDirection="ToTopRight" GradientFromColor="#FCF1C6" GradientToColor="#FAE9A0"
-                                                                    Padding="7,7,7,10">
+                                                                    Padding="7,7,7,10" VerticalOptions="FillAndExpand">
                                     <customControls:GradientStackLayout.Effects>
                                         <customEffects:RoundedCornerEffect Radius="8" />
                                     </customControls:GradientStackLayout.Effects>
 
                                     <Label Text="Next up" FontAttributes="Bold" FontSize="20" />
-                                    <BoxView HeightRequest="1" Margin="-2,0" Color="Black" />
+                                    <BoxView HeightRequest="0.5" Margin="-2,0" Color="Black" />
 
-                                    <StackLayout Orientation="Horizontal">
-                                        <DatePicker x:Name="DatePicker" Date="{Binding NextOccurrenceDate, Mode=TwoWay}"
-                                                    InputTransparent="{Binding IsNotEditing}">
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                                        <DatePicker x:Name="DatePicker" Date="{Binding NextOccurrenceDate, Mode=TwoWay}" Format="MMMM dd, yyyy" VerticalOptions="Center"
+                                                    InputTransparent="{Binding IsNotEditing}" HorizontalOptions="FillAndExpand" FontSize="14">
                                             <DatePicker.Effects>
                                                 <customEffects:BorderlessEffect />
                                             </DatePicker.Effects>
@@ -149,7 +149,7 @@
                                     </customControls:GradientStackLayout.Effects>
 
                                     <Label Text="Recurrence" FontAttributes="Bold" FontSize="20" />
-                                    <BoxView HeightRequest="1" Margin="-2,0" Color="Black" />
+                                    <BoxView HeightRequest="0.5" Margin="-2,0" Color="Black" />
                                 
                                 </customControls:GradientStackLayout>
                             </customControls:ShadowLayout>

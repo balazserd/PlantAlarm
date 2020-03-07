@@ -121,7 +121,9 @@ namespace PlantAlarm.ViewModels
                         PlantCategory = plantCategory
                     };
 
-                    Categories.Add(categoryItem);
+                    //Please check the unique getter and setter for this property and its private counterpart for the reason of this logic.
+                    _categories.Add(categoryItem);
+                    OnPropertyChanged(nameof(Categories)); 
                     categoryList.Add(categoryItem);
                 }
                 catch (PlantServiceException pse)

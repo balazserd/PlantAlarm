@@ -30,11 +30,5 @@ namespace PlantAlarm.Views
                 this.ImageContainerStack.ForceLayout();
             }
         }
-
-        protected override void OnDisappearing()
-        {
-            Application.Current.MainPage.Navigation.PopToRootAsync();
-            base.OnDisappearing();
-        }
     }
 }
