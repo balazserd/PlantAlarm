@@ -43,6 +43,24 @@
                     </StackLayout>
                 </customControls:ShadowLayout>
 
+                <CollectionView ItemsSource="{Binding CalendarDays}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Label Text="{Binding MonthName}" TextColor="#508AE9" FontSize="9"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="{Binding Day}" FontAttributes="Bold" FontSize="16" TextColor="Black"
+                                       HorizontalOptions="Center" Margin="0,-5,0,0" />
+                                <Label Text="{Binding DayName}" FontSize="10" HorizontalOptions="Center" Margin="0,-5,0,0" TextColor="Black"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
             </Grid>
         </StackLayout>
     </ContentPage.Content>

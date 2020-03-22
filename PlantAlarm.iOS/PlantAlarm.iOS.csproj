@@ -81,7 +81,6 @@
     <Compile Include="CustomRenderers\RoundedImageRenderer_iOS.cs" />
     <Compile Include="Effects\RoundedCornerEffect_iOS.cs" />
     <Compile Include="Effects\BorderEffect_iOS.cs" />
-    <Compile Include="Effects\OverlappingEffect_iOS.cs" />
     <Compile Include="CustomRenderers\GradientStackLayoutRenderer_iOS.cs" />
     <Compile Include="CustomRenderers\ShadowLayoutRenderer_iOS.cs" />
     <Compile Include="DependencyServices\MediaManagementService_iOS.cs" />

@@ -2,23 +2,57 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="PlantAlarm/Views/RootPages/PlantsPage.xaml" Line="1" Column="1" />
-      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml" Line="8" Column="88" />
-      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml.cs" Line="10" Column="26" />
-      <File FileName="PlantAlarm/Views/PlantDetailsPage.xaml" Line="130" Column="85" />
+      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml" Line="14" Column="1" />
+      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml.cs" />
+      <File FileName="PlantAlarm/Views/PlantDetailsPage.xaml" />
+      <File FileName="../../../../Library/Frameworks/Mono.framework/Versions/6.8.0/lib/mono/msbuild/Current/bin/Microsoft.Common.CurrentVersion.targets" />
+      <File FileName="PlantAlarm/Views/NewPlantPage.xaml" Line="80" Column="97" />
+      <File FileName="PlantAlarm/GlobalSuppressions.cs" />
+      <File FileName="PlantAlarm/AssemblyInfo.cs" />
+      <File FileName="PlantAlarm/Views/CategorySelectorPage.xaml" />
+      <File FileName="PlantAlarm/ViewModels/CategorySelectorViewModel.cs" />
+      <File FileName="PlantAlarm/Services/PlantService.cs" />
+      <File FileName="PlantAlarm.iOS/Main.cs" Line="17" Column="1" />
+      <File FileName="PlantAlarm.iOS/AppDelegate.cs" />
+      <File FileName="PlantAlarm/ViewModels/TodayViewModel.cs" />
+      <File FileName="PlantAlarm/CustomControls/CalendarDayViewCell.xaml" />
+      <File FileName="PlantAlarm.iOS/CustomRenderers/CalendarDayViewCellRenderer_iOS.cs" />
+      <File FileName="PlantAlarm/CustomControls/CalendarDayViewCell.xaml.cs" />
+      <File FileName="PlantAlarm/Views/NewTaskPage.xaml.cs" Line="33" Column="27" />
+      <File FileName="PlantAlarm/Views/NewTaskPage.xaml" Line="257" Column="55" />
+      <File FileName="PlantAlarm/Views/RootPages/TasksPage.xaml" Line="45" Column="47" />
+      <File FileName="PlantAlarm/ViewModels/NewTaskViewModel.cs" Line="166" Column="45" />
+      <File FileName="PlantAlarm/ViewModels/NewPlantViewModel.cs" Line="39" Column="10" />
+      <File FileName="PlantAlarm/Views/NewPlantPage.xaml.cs" Line="1" Column="1" />
+      <File FileName="PlantAlarm/obj/Debug/netstandard2.0/Views/NewTaskPage.xaml.g.cs" Line="41" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="PlantAlarm" expanded="True">
             <Node name="PlantAlarm" expanded="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="PackageDependencies" expanded="True" />
+              </Node>
+              <Node name="CustomControls" expanded="True">
+                <Node name="CalendarDayViewCell.xaml" expanded="True" />
+              </Node>
+              <Node name="Effects" expanded="True" />
+              <Node name="Services" expanded="True" />
+              <Node name="ViewModels" expanded="True" />
               <Node name="Views" expanded="True">
                 <Node name="RootPages" expanded="True">
+                  <Node name="TasksPage.xaml" expanded="True" />
                   <Node name="TodoPage.xaml" expanded="True" />
                 </Node>
+                <Node name="NewPlantPage.xaml" expanded="True" />
+                <Node name="NewTaskPage.xaml" expanded="True" selected="True" />
               </Node>
             </Node>
             <Node name="PlantAlarm.iOS" expanded="True">
-              <Node name="Assets.xcassets" selected="True" />
+              <Node name="CustomRenderers" expanded="True" />
+              <Node name="DependencyServices" expanded="True" />
+              <Node name="Effects" expanded="True" />
             </Node>
           </Node>
         </State>
