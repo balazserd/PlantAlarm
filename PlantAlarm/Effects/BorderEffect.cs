@@ -16,7 +16,14 @@ namespace PlantAlarm.Effects
             this.Color = color;
             v.Effects.Add(this);
         }
-        
+
+        public void SetThicknessViaView(View v, float thickness)
+        {
+            v.Effects.Remove(this);
+            this.Thickness = thickness;
+            v.Effects.Add(this);
+        }
+
         public BorderEffect() : base($"EBUniApps.{nameof(BorderEffect)}")
         {
             Color = Color.Black;
@@ -36,5 +43,28 @@ namespace PlantAlarm.Effects
 
                 effect.SetColorViaView(boundControl, (Color)newValue);
             });
+
+        public static BindableProperty ThicknessProperty = BindableProperty.CreateAttached(
+            "Thickness",
+            typeof(float),
+            typeof(BorderEffect),
+            0.0f,
+            propertyChanged: (bindable, oldValue, newValue) =>
+            {
+                View boundControl = bindable as View;
+                BorderEffect effect = boundControl.Effects.FirstOrDefault(eff => eff is BorderEffect) as BorderEffect;
+
+                if (effect != null)
+                {
+                    boundControl.Effects.Remove(effect);
+                }
+                boundControl.Effects.Add(new BorderEffect()
+                {
+                    Thickness = (float)newValue,
+                    Color = effect.Color
+                });
+            });
+        public static float GetThickness(BindableObject element) => (float)element.GetValue(ThicknessProperty);
+        public static void SetThickness(BindableObject element, float value) => element.SetValue(ThicknessProperty, value);
     }
 }

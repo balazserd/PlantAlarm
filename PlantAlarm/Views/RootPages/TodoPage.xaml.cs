@@ -7,10 +7,16 @@ namespace PlantAlarm.Views.RootPages
 {
     public partial class TodoPage : SafeAreaRespectingPage
     {
+        private readonly TodayViewModel vm;
+
         public TodoPage()
         {
             InitializeComponent();
-            this.BindingContext = new TodayViewModel(this);
+
+            BindingContext = new TodayViewModel(this, this.DaysListView);
+            vm = BindingContext as TodayViewModel;
+
+            vm.BackToTodayCommand.Execute(null);
         }
     }
 }

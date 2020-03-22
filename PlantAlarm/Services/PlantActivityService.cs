@@ -357,8 +357,8 @@ namespace PlantAlarm.Services
         /// <param name="day">The day for which to return the activities.</param>
         public static async Task<List<PlantActivityItem>> GetUpcomingActivitiesAsync(DateTime day)
         {
-            var activities = await asyncDb.Table<PlantActivityItem>()
-                .ToListAsync();
+            var table = asyncDb.Table<PlantActivityItem>();
+            var activities = await table.ToListAsync();
 
             return activities
                 .Where(act => act.Time.Date == day.Date)
@@ -515,9 +515,9 @@ namespace PlantAlarm.Services
         {
             var plantTask = await GetTaskOfActivityAsync(activity);
 
-            var plantConnections = await asyncDb.Table<PlantTaskPlantConnection>()
-                .Where(ptpc => ptpc.PlantTaskFk == plantTask.Id)
-                .ToListAsync();
+            var plantConnections = (await asyncDb.Table<PlantTaskPlantConnection>()
+                .ToListAsync())
+                .Where(ptpc => ptpc.PlantTaskFk == plantTask.Id);
 
             var plants = await asyncDb.Table<Plant>()
                 .ToListAsync();
@@ -557,8 +557,9 @@ namespace PlantAlarm.Services
             PlantTask plantTask;
             try
             {
-                plantTask = await asyncDb.Table<PlantTask>()
-                    .FirstAsync(task => task.Id == activity.PlantTaskFk);
+                plantTask = (await asyncDb.Table<PlantTask>()
+                    .ToListAsync())
+                    .First(task => task.Id == activity.PlantTaskFk);
             }
             catch (Exception)
             {

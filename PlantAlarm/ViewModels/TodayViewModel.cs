@@ -18,7 +18,9 @@ namespace PlantAlarm.ViewModels
     public class TodayViewModel : INotifyPropertyChanged
     {
         private readonly Page View;
+        private readonly CollectionView DaySelectorView;
         private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
+
         public List<CalendarDay> CalendarDays { get; private set; }
 
         private ObservableCollection<TodayPageActivityItem> activitiesForDay { get; set; }
@@ -43,30 +45,24 @@ namespace PlantAlarm.ViewModels
         }
 
         public ICommand SelectedDayChangedCommand { get; private set; }
+        public ICommand DaySelectedCommand { get; private set; }
+        public ICommand DayUnselectedCommand { get; private set; }
         public ICommand ActivitySelectedCommand { get; private set; }
         public ICommand PlantImageTappedCommand { get; private set; }
         public ICommand DelayAllCommand { get; private set; }
         public ICommand CompleteAllCommand { get; private set; }
+        public ICommand BackToTodayCommand { get; private set; }
 
-        public TodayViewModel(Page view)
+        public TodayViewModel(Page view, CollectionView daySelectorView)
         {
             this.View = view;
+            this.DaySelectorView = daySelectorView;
             ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>();
 
-            var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus 4 months. TODO: maybe a better calendar option.
-                .Select(i => 
-                    new CalendarDay
-                    {
-                        Date = DateTime.Today.AddDays(i)
-                    });
-
-            CalendarDays = listOfDays.ToList();
-            SelectedDay = CalendarDays.Single(cd => cd.Date.Date == DateTime.Today.Date); //Default selection should be today.
-
-            SelectedDayChangedCommand = new Command(async (dateTimeObject) =>
+            SelectedDayChangedCommand = new Command(async (calendarDayObject) =>
             {
-                var date = (dateTimeObject as CalendarDay).Date;
-                var activityList = await PlantActivityService.GetUpcomingActivitiesAsync(date);
+                var calendarDay = calendarDayObject as CalendarDay;
+                var activityList = await PlantActivityService.GetUpcomingActivitiesAsync(calendarDay.Date);
                 var actLi = new List<TodayPageActivityItem>(1);
 
                 foreach (var activity in activityList)
@@ -119,6 +115,24 @@ namespace PlantAlarm.ViewModels
                 }
 
                 ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>(actLi);
+
+                //Previous selection removed.
+                this.SelectedDay.IsSelected = false;
+
+                //Actual selection set and indicated.
+                this.SelectedDay = calendarDay;
+                this.SelectedDay.IsSelected = true;
+
+                //Scrolling to actual selection. MUST happen on main thread.
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.DaySelectorView.ScrollTo(this.CalendarDays.IndexOf(this.SelectedDay), -1, ScrollToPosition.Center);
+                });
+            });
+
+            BackToTodayCommand = new Command(() =>
+            {
+                SelectedDayChangedCommand.Execute(this.CalendarDays[120]);
             });
 
             ActivitySelectedCommand = new Command(async(_todayPageActivityItem) =>
@@ -181,6 +195,17 @@ namespace PlantAlarm.ViewModels
                     }
                 }
             });
+
+            var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus 4 months. TODO: maybe a better calendar option.
+                .Select(i =>
+                    new CalendarDay()
+                    {
+                        Date = DateTime.Today.AddDays(i),
+                        SelectedDayChangedCommand = this.SelectedDayChangedCommand
+                    });
+
+            CalendarDays = listOfDays.ToList();
+            SelectedDay = CalendarDays.Single(cd => cd.Date.Date == DateTime.Today.Date); //Default selection should be today.
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -246,8 +271,24 @@ namespace PlantAlarm.ViewModels
         }
     }
 
-    public class CalendarDay
+    public class CalendarDay : BindableObject
     {
+        public float BorderWidth { get => IsSelected ? 2.0f : 0.0f; }
+
+        private bool isSelected { get; set; } = false;
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                isSelected = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(BorderWidth));
+            }
+        }
+
+        public ICommand SelectedDayChangedCommand { get; set; }
+
         private DateTime date { get; set; }
         public DateTime Date
         {

@@ -1,11 +1,3 @@
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/ibtool/_BundleResourceWithLogicalName.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/actool/_PartialAppManifest.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/actool/_BundleResourceWithLogicalName.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/coremlc/_PartialAppManifest.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/coremlc/_BundleResourceWithLogicalName.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/optimized/
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csprojAssemblyReference.cache
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csproj.CoreCompileInputs.cache
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/bin/iPhoneSimulator/Debug/PlantAlarm.iOS.exe
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/bin/iPhoneSimulator/Debug/PlantAlarm.iOS.pdb
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/bin/iPhoneSimulator/Debug/Plugin.Permissions.dll
@@ -67,6 +59,14 @@
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/bin/iPhoneSimulator/Debug/zh-Hant/Xamarin.Forms.Platform.iOS.resources.dll
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/bin/iPhoneSimulator/Debug/PlantAlarm.dll
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/bin/iPhoneSimulator/Debug/PlantAlarm.pdb
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/ibtool/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/actool/_PartialAppManifest.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/actool/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/coremlc/_PartialAppManifest.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/coremlc/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/optimized/
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csprojAssemblyReference.cache
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csproj.CoreCompileInputs.cache
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/XamlC.stamp
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csproj.CopyComplete
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.exe

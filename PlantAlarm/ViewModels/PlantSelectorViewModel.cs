@@ -11,8 +11,10 @@ using Xamarin.Forms;
 
 namespace PlantAlarm.ViewModels
 {
-    public class PlantSelectorViewModel : INotifyPropertyChanged 
+    public class PlantSelectorViewModel : INotifyPropertyChanged
     {
+        private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
+
         public ObservableCollection<PlantSelectionItem> Plants { get; private set; }
 
         private ObservableCollection<object> selectedPlantItems { get; set; }
@@ -28,6 +30,7 @@ namespace PlantAlarm.ViewModels
 
         public ICommand AddCommand { get; private set; }
         public ICommand SelectionChangedCommand { get; private set; }
+        public ICommand BackCommand { get; private set; }
 
         public PlantSelectorViewModel(List<Plant> alreadySelectedPlants)
         {
@@ -78,6 +81,8 @@ namespace PlantAlarm.ViewModels
 
                 await Application.Current.MainPage.Navigation.PopAsync();
             });
+
+            BackCommand = new Command(async () => await NavigationStack.PopAsync());
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
