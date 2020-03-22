@@ -108,8 +108,8 @@ namespace PlantAlarm.Services
         public static async Task<PlantPhoto> GetPrimaryPhotoOfPlantAsync(Plant plant)
         {
             var primaryPhoto = (await asyncDb.Table<PlantPhoto>()
-                .ToListAsync())
                 .Where(photo => photo.PlantFk == plant.Id)
+                .ToListAsync())
                 .CorrectUrlForAll();
 
             return primaryPhoto.FirstOrDefault();
