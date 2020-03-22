@@ -1,0 +1,8 @@
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/ibtool/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/actool/_PartialAppManifest.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/actool/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/coremlc/_PartialAppManifest.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/coremlc/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11-13.3/optimized/
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csprojAssemblyReference.cache
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csproj.CoreCompileInputs.cache

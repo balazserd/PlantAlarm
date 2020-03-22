@@ -75,6 +75,7 @@ namespace PlantAlarm.ViewModels
         public ICommand SearchCategoriesCommand { get; private set; }
         public ICommand AddCategoryModalCommand { get; private set; }
         public ICommand AppearingCommand { get; private set; }
+        public ICommand DeleteCategoryCommand { get; private set; }
         public ICommand SelectionChangedCommand { get; private set; }
         public ICommand AddCategoriesCommand { get; private set; }
         public ICommand BackCommand { get; private set; }
@@ -90,6 +91,10 @@ namespace PlantAlarm.ViewModels
 
                 MessagingCenter.Send(this as object, "CategoriesSelected", selectedCategories);
                 await Application.Current.MainPage.Navigation.PopAsync();
+            });
+            DeleteCategoryCommand = new Command<CategoryItem>(async (item) =>
+            {
+                await PlantService.RemovePlantCategoryAsync(item.PlantCategory);
             });
             SelectionChangedCommand = new Command((itemTapped) =>
             {
@@ -116,7 +121,7 @@ namespace PlantAlarm.ViewModels
                 {
                     await PlantService.AddPlantCategoryAsync(plantCategory);
 
-                    var categoryItem = new CategoryItem(this.SelectionChangedCommand)
+                    var categoryItem = new CategoryItem(this.SelectionChangedCommand, this.DeleteCategoryCommand)
                     {
                         PlantCategory = plantCategory
                     };
@@ -137,7 +142,7 @@ namespace PlantAlarm.ViewModels
             View = view;
             plantCategoryList = allCategories;
             var categoryItemList = plantCategoryList
-                .Select(pc => new CategoryItem(this.SelectionChangedCommand)
+                .Select(pc => new CategoryItem(this.SelectionChangedCommand, this.DeleteCategoryCommand)
                 {
                     PlantCategory = pc
                 })
@@ -193,10 +198,12 @@ namespace PlantAlarm.ViewModels
         }
 
         public ICommand ItemTappedCommand { get; private set; }
+        public ICommand RemoveCommand { get; private set; }
 
-        public CategoryItem(ICommand itemTappedCommand)
+        public CategoryItem(ICommand itemTappedCommand, ICommand deleteCategoryCommand)
         {
             ItemTappedCommand = itemTappedCommand;
+            RemoveCommand = deleteCategoryCommand;
         }
     }
 }

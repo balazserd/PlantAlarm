@@ -35,4 +35,7 @@
   <ItemGroup>
     <Compile Remove="Services\NotificationService\Notification.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" />
+  </ItemGroup>
 </Project>

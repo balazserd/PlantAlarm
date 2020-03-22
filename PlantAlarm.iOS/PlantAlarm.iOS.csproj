@@ -155,10 +155,6 @@
     <ImageAsset Include="Assets.xcassets\ShareIcon.imageset\icons8-upload.png" />
     <ImageAsset Include="Assets.xcassets\ShareIcon.imageset\icons8-upload-1.png" />
     <ImageAsset Include="Assets.xcassets\ShareIcon.imageset\icons8-upload-2.png" />
-    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\icons8-add_filled-3.png" />
-    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\icons8-add_filled-2.png" />
-    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\icons8-add_filled-1.png" />
     <ImageAsset Include="Assets.xcassets\WarningYellow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\WarningYellow.imageset\icons8-error_filled.png" />
     <ImageAsset Include="Assets.xcassets\WarningYellow.imageset\icons8-error_filled-1.png" />
@@ -167,6 +163,10 @@
     <ImageAsset Include="Assets.xcassets\TickGreen.imageset\icons8-checked_checkbox_filled.png" />
     <ImageAsset Include="Assets.xcassets\TickGreen.imageset\icons8-checked_checkbox_filled-1.png" />
     <ImageAsset Include="Assets.xcassets\TickGreen.imageset\icons8-checked_checkbox_filled-2.png" />
+    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\icons8-add.png" />
+    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\icons8-add-1.png" />
+    <ImageAsset Include="Assets.xcassets\AddButtonGreen.imageset\icons8-add-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -214,5 +214,6 @@
     <Folder Include="Assets.xcassets\AddButtonGreen.imageset\" />
     <Folder Include="Assets.xcassets\WarningYellow.imageset\" />
     <Folder Include="Assets.xcassets\TickGreen.imageset\" />
+    <Folder Include="Assets.xcassets\AddButtonGreen.imageset\" />
   </ItemGroup>
 </Project>

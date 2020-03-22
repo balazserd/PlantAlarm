@@ -125,9 +125,9 @@
                                                         <CollectionView.ItemsLayout>
                                                             <LinearItemsLayout Orientation="Horizontal" />
                                                         </CollectionView.ItemsLayout>
-                                                        <CollectionView.Effects>
+                                                        <!--<CollectionView.Effects>
                                                             <customEffects:OverlappingEffect Size="25"/>
-                                                        </CollectionView.Effects>
+                                                        </CollectionView.Effects>-->
                                                     </CollectionView>
                                                 </Grid>
                                                 <BoxView Color="#199A6D" HorizontalOptions="FillAndExpand" HeightRequest="1" />

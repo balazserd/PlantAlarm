@@ -33,6 +33,11 @@ namespace PlantAlarm.Services
             }
         }
 
+        public static async Task RemovePlantCategoryAsync(PlantCategory categoryToRemove)
+        {
+            await asyncDb.DeleteAsync(categoryToRemove);
+        }
+
         public static async Task AddPlantCategoryConnectionsAsync(List<PlantCategory> categoryList, Plant plant)
         {
             List<PlantCategorization> itemsToAdd = categoryList

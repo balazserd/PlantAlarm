@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<rootpages:SafeAreaRespectingPage  xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
+                                   xmlns="http://xamarin.com/schemas/2014/forms" 
+                                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                                   x:Class="PlantAlarm.Views.RootPages.TodoPage"
+                                   xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+                                   xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+                                   xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#EAF7F2" Margin="0">
+            <StackLayout.Effects>
+                <customEffects:SafeAreaEffect />
+            </StackLayout.Effects>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--TOOLBAR-->
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Grid.Row="0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2">
+
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <!--LEFT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                            
+                            </StackLayout>
+
+                            <!--MIDDLE PART-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="Garden" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                            </StackLayout>
+
+                            <!--RIGHT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                <Button Text="New Plant" FontSize="16" Command="{Binding ShowNewPlantPageCommand}" HorizontalOptions="End" 
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
+                            </StackLayout>
+                        </Grid>
+                        
+                    </StackLayout>
+                </customControls:ShadowLayout>
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</rootpages:SafeAreaRespectingPage>

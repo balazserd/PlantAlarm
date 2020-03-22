@@ -51,7 +51,7 @@
                         <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,2,1,2">
                             <customControls:GradientStackLayout GradientFromColor="#7CC45D" GradientToColor="#9CC45D" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
                                 <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" TextColor="White"/>
-                                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,5" />
+                                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
                                 <Grid HeightRequest="30">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="3*" />

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using PlantAlarm.ViewModels;
+using PlantAlarm.Views.RootPages;
 using Xamarin.Forms;
 
 namespace PlantAlarm.Views
 {
-    public partial class NewTaskPage : ContentPage
+    public partial class NewTaskPage : SafeAreaRespectingPage
     {
         private const int CellHeight = 44;
         private readonly NewTaskViewModel vm;
