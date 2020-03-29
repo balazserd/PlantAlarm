@@ -19,6 +19,7 @@ namespace PlantAlarm.ViewModels
     public class NewPlantViewModel : INotifyPropertyChanged
     {
         private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
+
         private Page View { get; set; }
 
         public string PlantName { get; set; }

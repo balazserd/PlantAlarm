@@ -7,6 +7,7 @@ using PlantAlarm.DatabaseModels;
 using PlantAlarm.ViewModels;
 using SQLite;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace PlantAlarm.Services
 {
@@ -20,10 +21,63 @@ namespace PlantAlarm.Services
         /// Adds the PlantTask to the local storage, asynchronously. Then, creates the associated PlantActivityItems.
         /// </summary>
         /// <param name="task">The PlantTask to add.</param>
-        /// <returns></returns>
-        public static async Task AddPlantTaskAsync(PlantTask task)
+        /// <param name="plantsToPerformTaskOn">The list of Plants this task should be performed on.</param>
+        /// <returns>A Task object that, when finished, creates the resources mentioned above.</returns>
+        public static async Task AddPlantTaskAsync(PlantTask task, List<Plant> plantsToPerformTaskOn)
         {
-            await asyncDb.InsertAsync(task);
+            //Inserting the new PlantTask into DB.
+            await asyncDb.InsertAsync(task); //This will populate the id field.
+
+            //Creating the PlantTask - Plant connections.
+            var connectionList = new List<PlantTaskPlantConnection>();
+            foreach (var plant in plantsToPerformTaskOn)
+            {
+                var plantTaskPlantConnection = new PlantTaskPlantConnection
+                {
+                    PlantFk = plant.Id,
+                    PlantTaskFk = task.Id
+                };
+
+                connectionList.Add(plantTaskPlantConnection);
+            }
+            await PlantActivityService.AddPlantTaskPlantConnectionsAsync(connectionList);
+
+            //Adding activities for the task + recreating the daily reminders.
+            await AddActivitiesFromTaskAsync(task, DateTime.Today);
+        }
+
+        public static async Task ModifyPlantTaskAsync(PlantTask task, List<Plant> plantsToPerformTaskOn)
+        {
+            var oldConnections = await PlantActivityService.GetPlantTaskPlantConnectionsAsync(task);
+
+            //Remove old connections.
+            var plantIdsToRemove = oldConnections
+                .Select(oldConn => oldConn.PlantFk)
+                .Except(plantsToPerformTaskOn.Select(p => p.Id));
+
+            var connectionsToRemove = (await asyncDb
+                .Table<PlantTaskPlantConnection>()
+                .Where(conn => conn.PlantTaskFk == task.Id) //Only this task
+                .ToListAsync())
+                .Where(conn => plantIdsToRemove.Any(id => id == conn.PlantFk)); //Only the plants to remove
+
+            await Task.WhenAll(connectionsToRemove
+                .Select(conn => asyncDb.DeleteAsync(conn)));
+            
+            //Add new connections.
+            var connectionsToAdd = plantsToPerformTaskOn
+                .Select(p => p.Id)
+                .Except(oldConnections.Select(oldConn => oldConn.PlantFk))
+                .Select(id => new PlantTaskPlantConnection()
+                {
+                    PlantFk = id,
+                    PlantTaskFk = task.Id
+                });
+
+            await asyncDb.InsertAllAsync(connectionsToAdd);
+
+            //Update the task and recreate the activities.
+            await asyncDb.UpdateAsync(task);
             await AddActivitiesFromTaskAsync(task, DateTime.Today);
         }
 
@@ -61,6 +115,18 @@ namespace PlantAlarm.Services
         public static async Task AddPlantTaskPlantConnectionsAsync(List<PlantTaskPlantConnection> connections)
         {
             await asyncDb.InsertAllAsync(connections);
+        }
+
+        public static async Task<List<PlantTaskPlantConnection>> GetPlantTaskPlantConnectionsAsync(PlantTask task)
+        {
+            var dconnections = await asyncDb.Table<PlantTaskPlantConnection>()
+                .ToListAsync();
+
+            var connections = await asyncDb.Table<PlantTaskPlantConnection>()
+                .Where(conn => conn.PlantTaskFk == task.Id)
+                .ToListAsync();
+
+            return connections;
         }
 
         /// <summary>
@@ -110,7 +176,7 @@ namespace PlantAlarm.Services
 
         /// <summary>
         /// Adds activities to the local storage from the specified Task for the next 61 days, last day inclusive, today inclusive.
-        /// Tasks after firstDay will be deleted, even if they are marked as completed.
+        /// Activities after firstDay will be deleted, even if they are marked as completed.
         /// </summary>
         /// <param name="task">The PlantTask to create the activities for.</param>
         /// <param name="firstDay">The first (possible) day to add an activity for.</param>

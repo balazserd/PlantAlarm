@@ -41,14 +41,24 @@ namespace PlantAlarm.ViewModels
             ShowTaskDetailsPageCommandBase = new Command(async (_task) =>
             {
                 var task = _task as PlantTask;
-                await Navigation.PushAsync(new TaskDetailsPage(task));
+                await Navigation.PushAsync(new NewTaskPage(true, task));
             });
 
             ShowNewTaskPageCommand = new Command(async () =>
             {
-                await Navigation.PushAsync(new NewTaskPage());
+                await Navigation.PushAsync(new NewTaskPage(false));
             });
 
+            this.RefreshTasks();
+
+            MessagingCenter.Subscribe<object>(this as object, "TaskListChanged", (viewModel) =>
+            {
+                this.RefreshTasks();
+            });
+        }
+
+        private void RefreshTasks()
+        {
             var _plantTasks = new List<PlantTaskItem>();
             var tasks = PlantActivityService.GetAllTasks();
             foreach (var task in tasks)

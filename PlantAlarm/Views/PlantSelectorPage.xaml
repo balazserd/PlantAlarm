@@ -6,26 +6,6 @@
                                   xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
                                   xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
                                   xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
-    <ContentPage.Resources>
-        <Style TargetType="StackLayout">
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="White" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Selected">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="White" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout BackgroundColor="#FEFAEC">
             <StackLayout.Effects>
@@ -64,30 +44,36 @@
                     </StackLayout>
                 </customControls:ShadowLayout>
 
-                <ScrollView Grid.Row="1">
-                    <StackLayout Margin="6,6,0,6">
-                        <CollectionView ItemsSource="{Binding Plants}" SelectionMode="Multiple" x:Name="PlantColView"
-                                        SelectionChangedCommand="{Binding SelectionChangedCommand}" SelectedItems="{Binding SelectedPlantItems}"
-                                        SelectionChangedCommandParameter="{Binding Source={x:Reference PlantColView}, Path=SelectedItems}">
-                            <CollectionView.ItemsLayout>
-                                <GridItemsLayout Span="3" HorizontalItemSpacing="0" VerticalItemSpacing="6" Orientation="Vertical"/>
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackLayout Padding="0,0,6,0">
-                                        <customControls:RoundedCorneredStackLayout Orientation="Vertical" IsSelected="{Binding IsSelected}">
-                                            <customControls:RoundedImage Source="{Binding PrimaryPhoto.Url}" Aspect="AspectFill" 
-                                                                                 Margin="6,6,6,0"/>
-                                            <Label VerticalTextAlignment="Center" Margin="2,-1,2,0" Text="{Binding Plant.Name}"
-                                                   HorizontalTextAlignment="Center" MaxLines="1" LineBreakMode="TailTruncation"
-                                                   FontSize="12"/>
-                                        </customControls:RoundedCorneredStackLayout>
-                                    </StackLayout>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </StackLayout>
-                </ScrollView>
+                <Grid Grid.Row="1">
+
+                    <CollectionView ItemsSource="{Binding Plants}" Margin="6,3,0,6">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Span="3" HorizontalItemSpacing="0" VerticalItemSpacing="6" Orientation="Vertical"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Padding="0,0,6,0" BackgroundColor="{Binding StatusColor}" VerticalOptions="StartAndExpand" HeightRequest="120">
+                                    <customControls:RoundedCorneredStackLayout Orientation="Vertical" IsSelected="{Binding IsSelected}">
+                                        <customControls:RoundedImage Source="{Binding PrimaryPhoto.Url}" Aspect="AspectFill" 
+                                                                        Margin="6,6,6,0"/>
+                                        <Label VerticalTextAlignment="Center" Margin="2,-1,2,0" Text="{Binding Plant.Name}"
+                                                HorizontalTextAlignment="Center" MaxLines="1" LineBreakMode="TailTruncation"
+                                                FontSize="12"/>
+                                    </customControls:RoundedCorneredStackLayout>
+
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ItemTappedCommand}" />
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <customControls:GradientStackLayout GradientFromColor="#FEFAEC" GradientToColor="Transparent" GradientDirection="ToTop" Grid.Row="0"
+                                                        HeightRequest="5" VerticalOptions="Start" />
+
+                </Grid>
+                
             </Grid>
         </StackLayout>
     </ContentPage.Content>

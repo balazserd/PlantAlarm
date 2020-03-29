@@ -1,3 +1,7 @@
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/PlantAlarm.deps.json
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/PlantAlarm.dll
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/ref/PlantAlarm.dll
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/PlantAlarm.pdb
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/App.xaml.g.cs
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/AppShell.xaml.g.cs
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/CustomControls/AddButton.xaml.g.cs
@@ -17,12 +21,8 @@
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.csproj.CoreCompileInputs.cache
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.AssemblyInfoInputs.cache
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.AssemblyInfo.cs
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/XamlC.stamp
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.dll
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/ref/PlantAlarm.dll
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.pdb
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.csprojAssemblyReference.cache
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/PlantAlarm.deps.json
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/PlantAlarm.dll
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/ref/PlantAlarm.dll
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/bin/Debug/netstandard2.0/PlantAlarm.pdb
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/XamlC.stamp

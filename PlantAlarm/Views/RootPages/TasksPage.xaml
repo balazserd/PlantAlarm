@@ -48,7 +48,7 @@
                     <CollectionView ItemsSource="{Binding PlantTasks}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <customControls:ShadowLayout OffsetY="3" ShadowRadius="4" ShadowOpacity="0.4" Padding="10,0,10,3" Margin="0,5">
+                                <customControls:ShadowLayout OffsetY="3" ShadowRadius="4" ShadowOpacity="0.4" Padding="10,3,10,0" Margin="0,5">
                                     <customControls:GradientStackLayout GradientFromColor="#FBED83" GradientToColor="#F7DC67" GradientDirection="ToRight"
                                                                         HeightRequest="75" Padding="7">
                                         

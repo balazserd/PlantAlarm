@@ -15,6 +15,19 @@ namespace PlantAlarm.ViewModels
     public class NewTaskViewModel : INotifyPropertyChanged
     {
         private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
+        private readonly Page View;
+        private readonly PlantTask PlantTaskToEdit;
+
+        private bool isEditingMode { get; set; }
+        public bool IsEditingMode
+        {
+            get => isEditingMode;
+            set
+            {
+                isEditingMode = value;
+                OnPropertyChanged();
+            }
+        }
 
         private List<Plant> plantList { get; set; }
         public List<Plant> PlantList
@@ -63,23 +76,36 @@ namespace PlantAlarm.ViewModels
                 : 1.0;
         }
 
-        public ICommand AddTaskCommand { get; private set; }
+        public string CommitButtonLabel => this.IsEditingMode ? "Save" : "Add";
+
+        public ICommand CommitTaskCommand { get; private set; }
         public ICommand AddPlantsCommand { get; private set; }
         public ICommand BackCommand { get; private set; }
         public ICommand ToggleDayCommand { get; private set; }
+        public ICommand DeleteTaskCommand { get; private set; }
 
-        public NewTaskViewModel()
+        public NewTaskViewModel(Page view, bool isEditingMode, PlantTask taskToEdit = null)
         {
-            var defaultDate = DateTime.Now.AddHours(1);
-            Time = new TimeSpan(defaultDate.Hour, defaultDate.Minute, 0);
-            Date = defaultDate;
+            this.View = view;
+            this.IsEditingMode = isEditingMode;
+            this.PlantTaskToEdit = taskToEdit;
+            if (taskToEdit != null)
+            {
+                this.FillFormWithExistingPlantTask();
+            }
+            else
+            {
+                PlantList = new List<Plant>();
+                var defaultDate = DateTime.Now.AddHours(1);
+                Time = new TimeSpan(defaultDate.Hour, defaultDate.Minute, 0);
+                Date = defaultDate;
+            }
 
-            PlantList = new List<Plant>();
             AddPlantsCommand = new Command(async () =>
             {
                 await Application.Current.MainPage.Navigation.PushAsync(new PlantSelectorPage(PlantList));
             });
-            AddTaskCommand = new Command(async () =>
+            CommitTaskCommand = new Command(async () =>
             {
                 byte.TryParse(EveryXDays, out byte daysRecur);
                 byte.TryParse(EveryXMonths, out byte monthsRecur);
@@ -101,21 +127,18 @@ namespace PlantAlarm.ViewModels
                     OnSaturday = Saturday.IsOn,
                     OnSunday = Sunday.IsOn,
                 };
-                await PlantActivityService.AddPlantTaskAsync(plantTask);
 
-                var connectionList = new List<PlantTaskPlantConnection>();
-                foreach (var plant in PlantList)
+                if (this.IsEditingMode)
                 {
-                    var plantTaskPlantConnection = new PlantTaskPlantConnection
-                    {
-                        PlantFk = plant.Id,
-                        PlantTaskFk = plantTask.Id
-                    };
-
-                    connectionList.Add(plantTaskPlantConnection);
+                    plantTask.Id = this.PlantTaskToEdit.Id;
+                    await PlantActivityService.ModifyPlantTaskAsync(plantTask, this.PlantList);
                 }
-                await PlantActivityService.AddPlantTaskPlantConnectionsAsync(connectionList);
+                else
+                {
+                    await PlantActivityService.AddPlantTaskAsync(plantTask, this.PlantList);
+                }
 
+                MessagingCenter.Send(this as object, "TaskListChanged");
                 await Application.Current.MainPage.Navigation.PopAsync();
             });
             BackCommand = new Command(async () => await NavigationStack.PopAsync());
@@ -124,11 +147,40 @@ namespace PlantAlarm.ViewModels
                 DayToggle dayToggle = (DayToggle)_dayToggle;
                 dayToggle.IsOn = !dayToggle.IsOn;
             });
+            DeleteTaskCommand = new Command(async () =>
+            {
+                string response = await View.DisplayActionSheet("Are you sure you want to delete this task? All future activities of this task will be deleted. This cannot be undone.", "Cancel", "Delete");
+                if (response == "Delete")
+                {
+                    await PlantActivityService.RemoveTaskAsync(this.PlantTaskToEdit);
+                    MessagingCenter.Send(this as object, "TaskListChanged");
+                    await this.NavigationStack.PopAsync();
+                }
+            });
 
             MessagingCenter.Subscribe<object, List<Plant>>(this, "PlantsSelected", (viewModel, selectedPlants) =>
             {
                 PlantList = selectedPlants;
             });
+        }
+
+        private void FillFormWithExistingPlantTask()
+        {
+            this.TaskName = this.PlantTaskToEdit.Name;
+            this.DescriptionText = this.PlantTaskToEdit.Description;
+            this.Monday.IsOn = this.PlantTaskToEdit.OnMonday;
+            this.Tuesday.IsOn = this.PlantTaskToEdit.OnTuesday;
+            this.Wednesday.IsOn = this.PlantTaskToEdit.OnWednesday;
+            this.Thursday.IsOn = this.PlantTaskToEdit.OnThursday;
+            this.Friday.IsOn = this.PlantTaskToEdit.OnFriday;
+            this.Saturday.IsOn = this.PlantTaskToEdit.OnSaturday;
+            this.Sunday.IsOn = this.PlantTaskToEdit.OnSunday;
+            this.EveryXDays = this.PlantTaskToEdit.EveryXDays == 0 ? this.PlantTaskToEdit.EveryXDays.ToString() : "";
+            this.EveryXMonths = this.PlantTaskToEdit.EveryXMonths == 0 ? this.PlantTaskToEdit.EveryXMonths.ToString() : "";
+            this.Time = this.PlantTaskToEdit.FirstOccurrenceDate.TimeOfDay;
+            this.Date = this.PlantTaskToEdit.FirstOccurrenceDate.Date;
+
+            this.PlantList = PlantActivityService.GetPlantsOfTask(this.PlantTaskToEdit);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

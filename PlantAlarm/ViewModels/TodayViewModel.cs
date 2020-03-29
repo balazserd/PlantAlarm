@@ -81,12 +81,16 @@ namespace PlantAlarm.ViewModels
                         switch (chosenAction)
                         {
                             case "Skip":
+                                //This is sadly a workaround, as removing on the public property seems to crash.
+                                this.activitiesForDay.Remove(todayPageActivity);
                                 todayPageActivity.SkipCommand.Execute(null);
-                                this.ActivitiesForDay.Remove(todayPageActivity);
+                                OnPropertyChanged(nameof(ActivitiesForDay));
                                 break;
                             case "Delay":
+                                //This is sadly a workaround, as removing on the public property seems to crash.
+                                this.activitiesForDay.Remove(todayPageActivity);
                                 todayPageActivity.DelayCommand.Execute(null);
-                                this.ActivitiesForDay.Remove(todayPageActivity);
+                                OnPropertyChanged(nameof(ActivitiesForDay));
                                 break;
                             default:
                                 break;
@@ -196,7 +200,7 @@ namespace PlantAlarm.ViewModels
                 }
             });
 
-            var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus 4 months. TODO: maybe a better calendar option.
+            var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus ~4 months. TODO: maybe a better calendar option.
                 .Select(i =>
                     new CalendarDay()
                     {

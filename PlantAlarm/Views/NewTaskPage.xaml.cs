@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlantAlarm.DatabaseModels;
 using PlantAlarm.ViewModels;
 using PlantAlarm.Views.RootPages;
 using Xamarin.Forms;
@@ -12,14 +13,14 @@ namespace PlantAlarm.Views
         private const int CellHeight = 44;
         private readonly NewTaskViewModel vm;
 
-        public NewTaskPage()
+        public NewTaskPage(bool isEditingMode, PlantTask taskToEdit = null)
         {
             InitializeComponent();
 
             this.DatePicker.MinimumDate = DateTime.Now.Date;
             this.TimePicker.Time = TimeSpan.FromHours(8);
 
-            this.BindingContext = new NewTaskViewModel();
+            this.BindingContext = new NewTaskViewModel(this, isEditingMode, taskToEdit);
             vm = this.BindingContext as NewTaskViewModel;
         }
 

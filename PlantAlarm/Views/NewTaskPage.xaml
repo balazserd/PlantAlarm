@@ -36,7 +36,7 @@
 
                             <!--RIGHT TOOLBAR-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                                <Button Text="Add" FontSize="16" Command="{Binding AddTaskCommand}" HorizontalOptions="End" 
+                                <Button Text="{Binding CommitButtonLabel}" FontSize="16" Command="{Binding CommitTaskCommand}" HorizontalOptions="End" 
                                         FontAttributes="Bold" TextColor="#C8AA26" Margin="0,3"/>
                             </StackLayout>
                         </Grid>
@@ -44,238 +44,250 @@
                     </StackLayout>
                 </customControls:ShadowLayout>
 
-                <ScrollView Grid.Row="1">
-                    <StackLayout>
-                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,2,1,2">
-                            <customControls:GradientStackLayout GradientFromColor="#B29722" GradientToColor="#DEBD2A" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
-                                <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" TextColor="White"/>
-                                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
-                                <Grid HeightRequest="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*" />
-                                        <ColumnDefinition Width="8*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="Name" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
-                                    <Entry HorizontalOptions="FillAndExpand" Grid.Column="1" HorizontalTextAlignment="End" TextColor="White"
-                                           Text="{Binding TaskName}" FontAttributes="Italic" BackgroundColor="Transparent">
-                                        <Entry.Effects>
-                                            <customEffects:BorderlessEffect />
-                                        </Entry.Effects>
-                                    </Entry>
-                                </Grid>
-                                <BoxView HeightRequest="1" Color="White" Opacity="0.2"/>
-                                <Grid HeightRequest="30">
-                                    <Grid.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding AddPlantsCommand}" />
-                                    </Grid.GestureRecognizers>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="8*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="Plants" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold" TextColor="White"/>
-                                    <Label Text="{Binding SelectedPlantsText}" VerticalOptions="Center" Opacity="{Binding SelectedPlantsTextOpacity}"
-                                           Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
-                                           HorizontalOptions="End" TextColor="White" />
-                                </Grid>
+                <!--MAIN CONTENT-->
+                <Grid VerticalOptions="FillAndExpand" Grid.Row="1">
+                    <ScrollView>
+                        <StackLayout>
+                            <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,2,1,2">
+                                <customControls:GradientStackLayout GradientFromColor="#B29722" GradientToColor="#DEBD2A" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
+                                    <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                                    <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
+                                    <Grid HeightRequest="30">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="8*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="Name" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
+                                        <Entry HorizontalOptions="FillAndExpand" Grid.Column="1" HorizontalTextAlignment="End" TextColor="White"
+                                               Text="{Binding TaskName}" FontAttributes="Italic" BackgroundColor="Transparent">
+                                            <Entry.Effects>
+                                                <customEffects:BorderlessEffect />
+                                            </Entry.Effects>
+                                        </Entry>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="White" Opacity="0.2"/>
+                                    <Grid HeightRequest="30">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding AddPlantsCommand}" />
+                                        </Grid.GestureRecognizers>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="8*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="Plants" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold" TextColor="White"/>
+                                        <Label Text="{Binding SelectedPlantsText}" VerticalOptions="Center" Opacity="{Binding SelectedPlantsTextOpacity}"
+                                               Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
+                                               HorizontalOptions="End" TextColor="White" />
+                                    </Grid>
 
-                                <StackLayout.Effects>
-                                    <customEffects:RoundedCornerEffect Radius="8" />
-                                </StackLayout.Effects>
-                            </customControls:GradientStackLayout>
-                        </customControls:ShadowLayout>
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
 
-                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2">
-                            <customControls:GradientStackLayout GradientFromColor="#D3AC00" GradientToColor="#EAC317" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
-                                <Label Text="Start of task" FontSize="22" FontAttributes="Bold" TextColor="White"/>
-                                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
-                                <Grid HeightRequest="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*" />
-                                        <ColumnDefinition Width="8*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="Date" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
-                                    <DatePicker x:Name="DatePicker" HorizontalOptions="End" WidthRequest="100" Grid.Column="1" TextColor="White"
-                                                Date="{Binding Date, Mode=TwoWay}">
-                                        <DatePicker.Effects>
-                                            <customEffects:BorderlessEffect />
-                                        </DatePicker.Effects>
-                                    </DatePicker>
-                                </Grid>
-                                <BoxView HeightRequest="1" Color="White" Opacity="0.2"/>
-                                <Grid HeightRequest="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*" />
-                                        <ColumnDefinition Width="8*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="Time" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
-                                    <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" Grid.Column="1" TextColor="White"
-                                                Time="{Binding Time, Mode=TwoWay}">
-                                        <TimePicker.Effects>
-                                            <customEffects:BorderlessEffect />
-                                        </TimePicker.Effects>
-                                    </TimePicker>
-                                </Grid>
+                            <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2">
+                                <customControls:GradientStackLayout GradientFromColor="#D3AC00" GradientToColor="#EAC317" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
+                                    <Label Text="Start of task" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                                    <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
+                                    <Grid HeightRequest="30">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="8*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="Date" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
+                                        <DatePicker x:Name="DatePicker" HorizontalOptions="End" WidthRequest="100" Grid.Column="1" TextColor="White"
+                                                    Date="{Binding Date, Mode=TwoWay}">
+                                            <DatePicker.Effects>
+                                                <customEffects:BorderlessEffect />
+                                            </DatePicker.Effects>
+                                        </DatePicker>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="White" Opacity="0.2"/>
+                                    <Grid HeightRequest="30">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="8*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="Time" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
+                                        <TimePicker x:Name="TimePicker" HorizontalOptions="End" WidthRequest="100" Grid.Column="1" TextColor="White"
+                                                    Time="{Binding Time, Mode=TwoWay}">
+                                            <TimePicker.Effects>
+                                                <customEffects:BorderlessEffect />
+                                            </TimePicker.Effects>
+                                        </TimePicker>
+                                    </Grid>
 
-                                <StackLayout.Effects>
-                                    <customEffects:RoundedCornerEffect Radius="8" />
-                                </StackLayout.Effects>
-                            </customControls:GradientStackLayout>
-                        </customControls:ShadowLayout>
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
 
-                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2">
-                            <customControls:GradientStackLayout GradientFromColor="#D3AC00" GradientToColor="#EAC317" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
-                                <Label Text="Recurrence" FontSize="22" FontAttributes="Bold" TextColor="White"/>
-                                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
-                                <Grid HeightRequest="35" Margin="0,0,0,3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <StackLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                 BackgroundColor="{Binding Monday.BackgroundColor}">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Monday}" />
-                                        </StackLayout.GestureRecognizers>
+                            <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2">
+                                <customControls:GradientStackLayout GradientFromColor="#D3AC00" GradientToColor="#EAC317" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
+                                    <Label Text="Recurrence" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                                    <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
+                                    <Grid HeightRequest="35" Margin="0,0,0,3"> <!--Day selector grid-->
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                     BackgroundColor="{Binding Monday.BackgroundColor}">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Monday}" />
+                                            </StackLayout.GestureRecognizers>
 
-                                        <Label Text="MON" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                               TextColor="{Binding Monday.TextColor}"/>
+                                            <Label Text="MON" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Monday.TextColor}"/>
                                         
-                                        <StackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                        </StackLayout.Effects>
-                                    </StackLayout>
-                                    <StackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                 BackgroundColor="{Binding Tuesday.BackgroundColor}" >
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Tuesday}" />
-                                        </StackLayout.GestureRecognizers>
+                                            <StackLayout.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                            </StackLayout.Effects>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                     BackgroundColor="{Binding Tuesday.BackgroundColor}" >
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Tuesday}" />
+                                            </StackLayout.GestureRecognizers>
 
-                                        <Label Text="TUE" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                               TextColor="{Binding Tuesday.TextColor}"/>
+                                            <Label Text="TUE" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Tuesday.TextColor}"/>
                                         
-                                        <StackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                        </StackLayout.Effects>
-                                    </StackLayout>
-                                    <StackLayout Grid.Column="2" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                 BackgroundColor="{Binding Wednesday.BackgroundColor}">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Wednesday}" />
-                                        </StackLayout.GestureRecognizers>
+                                            <StackLayout.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                            </StackLayout.Effects>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="2" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                     BackgroundColor="{Binding Wednesday.BackgroundColor}">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Wednesday}" />
+                                            </StackLayout.GestureRecognizers>
 
-                                        <Label Text="WED" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                               TextColor="{Binding Wednesday.TextColor}"/>
+                                            <Label Text="WED" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Wednesday.TextColor}"/>
                                         
-                                        <StackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                        </StackLayout.Effects>
-                                    </StackLayout>
-                                    <StackLayout Grid.Column="3" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                 BackgroundColor="{Binding Thursday.BackgroundColor}">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Thursday}" />
-                                        </StackLayout.GestureRecognizers>
+                                            <StackLayout.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                            </StackLayout.Effects>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="3" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                     BackgroundColor="{Binding Thursday.BackgroundColor}">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Thursday}" />
+                                            </StackLayout.GestureRecognizers>
 
-                                        <Label Text="THU" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                               TextColor="{Binding Thursday.TextColor}"/>
+                                            <Label Text="THU" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Thursday.TextColor}"/>
                                         
-                                        <StackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                        </StackLayout.Effects>
+                                            <StackLayout.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                            </StackLayout.Effects>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="4" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                     BackgroundColor="{Binding Friday.BackgroundColor}">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Friday}" />
+                                            </StackLayout.GestureRecognizers>
+
+                                            <Label Text="FRI" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Friday.TextColor}"/>
+
+                                            <StackLayout.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                            </StackLayout.Effects>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="5" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                     BackgroundColor="{Binding Saturday.BackgroundColor}">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Saturday}" />
+                                            </StackLayout.GestureRecognizers>
+
+                                            <Label Text="SAT" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Saturday.TextColor}"/>
+
+                                            <StackLayout.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                            </StackLayout.Effects>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="6" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                     BackgroundColor="{Binding Sunday.BackgroundColor}">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Sunday}" />
+                                            </StackLayout.GestureRecognizers>
+
+                                            <Label Text="SUN" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Sunday.TextColor}"/>
+
+                                            <StackLayout.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="7" />
+                                            </StackLayout.Effects>
+                                        </StackLayout>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="White" Opacity="0.3"/>
+                                    <StackLayout Orientation="Horizontal" Grid.Column="0">
+                                        <Label Text="Every " VerticalOptions="Center" TextColor="White" />
+                                        <Entry VerticalOptions="Center" x:Name="EveryXDaysEntry" Keyboard="Numeric"  WidthRequest="37" BackgroundColor="#FAF3D0"
+                                               HorizontalTextAlignment="Center" MaxLength="2" Text="{Binding EveryXDays}" TextColor="#947900">
+                                            <Entry.Behaviors>
+                                                <behaviors:DoubleDigitEntryCheckingBehavior/>
+                                            </Entry.Behaviors>
+                                        </Entry>
+                                        <Label Text=" days"  VerticalOptions="Center" TextColor="White" />
                                     </StackLayout>
-                                    <StackLayout Grid.Column="4" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                 BackgroundColor="{Binding Friday.BackgroundColor}">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Friday}" />
-                                        </StackLayout.GestureRecognizers>
-
-                                        <Label Text="FRI" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                               TextColor="{Binding Friday.TextColor}"/>
-
-                                        <StackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                        </StackLayout.Effects>
+                                    <BoxView HeightRequest="1" Color="White" Opacity="0.3"/>
+                                    <StackLayout Orientation="Horizontal" Grid.Column="0">
+                                        <Label Text="Every " VerticalOptions="Center" TextColor="White" />
+                                        <Entry VerticalOptions="Center" x:Name="EveryXMonthsEntry" Keyboard="Numeric" WidthRequest="37" BackgroundColor="#FAF3D0"
+                                               HorizontalTextAlignment="Center" MaxLength="2" Text="{Binding EveryXMonths}" TextColor="#947900">
+                                            <Entry.Behaviors>
+                                                <behaviors:DoubleDigitEntryCheckingBehavior/>
+                                            </Entry.Behaviors>
+                                        </Entry>
+                                        <Label Text=" month(s)" VerticalOptions="Center" TextColor="White"/>
                                     </StackLayout>
-                                    <StackLayout Grid.Column="5" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                 BackgroundColor="{Binding Saturday.BackgroundColor}">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Saturday}" />
-                                        </StackLayout.GestureRecognizers>
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
 
-                                        <Label Text="SAT" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                               TextColor="{Binding Saturday.TextColor}"/>
+                            <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2">
+                                <customControls:GradientStackLayout GradientFromColor="#E5C94E" GradientToColor="#E9D26E" GradientDirection="ToTopRight" Padding="8"
+                                                                    Margin="10">
+                                    <Label Text="Notes" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                                    <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
+                                    <Editor Text="{Binding DescriptionText}" FontAttributes="Italic" MaxLength="1000" TextColor="#947900" BackgroundColor="#FAF3D0"
+                                            VerticalOptions="FillAndExpand" HeightRequest="100">
 
-                                        <StackLayout.Effects>
+                                        <Editor.Effects>
                                             <customEffects:RoundedCornerEffect Radius="7" />
-                                        </StackLayout.Effects>
-                                    </StackLayout>
-                                    <StackLayout Grid.Column="6" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                 BackgroundColor="{Binding Sunday.BackgroundColor}">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Sunday}" />
-                                        </StackLayout.GestureRecognizers>
+                                        </Editor.Effects>
+                                    </Editor>
 
-                                        <Label Text="SUN" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                               TextColor="{Binding Sunday.TextColor}"/>
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
 
-                                        <StackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                        </StackLayout.Effects>
-                                    </StackLayout>
-                                </Grid> <!--Day selector grid (too long, so collapsed)-->
-                                <BoxView HeightRequest="1" Color="White" Opacity="0.3"/>
-                                <StackLayout Orientation="Horizontal" Grid.Column="0">
-                                    <Label Text="Every " VerticalOptions="Center" TextColor="White" />
-                                    <Entry VerticalOptions="Center" x:Name="EveryXDaysEntry" Keyboard="Numeric"  WidthRequest="37" BackgroundColor="#FAF3D0"
-                                           HorizontalTextAlignment="Center" MaxLength="2" Text="{Binding EveryXDays}" TextColor="#947900">
-                                        <Entry.Behaviors>
-                                            <behaviors:DoubleDigitEntryCheckingBehavior/>
-                                        </Entry.Behaviors>
-                                    </Entry>
-                                    <Label Text=" days"  VerticalOptions="Center" TextColor="White" />
-                                </StackLayout>
-                                <BoxView HeightRequest="1" Color="White" Opacity="0.3"/>
-                                <StackLayout Orientation="Horizontal" Grid.Column="0">
-                                    <Label Text="Every " VerticalOptions="Center" TextColor="White" />
-                                    <Entry VerticalOptions="Center" x:Name="EveryXMonthsEntry" Keyboard="Numeric" WidthRequest="37" BackgroundColor="#FAF3D0"
-                                           HorizontalTextAlignment="Center" MaxLength="2" Text="{Binding EveryXMonths}" TextColor="#947900">
-                                        <Entry.Behaviors>
-                                            <behaviors:DoubleDigitEntryCheckingBehavior/>
-                                        </Entry.Behaviors>
-                                    </Entry>
-                                    <Label Text=" month(s)" VerticalOptions="Center" TextColor="White"/>
-                                </StackLayout>
-                                <StackLayout.Effects>
-                                    <customEffects:RoundedCornerEffect Radius="8" />
-                                </StackLayout.Effects>
-                            </customControls:GradientStackLayout>
-                        </customControls:ShadowLayout>
+                            <customControls:ShadowLayout OffsetY="2" ShadowRadius="3" ShadowOpacity="0.6" Padding="0,0,0,2" IsVisible="{Binding IsEditingMode}">
+                                <Button Command="{Binding DeleteTaskCommand}" Text="Delete Task" CornerRadius="8" BackgroundColor="#FC6055" TextColor="White" Margin="10,-5,10,10"
+                                        FontAttributes="Bold" />
+                            </customControls:ShadowLayout>
+                        </StackLayout>
 
-                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2">
-                            <customControls:GradientStackLayout GradientFromColor="#E5C94E" GradientToColor="#E9D26E" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
-                                <Label Text="Notes" FontSize="22" FontAttributes="Bold" TextColor="White"/>
-                                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
-                                <Editor Text="{Binding DescriptionText}" FontAttributes="Italic" MaxLength="1000" TextColor="#947900" BackgroundColor="#FAF3D0"
-                                        VerticalOptions="FillAndExpand" HeightRequest="100">
-
-                                    <Editor.Effects>
-                                        <customEffects:RoundedCornerEffect Radius="7" />
-                                    </Editor.Effects>
-                                </Editor>
-
-                                <StackLayout.Effects>
-                                    <customEffects:RoundedCornerEffect Radius="8" />
-                                </StackLayout.Effects>
-                            </customControls:GradientStackLayout>
-                        </customControls:ShadowLayout>
-                    </StackLayout>
-
-                </ScrollView>
+                    </ScrollView>
+                    
+                    <customControls:GradientStackLayout GradientFromColor="#FEFAEC" GradientToColor="Transparent" GradientDirection="ToTop" Grid.Row="0"
+                                                        HeightRequest="5" VerticalOptions="Start" Margin="0,-2,0,0"/> <!--This is responsible for the fading scroll at the top-->
+                </Grid>
 
             </Grid>
 

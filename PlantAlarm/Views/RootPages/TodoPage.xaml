@@ -7,20 +7,20 @@
                                    xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
                                    xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#EAF7F2" Margin="0">
+        <StackLayout BackgroundColor="#ECF1F9" Margin="0">
             <StackLayout.Effects>
                 <customEffects:SafeAreaEffect />
             </StackLayout.Effects>
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="45" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <!--TOOLBAR-->
-                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Grid.Row="0">
-                    <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2">
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,5" Grid.Row="0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#ECF1F9" Padding="11,2">
 
                         <Grid HorizontalOptions="FillAndExpand">
                             <!--LEFT TOOLBAR-->
@@ -36,126 +36,140 @@
                             <!--RIGHT TOOLBAR-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
                                 <Button Text="Today" FontSize="16" Command="{Binding BackToTodayCommand}" HorizontalOptions="End" 
-                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
+                                        FontAttributes="Bold" TextColor="#3468BE" Margin="0,3"/>
                             </StackLayout>
                         </Grid>
                         
                     </StackLayout>
                 </customControls:ShadowLayout>
 
-                <StackLayout Grid.Row="1">
-                    <CollectionView ItemsSource="{Binding CalendarDays}" Grid.Row="1" x:Name="DaysListView" SelectionMode="None"
-                                    HeightRequest="52" Margin="0,3,0,3">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Horizontal" />
-                        </CollectionView.ItemsLayout>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
 
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout WidthRequest="35" Padding="0,1,0,0" customEffects:StBorderEffect.Thickness="{Binding BorderWidth}">
-                                    <Label Text="{Binding MonthName}" TextColor="#508AE9" FontSize="9"
-                                            HorizontalOptions="Center"/>
-                                    <Label Text="{Binding Day}" FontAttributes="Bold" FontSize="16" TextColor="Black"
-                                            HorizontalOptions="Center" Margin="0,-5,0,0" />
-                                    <Label Text="{Binding DayName}" FontSize="10" HorizontalOptions="Center" Margin="0,-5,0,0" TextColor="Black"/>
+                    <StackLayout Grid.Row="0">
+                        <customControls:ShadowLayout OffsetY="3.5" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,1,0,2" Grid.Row="0">
+                            <CollectionView ItemsSource="{Binding CalendarDays}" Grid.Row="1" x:Name="DaysListView" SelectionMode="None"
+                                            HeightRequest="60" Margin="0,3,0,10" HorizontalScrollBarVisibility="Never" BackgroundColor="#DAE3F3">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Horizontal" />
+                                </CollectionView.ItemsLayout>
 
-                                    <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding SelectedDayChangedCommand}" CommandParameter="{Binding .}" />
-                                    </StackLayout.GestureRecognizers>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Padding="0,2,0,3">
+                                            <StackLayout WidthRequest="35" Padding="1,2,0,0" customEffects:StBorderEffect.Thickness="{Binding BorderWidth}"
+                                                         VerticalOptions="FillAndExpand">
+                                                <Label Text="{Binding MonthName}" TextColor="#508AE9" FontSize="9" VerticalOptions="Center"
+                                                        HorizontalOptions="Center"/>
+                                                <Label Text="{Binding Day}" FontAttributes="Bold" FontSize="16" TextColor="Black" VerticalOptions="Center"
+                                                        HorizontalOptions="Center" Margin="0,-5,0,0" />
+                                                <Label Text="{Binding DayName}" FontSize="10" HorizontalOptions="Center" Margin="0,-5,0,0" TextColor="Black"
+                                                       VerticalOptions="Center" />
 
-                                    <StackLayout.Effects>
-                                        <customEffects:RoundedCornerEffect Radius="5" />
-                                        <customEffects:BorderEffect Color="#ff5852" />
-                                    </StackLayout.Effects>
-                                </StackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SelectedDayChangedCommand}" CommandParameter="{Binding .}" />
+                                                </StackLayout.GestureRecognizers>
 
-                    <CollectionView ItemsSource="{Binding ActivitiesForDay}" VerticalOptions="FillAndExpand"	
-                                    x:Name="ActivityListView">
-                        <CollectionView.ItemTemplate>	
-                            <DataTemplate>
-                                <customControls:ShadowLayout OffsetY="3" ShadowRadius="4" ShadowOpacity="0.4" Padding="10,0,10,3" Margin="0,5">
-                                    <customControls:GradientStackLayout GradientFromColor="#FBED83" GradientToColor="#F7DC67" GradientDirection="ToRight"
-                                                                HeightRequest="80" Padding="7">
-                                        <customControls:GradientStackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ActivityTappedCommand}" CommandParameter="{Binding .}" />
-                                        </customControls:GradientStackLayout.GestureRecognizers>
-                                            
-                                        <StackLayout Orientation="Horizontal" Margin="0,0,10,3">	
-                                            <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">	
-                                                <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White"/>	
-                                                <CollectionView ItemsSource="{Binding Plants}" InputTransparent="false">	
-                                                    <CollectionView.ItemsLayout>	
-                                                        <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"	
-                                                                            HorizontalItemSpacing="5"/>	
-                                                    </CollectionView.ItemsLayout>	
-                                                    <CollectionView.ItemTemplate>	
-                                                        <DataTemplate>	
-                                                            <StackLayout>	
-                                                                <Image Source="{Binding Photo.Url}" HeightRequest="50" WidthRequest="50"	
-                                                                        Aspect="AspectFill">	
-                                                                    <Image.Effects>	
-                                                                        <customEffects:RoundedCornerEffect Radius="5" />	
-                                                                        <customEffects:BorderEffect Thickness="1.5" Color="White" />	
-                                                                    </Image.Effects>	
-                                                                    <Image.GestureRecognizers>	
-                                                                        <TapGestureRecognizer Command="{Binding PlantImageTappedCommand}" 	
-                                                                                                CommandParameter="{Binding Plant}" />	
-                                                                    </Image.GestureRecognizers>	
-                                                                </Image>	
-                                                            </StackLayout>	
-                                                        </DataTemplate>	
-                                                    </CollectionView.ItemTemplate>	
-                                                </CollectionView>	
-                                            </StackLayout>	
-                                            <CheckBox IsChecked="{Binding PlantActivityItem.IsCompleted, Mode=TwoWay}" HorizontalOptions="End" />	
+                                                <StackLayout.Effects>
+                                                    <customEffects:RoundedCornerEffect Radius="5" />
+                                                    <customEffects:BorderEffect Color="#ff5852" />
+                                                </StackLayout.Effects>
+                                            </StackLayout>
                                         </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </customControls:ShadowLayout>
+
+                        <Grid Margin="0,-5,0,0">
+                            <CollectionView ItemsSource="{Binding ActivitiesForDay}" VerticalOptions="FillAndExpand" Margin="0,2,0,5" VerticalScrollBarVisibility="Never"	
+                                            x:Name="ActivityListView">
+                                <CollectionView.ItemTemplate>	
+                                    <DataTemplate>
+                                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="3" ShadowOpacity="0.4" Padding="10,3,10,0" Margin="0,5">
+                                            <customControls:GradientStackLayout GradientFromColor="#5883C9" GradientToColor="#7D9ED5" GradientDirection="ToRight"
+                                                                        HeightRequest="80" Padding="7">
+                                                <customControls:GradientStackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ActivityTappedCommand}" CommandParameter="{Binding .}" />
+                                                </customControls:GradientStackLayout.GestureRecognizers>
+                                            
+                                                <StackLayout Orientation="Horizontal" Margin="0,0,0,3">	
+                                                    <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">	
+                                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White"/>	
+                                                        <CollectionView ItemsSource="{Binding Plants}" InputTransparent="false">	
+                                                            <CollectionView.ItemsLayout>	
+                                                                <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"	
+                                                                                    HorizontalItemSpacing="5"/>	
+                                                            </CollectionView.ItemsLayout>	
+                                                            <CollectionView.ItemTemplate>	
+                                                                <DataTemplate>	
+                                                                    <StackLayout>	
+                                                                        <Image Source="{Binding Photo.Url}" HeightRequest="50" WidthRequest="50"	
+                                                                                Aspect="AspectFill">	
+                                                                            <Image.Effects>	
+                                                                                <customEffects:RoundedCornerEffect Radius="5" />	
+                                                                                <customEffects:BorderEffect Thickness="1.5" Color="White" />	
+                                                                            </Image.Effects>	
+                                                                            <Image.GestureRecognizers>	
+                                                                                <TapGestureRecognizer Command="{Binding PlantImageTappedCommand}" 	
+                                                                                                        CommandParameter="{Binding Plant}" />	
+                                                                            </Image.GestureRecognizers>	
+                                                                        </Image>	
+                                                                    </StackLayout>	
+                                                                </DataTemplate>	
+                                                            </CollectionView.ItemTemplate>	
+                                                        </CollectionView>	
+                                                    </StackLayout>
+                                                    <!--<customControls:ShadowLayout OffsetY="2" ShadowRadius="3" ShadowOpacity="0.4">-->
+                                                        <customControls:GradientStackLayout GradientFromColor="Transparent" GradientToColor="Transparent" GradientDirection="ToRight"
+                                                                                            HorizontalOptions="End">
+                                                            <Button Text="{Binding ActivityStatusText}" BackgroundColor="{Binding ActivityStatusButtonBackgroundColor}"
+                                                                    BorderWidth="1.5"
+                                                                    BorderColor="{Binding ActivityStatusButtonBorderColor}" Command="{Binding IsCompletedChangedCommand}"
+                                                                    CornerRadius="5" TextColor="White" FontAttributes="Bold" WidthRequest="50" HeightRequest="37" />
+                                                            <Button Text="Skip" Command="{Binding ShowSkipDelayActionSheetCommand}" BorderColor="#224379" BorderWidth="1.5"
+                                                                    CornerRadius="5" BackgroundColor="White" WidthRequest="50" HeightRequest="37" TextColor="#224379"/>
+                                                        </customControls:GradientStackLayout>
+                                                    <!--</customControls:ShadowLayout>-->
+                                                </StackLayout>
 
                                         
-                                        <customControls:GradientStackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="7" />
-                                        </customControls:GradientStackLayout.Effects>
-                                    </customControls:GradientStackLayout>
-                                </customControls:ShadowLayout>
-                            </DataTemplate>	
-                        </CollectionView.ItemTemplate>	
-                    </CollectionView>
+                                                <customControls:GradientStackLayout.Effects>
+                                                    <customEffects:RoundedCornerEffect Radius="7" />
+                                                </customControls:GradientStackLayout.Effects>
+                                            </customControls:GradientStackLayout>
+                                        </customControls:ShadowLayout>
+                                    </DataTemplate>	
+                                </CollectionView.ItemTemplate>	
+                            </CollectionView>
+                        </Grid>
 
-                    <Grid Margin="10,2,10,10" VerticalOptions="End" HeightRequest="65">	
-                        <Grid.ColumnDefinitions>	
-                            <ColumnDefinition Width="*" />	
-                            <ColumnDefinition Width="*" />	
-                        </Grid.ColumnDefinitions>	
+                        <Grid Padding="10" Grid.Row="1" HeightRequest="65" Margin="0,-10,0,-8">	
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />	
+                                <ColumnDefinition Width="*" />	
+                            </Grid.ColumnDefinitions>	
 
-                        <Button Text="Complete all" BackgroundColor="#ECF1F9" TextColor="#2E5DA9" FontAttributes="Bold" BorderColor="#B5C8E7" BorderWidth="1"	
-                                Command="{Binding CompleteAllCommand}" HorizontalOptions="FillAndExpand" Grid.Column="0" CornerRadius="8"/>	
-                        <Button Text="Delay all" BackgroundColor="#ECF1F9" TextColor="#E71B4E" FontAttributes="Bold" BorderColor="#E71B4E" BorderWidth="1"	
-                                Command="{Binding DelayAllCommand}" HorizontalOptions="FillAndExpand" Grid.Column="1" CornerRadius="8"/>	
-                    </Grid>
+                            <customControls:ShadowLayout OffsetY="3" ShadowRadius="4" ShadowOpacity="0.3" Grid.Column="0">
+                                <Button Text="Complete all" BackgroundColor="#ECF1F9" TextColor="#2E5DA9" FontAttributes="Bold" BorderColor="#224379" BorderWidth="1"	
+                                        Command="{Binding CompleteAllCommand}" HorizontalOptions="FillAndExpand" CornerRadius="8" HeightRequest="40" />
+                            </customControls:ShadowLayout>
 
-                </StackLayout>
+                            <customControls:ShadowLayout OffsetY="3" ShadowRadius="4" ShadowOpacity="0.3" Grid.Column="1">
+                                <Button Text="Delay all" BackgroundColor="#ECF1F9" TextColor="#E71B4E" FontAttributes="Bold" BorderColor="#E71B4E" BorderWidth="1"	
+                                        Command="{Binding DelayAllCommand}" HorizontalOptions="FillAndExpand" CornerRadius="8" HeightRequest="40" />
+                            </customControls:ShadowLayout>
+                        </Grid>
+
+                    </StackLayout>
+                    
+                </Grid>
 
             </Grid>
         </StackLayout>
     </ContentPage.Content>
 
-    <ContentPage.Resources>
-        <Style TargetType="Frame">
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="Selected">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor"
-                                        Value="#EAF7F2" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-    </ContentPage.Resources>
 </rootpages:SafeAreaRespectingPage>

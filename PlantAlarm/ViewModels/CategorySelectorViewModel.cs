@@ -160,8 +160,6 @@ namespace PlantAlarm.ViewModels
             var alreadySelectedCategoryItems = Categories.Where(ci => alreadySelectedCategories.FirstOrDefault(pc => pc.Id == ci.PlantCategory.Id) != null);
 
             SelectedCategoryItems = new ObservableCollection<CategoryItem>(alreadySelectedCategoryItems);
-
-            
         }
 
         public static async Task<CategorySelectorViewModel> CreateAsync(Page view, List<PlantCategory> alreadySelected)
