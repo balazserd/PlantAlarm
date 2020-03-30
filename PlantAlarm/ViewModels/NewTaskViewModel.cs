@@ -139,6 +139,7 @@ namespace PlantAlarm.ViewModels
                 }
 
                 MessagingCenter.Send(this as object, "TaskListChanged");
+                MessagingCenter.Send(this as object, "SelectedDayActivitiesMightHaveChanged");
                 await Application.Current.MainPage.Navigation.PopAsync();
             });
             BackCommand = new Command(async () => await NavigationStack.PopAsync());
@@ -175,8 +176,8 @@ namespace PlantAlarm.ViewModels
             this.Friday.IsOn = this.PlantTaskToEdit.OnFriday;
             this.Saturday.IsOn = this.PlantTaskToEdit.OnSaturday;
             this.Sunday.IsOn = this.PlantTaskToEdit.OnSunday;
-            this.EveryXDays = this.PlantTaskToEdit.EveryXDays == 0 ? this.PlantTaskToEdit.EveryXDays.ToString() : "";
-            this.EveryXMonths = this.PlantTaskToEdit.EveryXMonths == 0 ? this.PlantTaskToEdit.EveryXMonths.ToString() : "";
+            this.EveryXDays = this.PlantTaskToEdit.EveryXDays == 0 ? "" : this.PlantTaskToEdit.EveryXDays.ToString();
+            this.EveryXMonths = this.PlantTaskToEdit.EveryXMonths == 0 ? "" : this.PlantTaskToEdit.EveryXMonths.ToString();
             this.Time = this.PlantTaskToEdit.FirstOccurrenceDate.TimeOfDay;
             this.Date = this.PlantTaskToEdit.FirstOccurrenceDate.Date;
 

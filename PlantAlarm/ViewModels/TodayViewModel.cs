@@ -62,70 +62,7 @@ namespace PlantAlarm.ViewModels
             SelectedDayChangedCommand = new Command(async (calendarDayObject) =>
             {
                 var calendarDay = calendarDayObject as CalendarDay;
-                var activityList = await PlantActivityService.GetUpcomingActivitiesAsync(calendarDay.Date);
-                var actLi = new List<TodayPageActivityItem>(1);
-
-                foreach (var activity in activityList)
-                {
-                    var todayPageActivity = new TodayPageActivityItem();
-                    todayPageActivity.PlantActivityItem = activity;
-
-                    todayPageActivity.ActivityTappedCommand = new Command(() =>
-                    {
-                        this.ActivitySelectedCommand.Execute(todayPageActivity);
-                    });
-
-                    todayPageActivity.ShowSkipDelayActionSheetCommand = new Command(async () =>
-                    {
-                        string chosenAction = await view.DisplayActionSheet("Choose an option", "Cancel", null, "Skip", "Delay");
-                        switch (chosenAction)
-                        {
-                            case "Skip":
-                                //This is sadly a workaround, as removing on the public property seems to crash.
-                                this.activitiesForDay.Remove(todayPageActivity);
-                                todayPageActivity.SkipCommand.Execute(null);
-                                OnPropertyChanged(nameof(ActivitiesForDay));
-                                break;
-                            case "Delay":
-                                //This is sadly a workaround, as removing on the public property seems to crash.
-                                this.activitiesForDay.Remove(todayPageActivity);
-                                todayPageActivity.DelayCommand.Execute(null);
-                                OnPropertyChanged(nameof(ActivitiesForDay));
-                                break;
-                            default:
-                                break;
-                        }
-                    });
-
-                    var plantsOfActivity = await PlantActivityService.GetPlantsOfActivityAsync(activity);
-                    todayPageActivity.Plants = (await Task.WhenAll(
-                        plantsOfActivity
-                        .Select(async (plant) =>
-                        {
-                            var plantItem = new TodayPagePlantItem();
-                            plantItem.Plant = plant;
-
-                            plantItem.Photo = await PlantService.GetPrimaryPhotoOfPlantAsync(plant);
-
-                            plantItem.PlantImageTappedCommand = this.PlantImageTappedCommand;
-
-                            return plantItem;
-                        })
-                    ))
-                    .ToList();
-
-                    todayPageActivity.Name = (await PlantActivityService.GetTaskOfActivityAsync(activity)).Name;
-                    actLi.Add(todayPageActivity);
-                }
-
-                ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>(actLi);
-
-                //Previous selection removed.
-                this.SelectedDay.IsSelected = false;
-
-                //Actual selection set and indicated.
-                this.SelectedDay = calendarDay;
-                this.SelectedDay.IsSelected = true;
+                await this.PerformDaySelectionChange(calendarDay);
 
                 //Scrolling to actual selection. MUST happen on main thread.
                 Device.BeginInvokeOnMainThread(() =>
@@ -210,6 +147,79 @@ namespace PlantAlarm.ViewModels
 
             CalendarDays = listOfDays.ToList();
             SelectedDay = CalendarDays.Single(cd => cd.Date.Date == DateTime.Today.Date); //Default selection should be today.
+
+            MessagingCenter.Subscribe<object>(this as object, "SelectedDayActivitiesMightHaveChanged", async (viewModel) =>
+            {
+                await this.PerformDaySelectionChange(this.SelectedDay);
+            });
+        }
+
+        private async Task PerformDaySelectionChange(CalendarDay calendarDay)
+        {
+            var activityList = await PlantActivityService.GetUpcomingActivitiesAsync(calendarDay.Date);
+            var actLi = new List<TodayPageActivityItem>(1);
+
+            foreach (var activity in activityList)
+            {
+                var todayPageActivity = new TodayPageActivityItem();
+                todayPageActivity.PlantActivityItem = activity;
+
+                todayPageActivity.ActivityTappedCommand = new Command(() =>
+                {
+                    this.ActivitySelectedCommand.Execute(todayPageActivity);
+                });
+
+                todayPageActivity.ShowSkipDelayActionSheetCommand = new Command(async () =>
+                {
+                    string chosenAction = await this.View.DisplayActionSheet("Choose an option", "Cancel", null, "Skip", "Delay");
+                    switch (chosenAction)
+                    {
+                        case "Skip":
+                            //This is sadly a workaround, as removing on the public property seems to crash.
+                            this.activitiesForDay.Remove(todayPageActivity);
+                            todayPageActivity.SkipCommand.Execute(null);
+                            OnPropertyChanged(nameof(ActivitiesForDay));
+                            break;
+                        case "Delay":
+                            //This is sadly a workaround, as removing on the public property seems to crash.
+                            this.activitiesForDay.Remove(todayPageActivity);
+                            todayPageActivity.DelayCommand.Execute(null);
+                            OnPropertyChanged(nameof(ActivitiesForDay));
+                            break;
+                        default:
+                            break;
+                    }
+                });
+
+                var plantsOfActivity = await PlantActivityService.GetPlantsOfActivityAsync(activity);
+                todayPageActivity.Plants = (await Task.WhenAll(
+                    plantsOfActivity
+                    .Select(async (plant) =>
+                    {
+                        var plantItem = new TodayPagePlantItem();
+                        plantItem.Plant = plant;
+
+                        plantItem.Photo = await PlantService.GetPrimaryPhotoOfPlantAsync(plant);
+
+                        plantItem.PlantImageTappedCommand = this.PlantImageTappedCommand;
+
+                        return plantItem;
+                    })
+                ))
+                .ToList();
+
+                todayPageActivity.Name = (await PlantActivityService.GetTaskOfActivityAsync(activity)).Name;
+                actLi.Add(todayPageActivity);
+            }
+
+            ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>(actLi);
+
+            //Previous selection removed.
+            this.SelectedDay.IsSelected = false;
+
+            //Actual selection set and indicated.
+            this.SelectedDay = calendarDay;
+            this.SelectedDay.IsSelected = true;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

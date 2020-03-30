@@ -213,21 +213,24 @@ namespace PlantAlarm.Services
 
                         //If it should occur every X days and {[number of days passed since the first occurrence] mod X} = 0.
                         (task.EveryXDays > 0 &&
-                         day >= task.FirstOccurrenceDate &&
-                        (day - task.FirstOccurrenceDate).Days % task.EveryXDays == 0) ||
+                         day >= task.FirstOccurrenceDate.Date &&
+                        (day - task.FirstOccurrenceDate.Date).Days % task.EveryXDays == 0) ||
 
                         //If it should occur every X month and this the Xth month's same day as it was for the first occurence.
                         (task.EveryXMonths > 0 &&
-                         day >= task.FirstOccurrenceDate &&
-                       ((day.Year - task.FirstOccurrenceDate.Year) * 12) + day.Month - task.FirstOccurrenceDate.Month % task.EveryXMonths == 0 &&
-                         day.Day == task.FirstOccurrenceDate.Day))
+                           //If this day is after the first occurrence...
+                           day >= task.FirstOccurrenceDate.Date &&
+                           //If it should occur in this month...
+                           ((day.Year - task.FirstOccurrenceDate.Date.Year) * 12 + day.Month - task.FirstOccurrenceDate.Date.Month) % task.EveryXMonths == 0 &&
+                           //If the day is the same or this is the last day of the month and the day is more than the number of days in this month...
+                           (day.Day == task.FirstOccurrenceDate.Date.Day || (IsLastDayOfMonth(day) && DateTime.DaysInMonth(day.Year, day.Month) < task.FirstOccurrenceDate.Day))))
                     {
                         AddActivityItemForDay(resultList, task.Id, day);
                     }
                 }
                 else
                 {
-                    if (day.Date == task.FirstOccurrenceDate) AddActivityItemForDay(resultList, task.Id, day);
+                    if (day.Date == task.FirstOccurrenceDate.Date) AddActivityItemForDay(resultList, task.Id, day);
                 }
             }
 
@@ -330,7 +333,7 @@ namespace PlantAlarm.Services
         public static async Task RemoveActivitiesOfTaskAsync(PlantTask task)
         {
             await asyncDb.Table<PlantActivityItem>()
-                .Where(act => act.PlantTaskFk == task.Id && act.Time > DateTime.Now)
+                .Where(act => act.PlantTaskFk == task.Id && act.Time >= DateTime.Now.Date)
                 .DeleteAsync();
             await RecreateDailyReminders();
         }
@@ -620,16 +623,9 @@ namespace PlantAlarm.Services
 
         public static async Task<PlantTask> GetTaskOfActivityAsync(PlantActivityItem activity)
         {
-            PlantTask plantTask;
-            try
-            {
-                plantTask = await asyncDb.Table<PlantTask>()
-                    .FirstAsync(task => task.Id == activity.PlantTaskFk);
-            }
-            catch (Exception)
-            {
-                throw new PlantActivityServiceException("Could not retrieve the single PlantTask from which this PlantActivityItem was created.");
-            }
+            PlantTask plantTask = await asyncDb
+                .Table<PlantTask>()
+                .FirstAsync(task => task.Id == activity.PlantTaskFk);
 
             return plantTask;
         }
@@ -665,6 +661,13 @@ namespace PlantAlarm.Services
         private static async Task RecreateDailyReminders()
         {
             await NotificationService.AddDailyNotifications();
+        }
+        #endregion
+
+        #region HELPERS
+        private static bool IsLastDayOfMonth(DateTime day)
+        {
+            return day.Date == new DateTime(day.Year, day.Month, 1).AddMonths(1).AddDays(-1);
         }
         #endregion
     }
