@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
+using PlantAlarm.Helpers;
 using PlantAlarm.Services;
 using PlantAlarm.Views;
 using Xamarin.Forms;
@@ -52,6 +53,7 @@ namespace PlantAlarm.ViewModels
         public ICommand DelayAllCommand { get; private set; }
         public ICommand CompleteAllCommand { get; private set; }
         public ICommand BackToTodayCommand { get; private set; }
+        public ICommand SwipeCommand { get; private set; }
 
         public TodayViewModel(Page view, CollectionView daySelectorView)
         {
@@ -59,9 +61,8 @@ namespace PlantAlarm.ViewModels
             this.DaySelectorView = daySelectorView;
             ActivitiesForDay = new ObservableCollection<TodayPageActivityItem>();
 
-            SelectedDayChangedCommand = new Command(async (calendarDayObject) =>
+            SelectedDayChangedCommand = new Command<CalendarDay>(async (calendarDay) =>
             {
-                var calendarDay = calendarDayObject as CalendarDay;
                 await this.PerformDaySelectionChange(calendarDay);
 
                 //Scrolling to actual selection. MUST happen on main thread.
@@ -81,7 +82,7 @@ namespace PlantAlarm.ViewModels
                 var plantActivityItem = (_todayPageActivityItem as TodayPageActivityItem).PlantActivityItem;
                 var plantTask = await PlantActivityService.GetTaskOfActivityAsync(plantActivityItem);
 
-                await NavigationStack.PushAsync(new TaskDetailsPage(plantTask));
+                await NavigationStack.PushAsync(new NewTaskPage(true, plantTask));
             });
 
             PlantImageTappedCommand = new Command(async (_plant) =>
@@ -135,6 +136,14 @@ namespace PlantAlarm.ViewModels
                         }
                     }
                 }
+            });
+
+            SwipeCommand = new Command<bool>((isSwipingLeft) =>
+            {
+                int currentIndex = this.CalendarDays.IndexOf(this.SelectedDay);
+                int index = isSwipingLeft ? currentIndex + 1 : currentIndex - 1;
+
+                this.SelectedDayChangedCommand.Execute(this.CalendarDays[index]);
             });
 
             var listOfDays = Enumerable.Range(-120, 241) //Will generate plus/minus ~4 months. TODO: maybe a better calendar option.
@@ -263,12 +272,14 @@ namespace PlantAlarm.ViewModels
             SkipCommand = new Command(() =>
             {
                 Task.Run(() => PlantActivityService.RemoveActivityAsync(this.PlantActivityItem));
+                MessagingCenter.Send(this as object, "TaskListChanged");
             });
 
             DelayCommand = new Command(() =>
             {
                 this.PlantActivityItem.Time = this.PlantActivityItem.Time.AddDays(1);
                 Task.Run(() => PlantActivityService.ModifyActivityAsync(this.PlantActivityItem));
+                MessagingCenter.Send(this as object, "TaskListChanged");
             });
         }
     }
@@ -276,7 +287,25 @@ namespace PlantAlarm.ViewModels
     public class TodayPagePlantItem : BindableObject
     {
         public Plant Plant { get; set; }
-        public PlantPhoto Photo { get; set; }
+
+        private PlantPhoto photo { get; set; }
+        public PlantPhoto Photo
+        {
+            get => photo;
+            set
+            {
+                photo = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasPhoto));
+                OnPropertyChanged(nameof(HasNoPhoto));
+            }
+        }
+
+        public bool HasPhoto { get => Photo != null; }
+        public bool HasNoPhoto { get => !HasPhoto; }
+
+        public string Monogram { get => Plant.GetMonogram(); }
+
         public ICommand PlantImageTappedCommand { get; set; }
 
         public void CallOnPropertyChangedForPhoto()

@@ -18,5 +18,20 @@ namespace PlantAlarm.Views.RootPages
 
             vm.BackToTodayCommand.Execute(null);
         }
+
+        void ExecuteSwipeLeftCommand(object sender, SwipedEventArgs e)
+        {
+            vm.SwipeCommand.Execute(true);
+        }
+
+        void ExecuteSwipeRightCommand(object sender, SwipedEventArgs e)
+        {
+            vm.SwipeCommand.Execute(false);
+        }
+
+        void SwipeGestureRecognizer_Swiped(System.Object sender, Xamarin.Forms.SwipedEventArgs e)
+        {
+            var i = 0;
+        }
     }
 }

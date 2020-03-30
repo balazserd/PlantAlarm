@@ -59,8 +59,8 @@
 
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <StackLayout Padding="0,2,0,3">
-                                            <StackLayout WidthRequest="35" Padding="1,2,0,0" customEffects:StBorderEffect.Thickness="{Binding BorderWidth}"
+                                        <StackLayout Padding="0,1,0,2">
+                                            <StackLayout WidthRequest="35" Padding="1,2,0,2" customEffects:StBorderEffect.Thickness="{Binding BorderWidth}"
                                                          VerticalOptions="FillAndExpand">
                                                 <Label Text="{Binding MonthName}" TextColor="#508AE9" FontSize="9" VerticalOptions="Center"
                                                         HorizontalOptions="Center"/>
@@ -84,56 +84,65 @@
                             </CollectionView>
                         </customControls:ShadowLayout>
 
-                        <Grid Margin="0,-5,0,0">
+                        <StackLayout Margin="0,-5,0,0">
                             <CollectionView ItemsSource="{Binding ActivitiesForDay}" VerticalOptions="FillAndExpand" Margin="0,2,0,5" VerticalScrollBarVisibility="Never"	
                                             x:Name="ActivityListView">
                                 <CollectionView.ItemTemplate>	
                                     <DataTemplate>
                                         <customControls:ShadowLayout OffsetY="2" ShadowRadius="3" ShadowOpacity="0.4" Padding="10,3,10,0" Margin="0,5">
                                             <customControls:GradientStackLayout GradientFromColor="#5883C9" GradientToColor="#7D9ED5" GradientDirection="ToRight"
-                                                                        HeightRequest="80" Padding="7">
+                                                                        HeightRequest="75" Padding="7">
                                                 <customControls:GradientStackLayout.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding ActivityTappedCommand}" CommandParameter="{Binding .}" />
                                                 </customControls:GradientStackLayout.GestureRecognizers>
                                             
                                                 <StackLayout Orientation="Horizontal" Margin="0,0,0,3">	
                                                     <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">	
-                                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White"/>	
-                                                        <CollectionView ItemsSource="{Binding Plants}" InputTransparent="false">	
+                                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White"/>
+                                                        <CollectionView ItemsSource="{Binding Plants}" InputTransparent="False" HeightRequest="50">	
                                                             <CollectionView.ItemsLayout>	
                                                                 <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="3"	
                                                                                     HorizontalItemSpacing="5"/>	
                                                             </CollectionView.ItemsLayout>	
                                                             <CollectionView.ItemTemplate>	
-                                                                <DataTemplate>	
-                                                                    <StackLayout>	
-                                                                        <Image Source="{Binding Photo.Url}" HeightRequest="50" WidthRequest="50"	
-                                                                                Aspect="AspectFill">	
-                                                                            <Image.Effects>	
-                                                                                <customEffects:RoundedCornerEffect Radius="5" />	
-                                                                                <customEffects:BorderEffect Thickness="1.5" Color="White" />	
-                                                                            </Image.Effects>	
-                                                                            <Image.GestureRecognizers>	
-                                                                                <TapGestureRecognizer Command="{Binding PlantImageTappedCommand}" 	
-                                                                                                        CommandParameter="{Binding Plant}" />	
-                                                                            </Image.GestureRecognizers>	
-                                                                        </Image>	
+                                                                <DataTemplate>
+                                                                    <StackLayout HeightRequest="50" WidthRequest="50" BackgroundColor="#C7D5ED">	
+                                                                        <Image Source="{Binding Photo.Url}" Aspect="AspectFill" IsVisible="{Binding HasPhoto}"
+                                                                                VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">	
+                                                                            <Image.Effects>
+                                                                                <customEffects:RoundedCornerEffect Radius="5" />
+                                                                            </Image.Effects>
+                                                                        </Image>
+
+                                                                        <Label VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Text="{Binding Monogram}"
+                                                                                IsVisible="{Binding HasNoPhoto}" FontSize="17" FontAttributes="Bold" CharacterSpacing="1"
+                                                                                TextColor="#2B569C"/>
+
+                                                                        <StackLayout.GestureRecognizers>
+                                                                            <TapGestureRecognizer Command="{Binding PlantImageTappedCommand}" 	
+                                                                                                  CommandParameter="{Binding Plant}" />	
+                                                                        </StackLayout.GestureRecognizers>
+                                                                        <StackLayout.Effects>
+                                                                            <customEffects:BorderEffect Color="#1D3968" Thickness="1.5" />
+                                                                            <customEffects:RoundedCornerEffect Radius="5" />
+                                                                        </StackLayout.Effects>
                                                                     </StackLayout>	
                                                                 </DataTemplate>	
-                                                            </CollectionView.ItemTemplate>	
-                                                        </CollectionView>	
+                                                            </CollectionView.ItemTemplate>
+                                                        </CollectionView>
+
                                                     </StackLayout>
-                                                    <!--<customControls:ShadowLayout OffsetY="2" ShadowRadius="3" ShadowOpacity="0.4">-->
-                                                        <customControls:GradientStackLayout GradientFromColor="Transparent" GradientToColor="Transparent" GradientDirection="ToRight"
-                                                                                            HorizontalOptions="End">
-                                                            <Button Text="{Binding ActivityStatusText}" BackgroundColor="{Binding ActivityStatusButtonBackgroundColor}"
-                                                                    BorderWidth="1.5"
-                                                                    BorderColor="{Binding ActivityStatusButtonBorderColor}" Command="{Binding IsCompletedChangedCommand}"
-                                                                    CornerRadius="5" TextColor="White" FontAttributes="Bold" WidthRequest="50" HeightRequest="37" />
-                                                            <Button Text="Skip" Command="{Binding ShowSkipDelayActionSheetCommand}" BorderColor="#224379" BorderWidth="1.5"
-                                                                    CornerRadius="5" BackgroundColor="White" WidthRequest="50" HeightRequest="37" TextColor="#224379"/>
-                                                        </customControls:GradientStackLayout>
-                                                    <!--</customControls:ShadowLayout>-->
+
+                                                    <customControls:GradientStackLayout GradientFromColor="Transparent" GradientToColor="Transparent" GradientDirection="ToRight"
+                                                                                        HorizontalOptions="End">
+                                                        <Button Text="{Binding ActivityStatusText}" BackgroundColor="{Binding ActivityStatusButtonBackgroundColor}"
+                                                                BorderWidth="1.5"
+                                                                BorderColor="{Binding ActivityStatusButtonBorderColor}" Command="{Binding IsCompletedChangedCommand}"
+                                                                CornerRadius="5" TextColor="White" FontAttributes="Bold" WidthRequest="50" HeightRequest="35" />
+                                                        <Button Text="Skip" Command="{Binding ShowSkipDelayActionSheetCommand}" BorderColor="#224379" BorderWidth="1.5"
+                                                                CornerRadius="5" BackgroundColor="White" WidthRequest="50" HeightRequest="35" TextColor="#224379"/>
+                                                    </customControls:GradientStackLayout>
+
                                                 </StackLayout>
 
                                         
@@ -145,9 +154,14 @@
                                     </DataTemplate>	
                                 </CollectionView.ItemTemplate>	
                             </CollectionView>
-                        </Grid>
 
-                        <Grid Padding="10" Grid.Row="1" HeightRequest="65" Margin="0,-10,0,-8">	
+                            <!--<StackLayout.GestureRecognizers> These are totally bugged as of now, they can't be overwritten on child views.
+                                <SwipeGestureRecognizer Direction="Left" Swiped="ExecuteSwipeLeftCommand" />
+                                <SwipeGestureRecognizer Direction="Right" Swiped="ExecuteSwipeRightCommand" />
+                            </StackLayout.GestureRecognizers>-->
+                        </StackLayout>
+
+                        <Grid Padding="10" Grid.Row="1" HeightRequest="65" Margin="0,-10,0,-6">	
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />	
                                 <ColumnDefinition Width="*" />	

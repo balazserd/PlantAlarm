@@ -5,7 +5,8 @@
                                   x:Class="PlantAlarm.Views.PlantSelectorPage"
                                   xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
                                   xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
-                                  xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors">
+                                  xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
+                                  xmlns:helpers="clr-namespace:PlantAlarm.Helpers">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#FEFAEC">
             <StackLayout.Effects>
@@ -46,19 +47,41 @@
 
                 <Grid Grid.Row="1">
 
-                    <CollectionView ItemsSource="{Binding Plants}" Margin="6,3,0,6">
+                    <CollectionView ItemsSource="{Binding Plants}" Margin="6,3,0,6" >
                         <CollectionView.ItemsLayout>
-                            <GridItemsLayout Span="3" HorizontalItemSpacing="0" VerticalItemSpacing="6" Orientation="Vertical"/>
+                            <GridItemsLayout Span="3" HorizontalItemSpacing="0" VerticalItemSpacing="6" Orientation="Vertical" />
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout Padding="0,0,6,0" BackgroundColor="{Binding StatusColor}" VerticalOptions="StartAndExpand" HeightRequest="120">
-                                    <customControls:RoundedCorneredStackLayout Orientation="Vertical" IsSelected="{Binding IsSelected}">
-                                        <customControls:RoundedImage Source="{Binding PrimaryPhoto.Url}" Aspect="AspectFill" 
-                                                                        Margin="6,6,6,0"/>
-                                        <Label VerticalTextAlignment="Center" Margin="2,-1,2,0" Text="{Binding Plant.Name}"
-                                                HorizontalTextAlignment="Center" MaxLines="1" LineBreakMode="TailTruncation"
-                                                FontSize="12"/>
+                                <StackLayout Padding="0,0,6,0" BackgroundColor="{Binding StatusColor}" VerticalOptions="FillAndExpand">
+                                    <customControls:RoundedCorneredStackLayout Orientation="Vertical" IsSelected="{Binding IsSelected}" Padding="6" 
+                                                                               VerticalOptions="FillAndExpand">
+                                        <Grid VerticalOptions="FillAndExpand">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <StackLayout Grid.Row="0" x:Name="squareStack" HeightRequest="{Binding Source={x:Reference squareStack}, Path=Width,
+                                                            Converter={StaticResource DoubleMultiplier}, ConverterParameter=0.9}">
+                                                <Image Source="{Binding PrimaryPhoto.Url}" Aspect="AspectFill" VerticalOptions="FillAndExpand" IsVisible="{Binding HasPhoto}">
+                                                    <Image.Effects>
+                                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                                    </Image.Effects>
+                                                </Image>
+
+                                                <Label HorizontalOptions="Center" Text="{Binding Monogram}" FontSize="22" FontAttributes="Bold" CharacterSpacing="1"
+                                                       TextColor="#9C841E" VerticalOptions="CenterAndExpand" IsVisible="{Binding HasNoPhoto}" />
+
+                                                <StackLayout.Effects>
+                                                    <customEffects:RoundedCornerEffect Radius="8" />
+                                                    <customEffects:BorderEffect Color="#43390D" Thickness="1.5" />
+                                                </StackLayout.Effects>
+                                            </StackLayout>
+                                            <Label Text="{Binding Plant.Name}" VerticalOptions="End" HorizontalTextAlignment="Center" MaxLines="1" Grid.Row="1"
+                                                   LineBreakMode="TailTruncation" FontSize="13" />
+                                        </Grid>
+                                        
                                     </customControls:RoundedCorneredStackLayout>
 
                                     <StackLayout.GestureRecognizers>
@@ -77,4 +100,9 @@
             </Grid>
         </StackLayout>
     </ContentPage.Content>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <helpers:DoubleMultiplier x:Key="DoubleMultiplier" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 </rootpages:SafeAreaRespectingPage>

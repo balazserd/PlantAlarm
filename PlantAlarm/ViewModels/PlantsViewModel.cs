@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
+using PlantAlarm.Helpers;
 using PlantAlarm.Services;
 using PlantAlarm.Views;
 using Xamarin.Forms;
@@ -88,11 +89,38 @@ namespace PlantAlarm.ViewModels
         }
     }
 
-    public class PlantItem
+    public class PlantItem : BindableObject
     {
         public ICommand ShowPlantDetailsPageCommand { get; set; }
         public Plant Plant { get; set; }
-        public PlantPhoto MainPhoto { get; set; }
+
+        private PlantPhoto mainPhoto { get; set; }
+        public PlantPhoto MainPhoto
+        {
+            get => mainPhoto;
+            set
+            {
+                mainPhoto = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasPhoto));
+                OnPropertyChanged(nameof(HasNoPhoto));
+            }
+        }
+
+        public string Monogram
+        {
+            get => Plant.GetMonogram();
+        }
+
+        public bool HasPhoto
+        {
+            get => MainPhoto != null;
+        }
+
+        public bool HasNoPhoto
+        {
+            get => !HasPhoto;
+        }
 
         public DateTime? LastMissedActivityTime { get; set; }
         public DateTime? LastCompletedActivityTime { get; set; }

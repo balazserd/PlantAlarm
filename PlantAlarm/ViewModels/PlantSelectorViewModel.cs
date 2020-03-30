@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PlantAlarm.DatabaseModels;
+using PlantAlarm.Helpers;
 using PlantAlarm.Services;
 using Xamarin.Forms;
 
@@ -87,7 +88,24 @@ namespace PlantAlarm.ViewModels
     {
         public Plant Plant { get; set; }
         public List<PlantPhoto> Photos { get; set; }
-        public PlantPhoto PrimaryPhoto { get; set; }
+
+        private PlantPhoto primaryPhoto { get; set; }
+        public PlantPhoto PrimaryPhoto
+        {
+            get => primaryPhoto;
+            set
+            {
+                primaryPhoto = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasPhoto));
+                OnPropertyChanged(nameof(HasNoPhoto));
+            }
+        }
+
+        public bool HasPhoto { get => PrimaryPhoto != null; }
+        public bool HasNoPhoto { get => !HasPhoto; }
+
+        public string Monogram { get => Plant.GetMonogram(); }
 
         public ICommand ItemTappedCommand { get; private set; }
 

@@ -42,11 +42,20 @@ namespace PlantAlarm.iOS.DependencyServices
                 var trigger = UNCalendarNotificationTrigger.CreateTrigger(dateComponents, false);
                 var content = new UNMutableNotificationContent
                 {
-                    Title = "Your plants need you!",
-                    Body = $"You have {listOfTasksForEveryDay[i].Count} task{(i > 1 ? "s" : "")} for today. Tap to see what you have to do in order to keep your (hopefully still) green friends happy.",
                     Sound = UNNotificationSound.Default,
                     CategoryIdentifier = DAILY_NOTIFICATIONS,
                 };
+
+                if (listOfTasksForEveryDay[i].Count == 0)
+                {
+                    content.Title = "All good!";
+                    content.Body = "You have no tasks for today. Enjoy the freedom! 😎";
+                }
+                else
+                {
+                    content.Title = "Your plants need you!";
+                    content.Body = $"You have {listOfTasksForEveryDay[i].Count} task{(listOfTasksForEveryDay[i].Count > 1 ? "s" : "")} for today. Tap to see what you have to do in order to keep your (hopefully still) green friends happy. 🌿🌺";
+                }
 
                 var request = UNNotificationRequest.FromIdentifier(
                     $"Daily_Notification_{date.Year}_{date.Month}_{date.Day}",

@@ -55,12 +55,24 @@
                                         </StackLayout.GestureRecognizers>
 
                                         <StackLayout Orientation="Horizontal">
-                                            <Image WidthRequest="100" HeightRequest="100" Source="{Binding MainPhoto.Url}" Aspect="AspectFill" VerticalOptions="Center" Margin="2,2,-4,2">
-                                                <Image.Effects>
-                                                    <customEffects:RoundedCornerEffect Radius="5"/>
-                                                </Image.Effects>
-                                            </Image>
-                                            <StackLayout HorizontalOptions="FillAndExpand" Padding="8">
+                                            <StackLayout Margin="2" WidthRequest="100" HeightRequest="100" BackgroundColor="White">
+                                                <Image Source="{Binding MainPhoto.Url}" Aspect="AspectFill" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                                                       IsVisible="{Binding HasPhoto}">
+                                                    <Image.Effects>
+                                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                                    </Image.Effects>
+                                                </Image>
+
+                                                <Label VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Text="{Binding Monogram}" IsVisible="{Binding HasNoPhoto}"
+                                                       FontSize="24" FontAttributes="Bold" CharacterSpacing="1" TextColor="#0D4F38"/>
+
+                                                <StackLayout.Effects>
+                                                    <customEffects:BorderEffect Color="#1CAD7A" Thickness="2" />
+                                                    <customEffects:RoundedCornerEffect Radius="8" />
+                                                </StackLayout.Effects>
+                                            </StackLayout>
+
+                                            <StackLayout HorizontalOptions="FillAndExpand" Padding="3,8,8,8">
                                                 <StackLayout Orientation="Horizontal" Margin="0,0,0,-3">
                                                     <Label Text="{Binding Plant.Name}" FontSize="16" FontAttributes="Bold" HorizontalOptions="StartAndExpand"
                                                             VerticalOptions="End"/>
