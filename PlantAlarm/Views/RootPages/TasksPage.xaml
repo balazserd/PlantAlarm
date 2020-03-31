@@ -13,9 +13,9 @@
                 <customEffects:SafeAreaEffect />
             </StackLayout.Effects>
 
-            <Grid>
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="42" />
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -44,66 +44,64 @@
                     </StackLayout>
                 </customControls:ShadowLayout>
 
-                <StackLayout Grid.Row="1" VerticalOptions="FillAndExpand" Margin="0,5,0,0">
-                    <CollectionView ItemsSource="{Binding PlantTasks}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <customControls:ShadowLayout OffsetY="3" ShadowRadius="4" ShadowOpacity="0.4" Padding="10,3,10,0" Margin="0,5">
-                                    <customControls:GradientStackLayout GradientFromColor="#FBED83" GradientToColor="#F7DC67" GradientDirection="ToRight"
-                                                                        HeightRequest="75" Padding="7">
+                <CollectionView ItemsSource="{Binding PlantTasks}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" Grid.Row="1" Margin="0,3,0,50">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <customControls:ShadowLayout OffsetY="3" ShadowRadius="4" ShadowOpacity="0.4" Padding="10,3,10,0" Margin="0,-2,0,12">
+                                <customControls:GradientStackLayout GradientFromColor="#FBED83" GradientToColor="#F7DC67" GradientDirection="ToRight"
+                                                                    HeightRequest="75" Padding="7">
                                         
-                                        <StackLayout.Effects>
-                                            <customEffects:RoundedCornerEffect Radius="8" />
-                                        </StackLayout.Effects>
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ShowTaskDetailsPageCommand}" />
-                                        </StackLayout.GestureRecognizers>
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowTaskDetailsPageCommand}" />
+                                    </StackLayout.GestureRecognizers>
 
-                                        <StackLayout Orientation="Horizontal" VerticalOptions="Start">
-                                            <Label Text="{Binding Task.Name}" FontAttributes="Bold" FontSize="17" HorizontalOptions="Fill" VerticalOptions="End"
-                                                   LineBreakMode="TailTruncation" TextColor="#43390D" />
-                                            <Label Text="{Binding NextIncompleteOccurrenceString}" FontAttributes="{Binding NextOccurrenceFontStyle}" FontSize="13"
-                                                   TextColor="{Binding NextOccurrenceColor}" HorizontalOptions="EndAndExpand" VerticalOptions="End"/>
-                                        </StackLayout>
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="Start">
+                                        <Label Text="{Binding Task.Name}" FontAttributes="Bold" FontSize="17" HorizontalOptions="Fill" VerticalOptions="End"
+                                                LineBreakMode="TailTruncation" TextColor="#43390D" />
+                                        <Label Text="{Binding NextIncompleteOccurrenceString}" FontAttributes="{Binding NextOccurrenceFontStyle}" FontSize="13"
+                                                TextColor="{Binding NextOccurrenceColor}" HorizontalOptions="EndAndExpand" VerticalOptions="End"/>
+                                    </StackLayout>
 
-                                        <BoxView HeightRequest="1" BackgroundColor="#C8AA26" Margin="-2,-2,-2,0"/>
+                                    <BoxView HeightRequest="1" BackgroundColor="#C8AA26" Margin="-2,-2,-2,0"/>
 
-                                        <StackLayout VerticalOptions="FillAndExpand">
-                                            <CollectionView ItemsSource="{Binding Plants}" VerticalOptions="Center">
-                                                <CollectionView.ItemsLayout>
-                                                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="4"/>
-                                                </CollectionView.ItemsLayout>
+                                    <StackLayout VerticalOptions="FillAndExpand">
+                                        <CollectionView ItemsSource="{Binding Plants}" VerticalOptions="Center">
+                                            <CollectionView.ItemsLayout>
+                                                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="4"/>
+                                            </CollectionView.ItemsLayout>
 
-                                                <CollectionView.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <customControls:ShadowLayout WidthRequest="45" HeightRequest="47" VerticalOptions="Center" ShadowOpacity="0.3"
-                                                                                     OffsetY="2" ShadowRadius="3" Padding="0,0,0,2">
-                                                            <customControls:ShadowLayout.Effects>
-                                                                <customEffects:RoundedCornerEffect Radius="4" />
-                                                                <customEffects:BorderEffect Thickness="1.5" Color="#86711A" />
-                                                            </customControls:ShadowLayout.Effects>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <customControls:ShadowLayout WidthRequest="45" HeightRequest="47" VerticalOptions="Center" ShadowOpacity="0.3"
+                                                                                    OffsetY="2" ShadowRadius="3" Padding="0,0,0,2">
+                                                        <customControls:ShadowLayout.Effects>
+                                                            <customEffects:RoundedCornerEffect Radius="4" />
+                                                            <customEffects:BorderEffect Thickness="1.5" Color="#86711A" />
+                                                        </customControls:ShadowLayout.Effects>
 
-                                                            <customControls:SquaredImage Source="{Binding PrimaryPhoto.Url}" Margin="0,0,0,0" HeightRequest="45" Opacity="0.9"
-                                                                                         BackgroundColor="#F5D341" VerticalOptions="Center" Aspect="AspectFill"
-                                                                                         IsVisible="{Binding HasPhoto}" />
+                                                        <customControls:SquaredImage Source="{Binding PrimaryPhoto.Url}" Margin="0,0,0,0" HeightRequest="45" Opacity="0.9"
+                                                                                        BackgroundColor="#F5D341" VerticalOptions="Center" Aspect="AspectFill"
+                                                                                        IsVisible="{Binding HasPhoto}" />
 
-                                                            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding HasNoPhoto}"
-                                                                         BackgroundColor="#FDF6D9">
-                                                                <Label HorizontalOptions="CenterAndExpand" Text="{Binding Monogram}" FontSize="14" FontAttributes="Bold"
-                                                                       TextColor="#9C841E" CharacterSpacing="1" VerticalOptions="CenterAndExpand" />
-                                                            </StackLayout>
-                                                        </customControls:ShadowLayout>
-                                                    </DataTemplate>
-                                                </CollectionView.ItemTemplate>
-                                            </CollectionView>
-                                        </StackLayout>
+                                                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding HasNoPhoto}"
+                                                                        BackgroundColor="#FDF6D9">
+                                                            <Label HorizontalOptions="CenterAndExpand" Text="{Binding Monogram}" FontSize="14" FontAttributes="Bold"
+                                                                    TextColor="#9C841E" CharacterSpacing="1" VerticalOptions="CenterAndExpand" />
+                                                        </StackLayout>
+                                                    </customControls:ShadowLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </StackLayout>
 
-                                    </customControls:GradientStackLayout>
-                                </customControls:ShadowLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </StackLayout>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Grid>
         </StackLayout>
     </ContentPage.Content>

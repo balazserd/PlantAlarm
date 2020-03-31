@@ -28,10 +28,5 @@ namespace PlantAlarm.Views.RootPages
         {
             vm.SwipeCommand.Execute(false);
         }
-
-        void SwipeGestureRecognizer_Swiped(System.Object sender, Xamarin.Forms.SwipedEventArgs e)
-        {
-            var i = 0;
-        }
     }
 }

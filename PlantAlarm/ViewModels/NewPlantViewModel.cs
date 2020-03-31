@@ -19,10 +19,23 @@ namespace PlantAlarm.ViewModels
     public class NewPlantViewModel : INotifyPropertyChanged
     {
         private readonly INavigation NavigationStack = Application.Current.MainPage.Navigation;
+        private readonly Plant PlantToEdit;
 
         private Page View { get; set; }
 
         public string PlantName { get; set; }
+
+        private bool isEditingMode { get; set; }
+        public bool IsEditingMode
+        {
+            get => isEditingMode;
+            set
+            {
+                isEditingMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CommitButtonText));
+            }
+        }
 
         private const string DefaultCategoriesMessage = "Tap to select categories";
         public string SelectedCategoriesMessage
@@ -43,20 +56,17 @@ namespace PlantAlarm.ViewModels
                 Color.White;
         }
 
-        public ScrollOrientation AllowedScrollOrientations
-        {
-            get => HasPhoto ? ScrollOrientation.Vertical : ScrollOrientation.Neither;
-        }
+        //public ScrollOrientation AllowedScrollOrientations
+        //{
+        //    get => HasPhoto ? ScrollOrientation.Vertical : ScrollOrientation.Neither;
+        //}
 
-        public bool HasPhoto
-        {
-            get => PhotoToAdd != null;
-        }
+        public bool HasPhoto { get => PhotoToAdd != null; }
+        public bool HasNoPhoto { get => !HasPhoto; }
 
-        public bool HasNoPhoto
-        {
-            get => !HasPhoto;
-        }
+        public string CommitButtonText { get => IsEditingMode ? "Save" : "Add"; }
+
+        public string Title { get => IsEditingMode ? PlantToEdit.Name : "New Plant"; }
 
         public string PhotoOptionsText
         {
@@ -90,23 +100,31 @@ namespace PlantAlarm.ViewModels
 
                 OnPropertyChanged(nameof(HasPhoto));
                 OnPropertyChanged(nameof(HasNoPhoto));
-                OnPropertyChanged(nameof(AllowedScrollOrientations));
+                //OnPropertyChanged(nameof(AllowedScrollOrientations));
                 OnPropertyChanged(nameof(PhotoOptionsText));
                 OnPropertyChanged();
             }
         }
 
         public ICommand ShowCategorySelectorPageCommand { get; private set; }
-        public ICommand AddPhotoCommand { get; set; }
-        public ICommand ShowPhotoOptionsCommand { get; set; }
-        public ICommand DeletePhotoCommand { get; set; }
-        public ICommand ChangePhotoCommand { get; set; }
-        public ICommand AddPlantCommand { get; set; }
-        public ICommand BackCommand { get; set; }
-            
-        public NewPlantViewModel(Page viewForViewModel)
+        public ICommand AddPhotoCommand { get; private set; }
+        public ICommand ShowPhotoOptionsCommand { get; private set; }
+        public ICommand DeletePhotoCommand { get; private set; }
+        public ICommand ChangePhotoCommand { get; private set; }
+        public ICommand CommitPlantCommand { get; private set; }
+        public ICommand BackCommand { get; private set; }
+        public ICommand DeletePlantCommand { get; private set; }
+
+        public NewPlantViewModel(Page viewForViewModel, bool isEditing = false, Plant plantToEdit = null)
         {
-            View = viewForViewModel;
+            this.View = viewForViewModel;
+            this.IsEditingMode = isEditing;
+            this.PlantToEdit = plantToEdit;
+
+            if (this.IsEditingMode)
+            {
+                this.FillFormWithExistingPlant();
+            }
 
             Categories = new List<PlantCategory>();
 
@@ -187,32 +205,67 @@ namespace PlantAlarm.ViewModels
                 plantPhoto.TakenAt = DateTime.Now;
                 PhotoToAdd = plantPhoto;
             });
-            AddPlantCommand = new Command(async() =>
+            CommitPlantCommand = new Command(async() =>
             {
-                Plant plantToAdd = new Plant
+                if (this.IsEditingMode)
                 {
-                    CreatedAt = DateTime.Now,
-                    Name = PlantName
-                };
-                await PlantService.AddPlantAsync(plantToAdd);
+                    this.PlantToEdit.Name = this.PlantName;
+                    await PlantService.ModifyPlantAsync(this.PlantToEdit);
 
-                if (_truncatedUrlPlantPhoto != null)
+                    MessagingCenter.Send(this as object, "PlantChanged");
+                }
+                else
                 {
-                    _truncatedUrlPlantPhoto.IsPrimary = true;
-                    _truncatedUrlPlantPhoto.PlantFk = plantToAdd.Id;
+                    Plant plantToAdd = new Plant
+                    {
+                        CreatedAt = DateTime.Now,
+                        Name = PlantName ?? ""
+                    };
+                    await PlantService.AddPlantAsync(plantToAdd);
 
-                    await PlantService.AddPlantPhotosAsync(new List<PlantPhoto> { _truncatedUrlPlantPhoto });
+                    if (_truncatedUrlPlantPhoto != null)
+                    {
+                        _truncatedUrlPlantPhoto.IsPrimary = true;
+                        _truncatedUrlPlantPhoto.PlantFk = plantToAdd.Id;
+
+                        await PlantService.AddPlantPhotosAsync(new List<PlantPhoto> { _truncatedUrlPlantPhoto });
+                    }
+
+                    MessagingCenter.Send(this as object, "PlantAdded");
                 }
 
-                MessagingCenter.Send(this as object, "PlantAdded");
                 await NavigationStack.PopAsync();
             });
             BackCommand = new Command(async () => await NavigationStack.PopAsync());
+            DeletePlantCommand = new Command(async () =>
+            {
+                switch (await this.View.DisplayActionSheet($"Deleting a plant will remove all photos related to it and also modify all tasks that were to be performed on it.\n\nThis action cannot be undone. Are you sure you want to delete {this.PlantToEdit.Name}?", "Cancel", "Delete"))
+                {
+                    case "Delete": break;
+                    default: return;
+                }
+
+                switch (await this.View.DisplayActionSheet($"Please confirm again that you want to delete the plant \"{this.PlantToEdit.Name}\" and all photos related to it.", "Cancel", "Delete permanently"))
+                {
+                    case "Delete permanently": break;
+                    default: return;
+                }
+
+                await PlantService.DeletePlantAsync(this.PlantToEdit);
+                MessagingCenter.Send(this as object, "PlantDeleted");
+
+                await this.NavigationStack.PopToRootAsync();
+            });
 
             MessagingCenter.Subscribe<object, List<PlantCategory>>(this, "CategoriesSelected", (viewModel, categoryList) =>
             {
                 Categories = categoryList;
             });
+        }
+
+        private void FillFormWithExistingPlant()
+        {
+            this.PlantName = this.PlantToEdit.Name;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

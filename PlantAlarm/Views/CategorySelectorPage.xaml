@@ -31,7 +31,7 @@
 
                             <!--MIDDLE PART-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                                <Label Text="Garden" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                                <Label Text="Categories" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
                             </StackLayout>
 
                             <!--RIGHT TOOLBAR-->

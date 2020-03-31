@@ -144,8 +144,8 @@
                                                 <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Monday}" />
                                             </StackLayout.GestureRecognizers>
 
-                                            <Label Text="MON" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                                   TextColor="{Binding Monday.TextColor}"/>
+                                            <Label Text="MON" FontSize="14" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Monday.TextColor}" LineBreakMode="TailTruncation" />
                                         
                                             <StackLayout.Effects>
                                                 <customEffects:RoundedCornerEffect Radius="7" />
@@ -157,8 +157,8 @@
                                                 <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Tuesday}" />
                                             </StackLayout.GestureRecognizers>
 
-                                            <Label Text="TUE" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                                   TextColor="{Binding Tuesday.TextColor}"/>
+                                            <Label Text="TUE" FontSize="14" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Tuesday.TextColor}" LineBreakMode="TailTruncation" />
                                         
                                             <StackLayout.Effects>
                                                 <customEffects:RoundedCornerEffect Radius="7" />
@@ -170,8 +170,8 @@
                                                 <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Wednesday}" />
                                             </StackLayout.GestureRecognizers>
 
-                                            <Label Text="WED" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                                   TextColor="{Binding Wednesday.TextColor}"/>
+                                            <Label Text="WED" FontSize="14" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Wednesday.TextColor}" LineBreakMode="TailTruncation" />
                                         
                                             <StackLayout.Effects>
                                                 <customEffects:RoundedCornerEffect Radius="7" />
@@ -183,8 +183,8 @@
                                                 <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Thursday}" />
                                             </StackLayout.GestureRecognizers>
 
-                                            <Label Text="THU" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                                   TextColor="{Binding Thursday.TextColor}"/>
+                                            <Label Text="THU" FontSize="14" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Thursday.TextColor}" LineBreakMode="TailTruncation" />
                                         
                                             <StackLayout.Effects>
                                                 <customEffects:RoundedCornerEffect Radius="7" />
@@ -196,8 +196,8 @@
                                                 <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Friday}" />
                                             </StackLayout.GestureRecognizers>
 
-                                            <Label Text="FRI" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                                   TextColor="{Binding Friday.TextColor}"/>
+                                            <Label Text="FRI" FontSize="14" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Friday.TextColor}" LineBreakMode="TailTruncation" />
 
                                             <StackLayout.Effects>
                                                 <customEffects:RoundedCornerEffect Radius="7" />
@@ -209,8 +209,8 @@
                                                 <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Saturday}" />
                                             </StackLayout.GestureRecognizers>
 
-                                            <Label Text="SAT" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                                   TextColor="{Binding Saturday.TextColor}"/>
+                                            <Label Text="SAT" FontSize="14" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Saturday.TextColor}" LineBreakMode="TailTruncation" />
 
                                             <StackLayout.Effects>
                                                 <customEffects:RoundedCornerEffect Radius="7" />
@@ -222,8 +222,8 @@
                                                 <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="{Binding Sunday}" />
                                             </StackLayout.GestureRecognizers>
 
-                                            <Label Text="SUN" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
-                                                   TextColor="{Binding Sunday.TextColor}"/>
+                                            <Label Text="SUN" FontSize="14" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontAttributes="Bold"
+                                                   TextColor="{Binding Sunday.TextColor}" LineBreakMode="TailTruncation" />
 
                                             <StackLayout.Effects>
                                                 <customEffects:RoundedCornerEffect Radius="7" />

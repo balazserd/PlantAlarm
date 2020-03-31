@@ -1,39 +1,80 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PlantAlarm.Views.PlantDetailsPhotosPage"
-             xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
-             xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
-             xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
-             Title="{Binding Title}">
+<rootpages:SafeAreaRespectingPage xmlns:rootpages="clr-namespace:PlantAlarm.Views.RootPages"
+                                  xmlns="http://xamarin.com/schemas/2014/forms"
+                                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                                  x:Class="PlantAlarm.Views.PlantDetailsPhotosPage"
+                                  xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
+                                  xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
+                                  xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
+                                  >
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ShareIcon.png" Command="{Binding ShareImageCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
-            <CarouselView ItemsSource="{Binding Photos}" PeekAreaInsets="20" VerticalOptions="Start"
-                          IsBounceEnabled="True" x:Name="PhotosCarousel" HorizontalScrollBarVisibility="Never"
-                          CurrentItem="{Binding SelectedPhoto, Mode=TwoWay}" CurrentItemChanged="ScrollToCurrentItem">
-                <CarouselView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout>
-                            <customControls:SquaredImageContainerStack>
-                                <customControls:SquaredImage Source="{Binding Url}" Margin="0,20" Aspect="AspectFill"
-                                                             HorizontalOptions="Center" VerticalOptions="Center">
-                                    <customControls:SquaredImage.Effects>
-                                        <customEffects:RoundedCornerEffect Radius="8" />
-                                    </customControls:SquaredImage.Effects>
-                                </customControls:SquaredImage>
-                            </customControls:SquaredImageContainerStack>
-                        </StackLayout>
-                    </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
-            <StackLayout Margin="20,20,20,10" VerticalOptions="FillAndExpand">
-                <Button Text="Delete" Command="{Binding DeletePhotoCommand}" TextColor="Red" FontAttributes="Bold"
-                        CornerRadius="8" VerticalOptions="FillAndExpand" BorderColor="Red" BorderWidth="1"
-                        BackgroundColor="GhostWhite"/>
-            </StackLayout>
+        <StackLayout BackgroundColor="#EAF7F2">
+            <StackLayout.Effects>
+                <customEffects:SafeAreaEffect />
+            </StackLayout.Effects>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="42" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--TOOLBAR-->
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Grid.Row="0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2">
+
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <!--LEFT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                                <Button Text="← Back" FontSize="16" Command="{Binding BackCommand}" HorizontalOptions="Start" CornerRadius="4"
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
+                            </StackLayout>
+
+                            <!--MIDDLE PART-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                            </StackLayout>
+
+                            <!--RIGHT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+
+                            </StackLayout>
+                        </Grid>
+                        
+                    </StackLayout>
+                </customControls:ShadowLayout>
+
+                <!--PAGE-->
+                <StackLayout Orientation="Vertical" Grid.Row="1">
+                    <CarouselView ItemsSource="{Binding Photos}" PeekAreaInsets="15" VerticalOptions="Start" IsBounceEnabled="True" x:Name="PhotosCarousel"
+                                  HorizontalScrollBarVisibility="Never" CurrentItem="{Binding SelectedPhoto, Mode=TwoWay}" CurrentItemChanged="ScrollToCurrentItem">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <customControls:SquaredImageContainerStack Margin="5,0">
+                                        <customControls:SquaredImage Source="{Binding Url}" Margin="0,20" Aspect="AspectFill"
+                                                                     HorizontalOptions="Center" VerticalOptions="Center">
+                                            <customControls:SquaredImage.Effects>
+                                                <customEffects:RoundedCornerEffect Radius="8" />
+                                                <customEffects:BorderEffect Color="#126F4E" Thickness="2" />
+                                            </customControls:SquaredImage.Effects>
+                                        </customControls:SquaredImage>
+                                    </customControls:SquaredImageContainerStack>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+                    <StackLayout Margin="15,20,15,50" VerticalOptions="FillAndExpand">
+                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="3" ShadowOpacity="0.6" Padding="0,0,0,2">
+                            <Button Command="{Binding DeletePhotoCommand}" Text="Delete Photo" CornerRadius="8" BackgroundColor="#FC6055" TextColor="White" Margin="0,-5,0,10"
+                                    FontAttributes="Bold" />
+                        </customControls:ShadowLayout>
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</rootpages:SafeAreaRespectingPage>

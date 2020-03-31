@@ -55,6 +55,18 @@ namespace PlantAlarm.ViewModels
             {
                 this.RefreshTasks();
             });
+            MessagingCenter.Subscribe<object>(this as object, "PhotoAdded", (viewModel) =>
+            {
+                this.RefreshTasks();
+            }); 
+            MessagingCenter.Subscribe<object>(this as object, "PhotoRemoved", (viewModel) =>
+            {
+                this.RefreshTasks();
+            });
+            MessagingCenter.Subscribe<object>(this as object, "PlantDeleted", (viewModel) =>
+            {
+                this.RefreshTasks();
+            });
         }
 
         private void RefreshTasks()

@@ -108,15 +108,15 @@
                                                                 <DataTemplate>
                                                                     <StackLayout HeightRequest="50" WidthRequest="50" BackgroundColor="#C7D5ED">	
                                                                         <Image Source="{Binding Photo.Url}" Aspect="AspectFill" IsVisible="{Binding HasPhoto}"
-                                                                                VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">	
+                                                                               VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">	
                                                                             <Image.Effects>
                                                                                 <customEffects:RoundedCornerEffect Radius="5" />
                                                                             </Image.Effects>
                                                                         </Image>
 
                                                                         <Label VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Text="{Binding Monogram}"
-                                                                                IsVisible="{Binding HasNoPhoto}" FontSize="17" FontAttributes="Bold" CharacterSpacing="1"
-                                                                                TextColor="#2B569C"/>
+                                                                               IsVisible="{Binding HasNoPhoto}" FontSize="17" FontAttributes="Bold" CharacterSpacing="1"
+                                                                               TextColor="#2B569C"/>
 
                                                                         <StackLayout.GestureRecognizers>
                                                                             <TapGestureRecognizer Command="{Binding PlantImageTappedCommand}" 	

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using PlantAlarm.DatabaseModels;
 using PlantAlarm.ViewModels;
 using PlantAlarm.Views.RootPages;
 using Xamarin.Forms;
@@ -10,11 +11,11 @@ namespace PlantAlarm.Views
     public partial class NewPlantPage : SafeAreaRespectingPage
     {
         private NewPlantViewModel vm;
-        public NewPlantPage()
+        public NewPlantPage(bool isEditingMode = false, Plant plantToEdit = null)
         {
             InitializeComponent();
 
-            this.BindingContext = new NewPlantViewModel(this);
+            this.BindingContext = new NewPlantViewModel(this, isEditingMode, plantToEdit);
             vm = this.BindingContext as NewPlantViewModel;
         }
 

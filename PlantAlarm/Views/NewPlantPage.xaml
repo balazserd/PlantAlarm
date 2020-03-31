@@ -5,7 +5,8 @@
                                    x:Class="PlantAlarm.Views.NewPlantPage"
                                    xmlns:customControls="clr-namespace:PlantAlarm.CustomControls"
                                    xmlns:customEffects="clr-namespace:PlantAlarm.Effects"
-                                   xmlns:customBehaviors="clr-namespace:PlantAlarm.Behaviors">
+                                   xmlns:customBehaviors="clr-namespace:PlantAlarm.Behaviors"
+                                   xmlns:helpers="clr-namespace:PlantAlarm.Helpers">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#EAF7F2">
             <StackLayout.Effects>
@@ -31,12 +32,12 @@
 
                             <!--MIDDLE PART-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                                <Label Text="New Plant" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                                <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
                             </StackLayout>
 
                             <!--RIGHT TOOLBAR-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                                <Button Text="Add" FontSize="16" Command="{Binding AddPlantCommand}" HorizontalOptions="End" CornerRadius="4"
+                                <Button Text="{Binding CommitButtonText}" FontSize="16" Command="{Binding CommitPlantCommand}" HorizontalOptions="End" CornerRadius="4"
                                         FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
                             </StackLayout>
                         </Grid>
@@ -45,86 +46,100 @@
                 </customControls:ShadowLayout>
 
                 <!--PAGE-->
-                <ScrollView Grid.Row="1" Padding="0,6" Margin="0,-6,0,0" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand"
-                            Orientation="{Binding AllowedScrollOrientations}">
-                    <StackLayout>
-                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,2,1,2">
-                            <customControls:GradientStackLayout GradientFromColor="#7CC45D" GradientToColor="#9CC45D" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
-                                <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" TextColor="White"/>
-                                <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
-                                <Grid HeightRequest="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*" />
-                                        <ColumnDefinition Width="8*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="Name" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
-                                    <Entry HorizontalOptions="FillAndExpand" Grid.Column="1" HorizontalTextAlignment="End" TextColor="White"
-                                           Text="{Binding PlantName}" FontAttributes="Italic" BackgroundColor="Transparent">
-                                        <Entry.Effects>
-                                            <customEffects:BorderlessEffect />
-                                        </Entry.Effects>
-                                    </Entry>
-                                </Grid>
-                                <BoxView HeightRequest="1" Color="#BDD893"/>
-                                <Grid HeightRequest="30">
-                                    <Grid.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowCategorySelectorPageCommand}" />
-                                    </Grid.GestureRecognizers>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="8*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="Categories" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold" TextColor="White"/>
-                                    <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center"
-                                           Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
-                                           HorizontalOptions="End" TextColor="{Binding CategoriesTextColor}"/>
-                                </Grid>
-
-                                <StackLayout.Effects>
-                                    <customEffects:RoundedCornerEffect Radius="8" />
-                                </StackLayout.Effects>
-                            </customControls:GradientStackLayout>
-                        </customControls:ShadowLayout>
-            
-                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2">
-                            <customControls:GradientStackLayout GradientFromColor="#648A2C" GradientToColor="#7AA835" GradientDirection="ToTopRight" Padding="8" Margin="10">
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="Picture" FontSize="22" FontAttributes="Bold" TextColor="White"
-                                           VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                                    <Button Text="{Binding PhotoOptionsText}" Command="{Binding AddPhotoCommand}" HorizontalOptions="End" FontSize="13" FontAttributes="Bold"
-                                            VerticalOptions="Center" TextColor="#4A6520" BackgroundColor="#C8DEA5" BorderRadius="5" Padding="5,0,5,0" HeightRequest="25"/>
-                                </StackLayout>
-                                <BoxView HeightRequest="1" Margin="-3,0,-3,0" Color="White" />
-                                <Label Text="You can add more pictures later to track progress." TextColor="#BDD893" FontAttributes="Italic"
-                                       Margin="0,5,0,5" FontSize="11" LineBreakMode="WordWrap" />
-                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent">
-                                    <Grid BackgroundColor="Transparent">
-                                        <Grid x:Name="ImageContainerStack">
-                                            <customControls:SquaredImage Source="{Binding PhotoToAdd.Url}" HorizontalOptions="FillAndExpand" Aspect="AspectFill">
-                                                <customControls:SquaredImage.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding ShowPhotoOptionsCommand}" />
-                                                </customControls:SquaredImage.GestureRecognizers>
-                                                <customControls:SquaredImage.Effects>
-                                                    <customEffects:RoundedCornerEffect Radius="7" />
-                                                    <customEffects:BorderEffect Color="White" Thickness="2" />
-                                                </customControls:SquaredImage.Effects>
-
-                                            </customControls:SquaredImage>
-
-                                            <Label Text="Add a picture by tapping the button above." HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"
-                                                   IsVisible="{Binding HasNoPhoto}"/>
-                                        </Grid>
+                <StackLayout Grid.Row="1" Padding="0,6" Margin="0,-6,0,0">
+                    <ScrollView  VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand">
+                        <StackLayout>
+                            <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,2,1,2">
+                                <customControls:GradientStackLayout GradientFromColor="#7CC45D" GradientToColor="#9CC45D" GradientDirection="ToTopRight" Padding="8" Margin="10,10,10,0">
+                                    <Label Text="Basic Info" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                                    <BoxView HeightRequest="1" Color="White" Margin="-3,0,-3,3" />
+                                    <Grid HeightRequest="30">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="8*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="Name" VerticalOptions="Center" FontAttributes="Bold" TextColor="White" Margin="0,0,15,0"/>
+                                        <Entry HorizontalOptions="FillAndExpand" Grid.Column="1" HorizontalTextAlignment="End" TextColor="White"
+                                               Text="{Binding PlantName}" FontAttributes="Italic" BackgroundColor="Transparent">
+                                            <Entry.Effects>
+                                                <customEffects:BorderlessEffect />
+                                            </Entry.Effects>
+                                        </Entry>
                                     </Grid>
-                                </StackLayout>
+                                    <!--<BoxView HeightRequest="1" Color="#BDD893"/> Categories are a future feature.
+                                    <Grid HeightRequest="30">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ShowCategorySelectorPageCommand}" />
+                                        </Grid.GestureRecognizers>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="Categories" VerticalOptions="Center" Grid.Column="0" FontAttributes="Bold" TextColor="White" LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding SelectedCategoriesMessage}" VerticalOptions="Center"
+                                               Grid.Column="1" LineBreakMode="WordWrap" MaxLines="2" FontAttributes="Italic"
+                                               HorizontalOptions="End" TextColor="{Binding CategoriesTextColor}"/>
+                                    </Grid>-->
+
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
+            
+                            <customControls:ShadowLayout OffsetY="2" ShadowRadius="6" ShadowOpacity="0.6" Padding="1,0,1,2"
+                                                         IsVisible="{Binding IsEditingMode, Converter={StaticResource BooleanInverter}}">
+                                <customControls:GradientStackLayout GradientFromColor="#648A2C" GradientToColor="#7AA835" GradientDirection="ToTopRight" Padding="8" Margin="10">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Picture" FontSize="22" FontAttributes="Bold" TextColor="White"
+                                               VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                        <Button Text="{Binding PhotoOptionsText}" Command="{Binding AddPhotoCommand}" HorizontalOptions="End" FontSize="13" FontAttributes="Bold"
+                                                VerticalOptions="Center" TextColor="#4A6520" BackgroundColor="#C8DEA5" BorderRadius="5" Padding="5,0,5,0" HeightRequest="25"/>
+                                    </StackLayout>
+                                    <BoxView HeightRequest="1" Margin="-3,0,-3,0" Color="White" />
+                                    <Label Text="You can add more pictures later to track progress." TextColor="#BDD893" FontAttributes="Italic"
+                                           Margin="0,5,0,5" FontSize="11" LineBreakMode="WordWrap" />
+                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent">
+                                        <Grid BackgroundColor="Transparent">
+                                            <Grid x:Name="ImageContainerStack">
+                                                <customControls:SquaredImage Source="{Binding PhotoToAdd.Url}" HorizontalOptions="FillAndExpand" Aspect="AspectFill">
+                                                    <customControls:SquaredImage.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding ShowPhotoOptionsCommand}" />
+                                                    </customControls:SquaredImage.GestureRecognizers>
+                                                    <customControls:SquaredImage.Effects>
+                                                        <customEffects:RoundedCornerEffect Radius="7" />
+                                                        <customEffects:BorderEffect Color="White" Thickness="2" />
+                                                    </customControls:SquaredImage.Effects>
+
+                                                </customControls:SquaredImage>
+
+                                                <Label Text="Add a picture by tapping the button above." HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"
+                                                       IsVisible="{Binding HasNoPhoto}" HorizontalTextAlignment="Center"/>
+                                            </Grid>
+                                        </Grid>
+                                    </StackLayout>
                 
-                                <StackLayout.Effects>
-                                    <customEffects:RoundedCornerEffect Radius="8" />
-                                </StackLayout.Effects>
-                            </customControls:GradientStackLayout>
+                                    <StackLayout.Effects>
+                                        <customEffects:RoundedCornerEffect Radius="8" />
+                                    </StackLayout.Effects>
+                                </customControls:GradientStackLayout>
+                            </customControls:ShadowLayout>
+                        </StackLayout>
+                    </ScrollView>
+
+                    <StackLayout Margin="15,20,15,50" VerticalOptions="End" IsVisible="{Binding IsEditingMode}">
+                        <customControls:ShadowLayout OffsetY="2" ShadowRadius="3" ShadowOpacity="0.6" Padding="0,0,0,2">
+                            <Button Command="{Binding DeletePlantCommand}" Text="Delete Plant" CornerRadius="8" BackgroundColor="#FC6055" TextColor="White" Margin="0,-5,0,10"
+                                    FontAttributes="Bold" />
                         </customControls:ShadowLayout>
                     </StackLayout>
-                </ScrollView>
+                </StackLayout>
             </Grid>
         </StackLayout>
     </ContentPage.Content>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <helpers:BooleanInverter x:Key="BooleanInverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 </rootpages:SafeAreaRespectingPage>

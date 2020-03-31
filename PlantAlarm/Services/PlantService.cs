@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using PlantAlarm.DatabaseModels;
 using SQLite;
@@ -16,6 +17,33 @@ namespace PlantAlarm.Services
         public static async Task AddPlantAsync(Plant newPlant)
         {
             await asyncDb.InsertAsync(newPlant);
+        }
+
+        public static async Task ModifyPlantAsync(Plant newVersionOfPlant)
+        {
+            await asyncDb.UpdateAsync(newVersionOfPlant);
+        }
+
+        public static async Task DeletePlantAsync(Plant plantToDelete)
+        {
+            //First delete all photos.
+            var photos = await PlantService.GetPhotosOfPlantAsync(plantToDelete);
+            var deletePhotosTask = Task.WhenAll(photos.Select(async (photo) =>
+            {
+                await PlantService.RemovePlantPhotoAsync(photo);
+            })); //Will be waited on at the end.
+
+            //Get Tasks before removing the PlantTaskConnections
+            var tasks = await PlantActivityService.GetTasksOfPlantAsync(plantToDelete);
+
+            //Remove PlantTaskPlantConnections
+            var deletePlantTaskConnectionsTask = PlantActivityService.RemovePlantTaskPlantConnectionsForPlantTaskAsync(plantToDelete); //Waited on at the end.
+
+            //Finally, remove the plant.
+            await asyncDb.DeleteAsync(plantToDelete);
+
+            await deletePhotosTask;
+            await deletePlantTaskConnectionsTask;
         }
 
         public static async Task AddPlantCategoryAsync(PlantCategory newPlantCategory)
@@ -158,6 +186,11 @@ namespace PlantAlarm.Services
                 .ToList();
 
             return primaryPhotosOfPlants;
+        }
+
+        public static async Task RemovePlantPhotoAsync(PlantPhoto photo)
+        {
+            await asyncDb.DeleteAsync(photo);
         }
 
         private static IEnumerable<PlantPhoto> CorrectUrlForAll<T>(this T plantPhotoList) where T : IEnumerable<PlantPhoto>

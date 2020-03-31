@@ -14,7 +14,7 @@ namespace PlantAlarm.Views {
     
     
     [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views/PlantDetailsPhotosPage.xaml")]
-    public partial class PlantDetailsPhotosPage : global::Xamarin.Forms.ContentPage {
+    public partial class PlantDetailsPhotosPage : global::PlantAlarm.Views.RootPages.SafeAreaRespectingPage {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
         private global::Xamarin.Forms.CarouselView PhotosCarousel;

@@ -66,7 +66,19 @@ namespace PlantAlarm.ViewModels
                 await PlantService.AddPlantPhotoAsync(newPlantPhoto); //Id gets populated here.
             });
 
-            MessagingCenter.Subscribe<object>(this, "PlantAdded", (vm) =>
+            MessagingCenter.Subscribe<object>(this, "PlantAdded", _ =>
+            {
+                this.RefreshSource();
+            });
+            MessagingCenter.Subscribe<object>(this as object, "PhotoAdded", _ =>
+            {
+                this.RefreshSource();
+            });
+            MessagingCenter.Subscribe<object>(this as object, "PhotoRemoved", _ =>
+            {
+                this.RefreshSource();
+            }); 
+            MessagingCenter.Subscribe<object>(this as object, "PlantDeleted", _ =>
             {
                 this.RefreshSource();
             });
@@ -99,6 +111,7 @@ namespace PlantAlarm.ViewModels
 
                 plantItem.MainPhoto = plantMainPhoto;
                 plantItem.ShowPlantDetailsPageCommand = new Command(() => this.ShowPlantDetailsPageCommandBase.Execute(plant));
+                plantItem.TakeProgressPictureCommand = new Command(() => this.TakeProgressPictureCommandBase.Execute(plant));
 
                 lock (lockObject)
                 {
@@ -117,6 +130,8 @@ namespace PlantAlarm.ViewModels
     public class PlantItem : BindableObject
     {
         public ICommand ShowPlantDetailsPageCommand { get; set; }
+        public ICommand TakeProgressPictureCommand { get; set; }
+
         public Plant Plant { get; set; }
 
         private PlantPhoto mainPhoto { get; set; }
@@ -152,9 +167,9 @@ namespace PlantAlarm.ViewModels
         public DateTime? FirstCompletedActivityTimeAfterLastMissedActivity { get; set; }
 
         public int StreakDays =>
-            (LastCompletedActivityTime?.Date - LastMissedActivityTime?.Date)?.Days > 0 ?
-            ((DateTime.Today.Date - FirstCompletedActivityTimeAfterLastMissedActivity?.Date)?.Days ?? 0) :
-            0;
+            (LastCompletedActivityTime?.Date - LastMissedActivityTime?.Date)?.Days > 0
+            ? ((DateTime.Today.Date - FirstCompletedActivityTimeAfterLastMissedActivity?.Date)?.Days ?? 0)
+            : 0;
 
         public bool HasMissedTasks => (LastMissedActivityTime ?? DateTime.MinValue) > (LastCompletedActivityTime ?? DateTime.MinValue);
         public bool HasTasksDueToday { get; set; }

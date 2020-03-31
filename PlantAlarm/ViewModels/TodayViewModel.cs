@@ -165,6 +165,14 @@ namespace PlantAlarm.ViewModels
             {
                 await this.PerformDaySelectionChange(this.SelectedDay);
             });
+            MessagingCenter.Subscribe<object>(this as object, "PhotoRemoved", async (_) =>
+            {
+                await this.PerformDaySelectionChange(this.SelectedDay);
+            }); 
+            MessagingCenter.Subscribe<object>(this as object, "PlantDeleted", async (_) =>
+            {
+                await this.PerformDaySelectionChange(this.SelectedDay);
+            });
         }
 
         private async Task PerformDaySelectionChange(CalendarDay calendarDay)

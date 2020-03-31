@@ -56,6 +56,7 @@ namespace PlantAlarm.ViewModels
         public ICommand OpenPhotoCarouselCommand { get; private set; }
         public ICommand AddNewPhotoCommand { get; private set; }
         public ICommand BackCommand { get; set; }
+        public ICommand ModifyPlantCommand { get; private set; }
 
         public PlantDetailsViewModel(Plant plant, Page view)
         {
@@ -88,10 +89,28 @@ namespace PlantAlarm.ViewModels
                 MessagingCenter.Send(this as object, "PhotoAdded");
             });
             BackCommand = new Command(async() => await NavigationStack.PopAsync());
+            ModifyPlantCommand = new Command(async () =>
+            {
+                await NavigationStack.PushAsync(new NewPlantPage(true, this.Plant));
+            });
 
             this.Plant = plant;
 
-            var photoVmList = PlantService.GetPhotosOfPlant(plant)
+            this.RefreshPhotos();
+
+            MessagingCenter.Subscribe<object>(this as object, "PhotoRemoved", (viewModel) =>
+            {
+                this.RefreshPhotos();
+            });
+            MessagingCenter.Subscribe<object>(this as object, "PlantChanged", (newPlant) =>
+            {
+                this.Plant = plant;
+            });
+        }
+
+        private void RefreshPhotos()
+        {
+            var photoVmList = PlantService.GetPhotosOfPlant(this.Plant)
                 .Select(ph => new ProgressPhotoViewModel(ph, OpenPhotoCarouselCommand))
                 .OrderByDescending(phVm => phVm.Photo.TakenAt);
 

@@ -14,7 +14,7 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="42" />
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -36,7 +36,8 @@
 
                             <!--RIGHT TOOLBAR-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-
+                                <Button Text="Edit" FontSize="16" Command="{Binding ModifyPlantCommand}" HorizontalOptions="End" CornerRadius="4"
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3"/>
                             </StackLayout>
                         </Grid>
                         

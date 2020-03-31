@@ -15,7 +15,7 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="42" />
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -44,10 +44,10 @@
                     </StackLayout>
                 </customControls:ShadowLayout>
 
-                <CollectionView ItemsSource="{Binding PlantItems}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" Grid.Row="1" Margin="0,0,0,13">
+                <CollectionView ItemsSource="{Binding PlantItems}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" Grid.Row="1" Margin="0,0,0,50">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <customControls:ShadowLayout OffsetY="3" ShadowOpacity="0.3" ShadowRadius="2" Padding="11,0,12,3">
+                            <customControls:ShadowLayout OffsetY="3" ShadowOpacity="0.3" ShadowRadius="2" Padding="8,0,12,10">
                                 <customControls:GradientStackLayout GradientFromColor="#97D9C2" GradientToColor="#D5F0E6" GradientDirection="ToTopRight">
                                     <StackLayout>
                                         <StackLayout.GestureRecognizers>
@@ -111,7 +111,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
 
-                    <CollectionView.ItemsLayout>
+                    <!--<CollectionView.ItemsLayout>
                         <GridItemsLayout VerticalItemSpacing="8" HorizontalItemSpacing="8" Orientation="Vertical">
                             <GridItemsLayout.Span>
                                 <OnIdiom x:TypeArguments="x:Int32">
@@ -120,7 +120,7 @@
                                 </OnIdiom>
                             </GridItemsLayout.Span>
                         </GridItemsLayout>
-                    </CollectionView.ItemsLayout>
+                    </CollectionView.ItemsLayout>-->
                 </CollectionView>
             </Grid>
         </StackLayout>

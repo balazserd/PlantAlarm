@@ -129,6 +129,18 @@ namespace PlantAlarm.Services
             return connections;
         }
 
+        public static async Task<List<PlantTaskPlantConnection>> GetPlantTaskPlantConnectionsAsync(Plant plant)
+        {
+            var dconnections = await asyncDb.Table<PlantTaskPlantConnection>()
+                .ToListAsync();
+
+            var connections = await asyncDb.Table<PlantTaskPlantConnection>()
+                .Where(conn => conn.PlantFk == plant.Id)
+                .ToListAsync();
+
+            return connections;
+        }
+
         /// <summary>
         /// Removes the Plant association items for the PlantTask.
         /// </summary>
@@ -138,6 +150,18 @@ namespace PlantAlarm.Services
         {
             await asyncDb.Table<PlantTaskPlantConnection>()
                 .Where(conn => conn.PlantTaskFk == task.Id)
+                .DeleteAsync();
+        }
+
+        /// <summary>
+        /// Removes the PlantTask association items for the Plant.
+        /// </summary>
+        /// <param name="task">The Plant to remove PlantTask connections for.</param>
+        /// <returns></returns>
+        public static async Task RemovePlantTaskPlantConnectionsForPlantTaskAsync(Plant plant)
+        {
+            await asyncDb.Table<PlantTaskPlantConnection>()
+                .Where(conn => conn.PlantFk == plant.Id)
                 .DeleteAsync();
         }
 
@@ -158,6 +182,11 @@ namespace PlantAlarm.Services
             return Db.Table<PlantTask>().ToList();
         }
 
+        public static async Task<List<PlantTask>> GetAllTasksAsync()
+        {
+            return await asyncDb.Table<PlantTask>().ToListAsync();
+        }
+
         public static async Task UpdateTask(PlantTask plantTask)
         {
             await asyncDb.UpdateAsync(plantTask);
@@ -174,6 +203,17 @@ namespace PlantAlarm.Services
             await AddActivitiesFromTaskAsync(plantTask, firstDateToRemove);
         }
 
+        public static async Task<List<PlantTask>> GetTasksOfPlantAsync(Plant plant)
+        {
+            var connections = await GetPlantTaskPlantConnectionsAsync(plant);
+            var allTasks = await GetAllTasksAsync();
+
+            var tasksOfPlant = allTasks
+                .Where(t => connections.Any(conn => conn.PlantTaskFk == t.Id));
+
+            return tasksOfPlant.ToList();
+        }
+
         /// <summary>
         /// Adds activities to the local storage from the specified Task for the next 61 days, last day inclusive, today inclusive.
         /// Activities after firstDay will be deleted, even if they are marked as completed.
@@ -182,8 +222,6 @@ namespace PlantAlarm.Services
         /// <param name="firstDay">The first (possible) day to add an activity for.</param>
         public static async Task AddActivitiesFromTaskAsync(PlantTask task, DateTime firstDay)
         {
-            var allActivities = await GetUpcomingActivitiesAsync(DateTime.Today, DateTime.Today.AddDays(60));
-
             //First, we need to delete all activities that are after 'firstDay'. (This can run on seperate thread - will be waited later on.)
             Task deleteTask = Task.Run(async() =>
             {

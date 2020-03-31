@@ -48,6 +48,13 @@ namespace PlantAlarm.Services
             return photoName;
         }
 
+        public static void RemovePhotoFromLocalFolder(string url)
+        {
+            if (!File.Exists(url)) return;
+
+            File.Delete(url);
+        }
+
         public static void SavePhotoToCameraRoll(MediaFile file) => MediaManagementService.SavePhotoToCameraRoll(file);
 
         public static void RequestPermissionToPhotoLibraries() => MediaManagementService.RequestAccessToCameraRoll();

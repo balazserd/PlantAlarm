@@ -1,49 +1,58 @@
 ﻿<Properties StartupConfiguration="{6DD49F82-744F-4A55-9FF7-CE575E313221}|Default">
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml" Line="147" Column="1" />
-      <File FileName="PlantAlarm.iOS/Main.cs" />
-      <File FileName="PlantAlarm/Views/NewPlantPage.xaml" />
-      <File FileName="PlantAlarm/ViewModels/NewPlantViewModel.cs" />
-      <File FileName="PlantAlarm/Views/NewPlantPage.xaml.cs" />
-      <File FileName="PlantAlarm/ViewModels/PlantsViewModel.cs" />
-      <File FileName="PlantAlarm/ViewModels/NewTaskViewModel.cs" />
+      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml" Line="12" Column="38" />
+      <File FileName="PlantAlarm.iOS/Main.cs" Line="21" Column="1" />
+      <File FileName="PlantAlarm/Views/NewPlantPage.xaml" Line="31" Column="43" />
+      <File FileName="PlantAlarm/ViewModels/NewPlantViewModel.cs" Line="68" Column="1" />
+      <File FileName="PlantAlarm/Views/NewPlantPage.xaml.cs" Line="17" Column="1" />
+      <File FileName="PlantAlarm/ViewModels/PlantsViewModel.cs" Line="80" Column="17" />
+      <File FileName="PlantAlarm/ViewModels/NewTaskViewModel.cs" Line="169" Column="10" />
       <File FileName="PlantAlarm/Views/NewTaskPage.xaml.cs" />
-      <File FileName="PlantAlarm/ViewModels/TasksViewModel.cs" />
-      <File FileName="PlantAlarm/Views/NewTaskPage.xaml" />
-      <File FileName="PlantAlarm/ViewModels/TodayViewModel.cs" />
+      <File FileName="PlantAlarm/ViewModels/TasksViewModel.cs" Line="66" Column="76" />
+      <File FileName="PlantAlarm/Views/NewTaskPage.xaml" Line="148" Column="122" />
+      <File FileName="PlantAlarm/ViewModels/TodayViewModel.cs" Line="171" Column="17" />
       <File FileName="PlantAlarm/Views/PlantSelectorPage.xaml.cs" />
       <File FileName="PlantAlarm/ViewModels/PlantSelectorViewModel.cs" />
-      <File FileName="PlantAlarm/Views/PlantSelectorPage.xaml" />
-      <File FileName="PlantAlarm/Views/CategorySelectorPage.xaml" />
+      <File FileName="PlantAlarm/Views/PlantSelectorPage.xaml" Line="1" Column="1" />
+      <File FileName="PlantAlarm/Views/CategorySelectorPage.xaml" Line="34" Column="56" />
       <File FileName="PlantAlarm/ViewModels/CategorySelectorViewModel.cs" />
       <File FileName="PlantAlarm/CustomControls/RoundedCorneredStackLayout.cs" />
       <File FileName="PlantAlarm.iOS/CustomRenderers/RoundedCorneredStackLayoutRenderer_iOS.cs" />
       <File FileName="PlantAlarm.iOS/CustomRenderers/GradientStackLayoutRenderer_iOS.cs" />
-      <File FileName="PlantAlarm/Services/PlantActivityService.cs" />
+      <File FileName="PlantAlarm/Services/PlantActivityService.cs" Line="161" Column="34" />
       <File FileName="PlantAlarm/DatabaseModels/Tables.cs" />
       <File FileName="PlantAlarm/DatabaseModels/LocalDbConnection.cs" />
       <File FileName="PlantAlarm/App.xaml.cs" />
-      <File FileName="PlantAlarm/Views/RootPages/TasksPage.xaml" />
-      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml.cs" />
-      <File FileName="PlantAlarm/Views/RootPages/PlantsPage.xaml" />
+      <File FileName="PlantAlarm/Views/RootPages/TasksPage.xaml" Line="50" Column="146" />
+      <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml.cs" Line="30" Column="10" />
+      <File FileName="PlantAlarm/Views/RootPages/PlantsPage.xaml" Line="49" Column="39" />
       <File FileName="PlantAlarm/Helpers/Extensions.cs" />
-      <File FileName="PlantAlarm/Helpers/XamlHelpers.cs" />
+      <File FileName="PlantAlarm/Helpers/XamlHelpers.cs" Line="13" Column="1" />
       <File FileName="PlantAlarm.iOS/DependencyServices/NotificationService_iOS.cs" />
       <File FileName="PlantAlarm/CustomControls/RoundedImage.cs" />
       <File FileName="PlantAlarm/CustomControls/SquaredImageContainerStack.cs" />
       <File FileName="PlantAlarm/CustomControls/SquaredImage.cs" />
-      <File FileName="PlantAlarm/ViewModels/PlantDetailsViewModel.cs" />
-      <File FileName="PlantAlarm/Views/PlantDetailsPage.xaml" />
+      <File FileName="PlantAlarm/ViewModels/PlantDetailsViewModel.cs" Line="92" Column="31" />
+      <File FileName="PlantAlarm/Views/PlantDetailsPage.xaml" Line="39" Column="103" />
       <File FileName="PlantAlarm/Effects/OverlappingEffect.cs" />
       <File FileName="PlantAlarm/Effects/BorderEffect.cs" />
       <File FileName="PlantAlarm/Effects/BorderlessEffect.cs" />
       <File FileName="PlantAlarm.iOS/Effects/OverlappingEffect_iOS.cs" />
       <File FileName="PlantAlarm.iOS/Effects/BorderEffect_iOS.cs" />
-      <File FileName="PlantAlarm/Services/MediaService.cs" />
-      <File FileName="PlantAlarm/Services/PlantService.cs" />
-      <File FileName="PlantAlarm/Views/RootPages/PlantsPage.xaml.cs" />
-      <File FileName="PlantAlarm/Views/PlantDetailsPage.xaml.cs" />
+      <File FileName="PlantAlarm/Services/MediaService.cs" Line="32" Column="42" />
+      <File FileName="PlantAlarm/Services/PlantService.cs" Line="42" Column="41" />
+      <File FileName="PlantAlarm/Views/RootPages/PlantsPage.xaml.cs" Line="1" Column="1" />
+      <File FileName="PlantAlarm/Views/PlantDetailsPage.xaml.cs" Line="22" Column="64" />
+      <File FileName="PlantAlarm/Effects/SafeAreaEffect.cs" Line="6" Column="18" />
+      <File FileName="PlantAlarm.iOS/Effects/SafeAreaEffect_iOS.cs" Line="17" Column="43" />
+      <File FileName="PlantAlarm/Views/PlantDetailsPhotosPage.xaml" Line="52" Column="84" />
+      <File FileName="PlantAlarm/Views/PlantDetailsPhotosPage.xaml.cs" Line="15" Column="35" />
+      <File FileName="PlantAlarm/Views/TaskDetailsPage.xaml" Line="145" Column="80" />
+      <File FileName="PlantAlarm/ViewModels/PlantDetailsPhotosViewModel.cs" Line="91" Column="50" />
+      <File FileName="PlantAlarm/AppShell.xaml" Line="1" Column="1" />
+      <File FileName="PlantAlarm/AppShell.xaml.cs" Line="1" Column="1" />
+      <File FileName="PlantAlarm/Views/RootPages/SafeAreaRespectingPage.cs" Line="11" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -57,12 +66,12 @@
                 <Node name="CalendarDayViewCell.xaml" expanded="True" />
               </Node>
               <Node name="DatabaseModels" expanded="True" />
-              <Node name="Effects" expanded="True">
-                <Node name="OverlappingEffect.cs" selected="True" />
-              </Node>
+              <Node name="Effects" expanded="True" />
               <Node name="Helpers" expanded="True" />
               <Node name="Services" expanded="True" />
-              <Node name="ViewModels" expanded="True" />
+              <Node name="ViewModels" expanded="True">
+                <Node name="PlantDetailsPhotosViewModel.cs" selected="True" />
+              </Node>
               <Node name="Views" expanded="True">
                 <Node name="RootPages" expanded="True">
                   <Node name="PlantsPage.xaml" expanded="True" />
@@ -72,9 +81,11 @@
                 <Node name="NewPlantPage.xaml" expanded="True" />
                 <Node name="NewTaskPage.xaml" expanded="True" />
                 <Node name="PlantDetailsPage.xaml" expanded="True" />
+                <Node name="PlantDetailsPhotosPage.xaml" expanded="True" />
                 <Node name="PlantSelectorPage.xaml" expanded="True" />
               </Node>
               <Node name="App.xaml" expanded="True" />
+              <Node name="AppShell.xaml" expanded="True" />
             </Node>
             <Node name="PlantAlarm.Android" expanded="True" />
             <Node name="PlantAlarm.iOS" expanded="True">
@@ -92,7 +103,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.PlantAlarm.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.72E0B654-894B-461B-80AF-0F09BA9FB73E" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/Services/MediaService.cs" relfile="PlantAlarm/Services/MediaService.cs" line="55" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
