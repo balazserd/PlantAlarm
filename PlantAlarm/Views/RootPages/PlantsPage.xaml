@@ -44,7 +44,7 @@
                     </StackLayout>
                 </customControls:ShadowLayout>
 
-                <CollectionView ItemsSource="{Binding PlantItems}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" Grid.Row="1">
+                <CollectionView ItemsSource="{Binding PlantItems}" VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" Grid.Row="1" Margin="0,0,0,13">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <customControls:ShadowLayout OffsetY="3" ShadowOpacity="0.3" ShadowRadius="2" Padding="11,0,12,3">

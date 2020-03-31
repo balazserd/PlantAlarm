@@ -87,6 +87,7 @@
     <Compile Include="DependencyServices\MediaManagementService_iOS.cs" />
     <Compile Include="Effects\SafeAreaEffect_iOS.cs" />
     <Compile Include="Effects\NotchEqualizerForColViewsEffect_iOS.cs" />
+    <Compile Include="Effects\OverlappingEffect_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

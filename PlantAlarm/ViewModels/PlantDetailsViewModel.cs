@@ -10,6 +10,8 @@ using PlantAlarm.Services;
 using PlantAlarm.Views;
 using SkiaSharp;
 using Xamarin.Forms;
+using System.Threading.Tasks;
+using PlantAlarm.Helpers;
 
 namespace PlantAlarm.ViewModels
 {
@@ -81,25 +83,44 @@ namespace PlantAlarm.ViewModels
                 await PlantService.AddPlantPhotoAsync(newPlantPhoto); //Id gets populated here.
                 newPlantPhoto.Url = MediaService.AppendLocalAppDataFolderToPhotoName(newPlantPhoto.Url); //Url modified to be absolute.
 
-                PhotoViewModels.Add(new ProgressPhotoViewModel(newPlantPhoto, OpenPhotoCarouselCommand));
+                PhotoViewModels.Insert(0, new ProgressPhotoViewModel(newPlantPhoto, OpenPhotoCarouselCommand));
+                this.RefreshUpcomingActivities();
+                MessagingCenter.Send(this as object, "PhotoAdded");
             });
             BackCommand = new Command(async() => await NavigationStack.PopAsync());
 
             this.Plant = plant;
 
             var photoVmList = PlantService.GetPhotosOfPlant(plant)
-                .Select(ph => new ProgressPhotoViewModel(ph, OpenPhotoCarouselCommand));
+                .Select(ph => new ProgressPhotoViewModel(ph, OpenPhotoCarouselCommand))
+                .OrderByDescending(phVm => phVm.Photo.TakenAt);
 
             this.PhotoViewModels = new ObservableCollection<ProgressPhotoViewModel>(photoVmList);
 
-            var activities = PlantActivityService.GetUpcomingActivitiesOfPlant(plant);
+            this.RefreshUpcomingActivities();
+        }
+
+        private void RefreshUpcomingActivities()
+        {
+            var activities = PlantActivityService.GetUpcomingActivitiesOfPlant(this.Plant);
             var extendedActivities = activities
                 .Select(act =>
                 {
                     var plantsOfActivity = PlantActivityService.GetPlantsOfActivity(act.PlantActivityItem);
-                    var primaryPhotosOfPlants = PlantService.GetPrimaryPhotosOfPlants(plantsOfActivity);
+                    var allPhotos = PlantService.GetAllPhotos();
 
-                    act.PrimaryPhotoOfPlantsInTask = primaryPhotosOfPlants;
+                    act.PlantsInTask = plantsOfActivity
+                        .Select(pl =>
+                        {
+                            var item = new ExtendedPlantActivityViewModel.PlantItem() { Plant = pl };
+                            var photosOfPlant = allPhotos.Where(photo => photo.PlantFk == pl.Id);
+
+                            item.Photo = photosOfPlant.FirstOrDefault(photo => photo.IsPrimary) ?? photosOfPlant.OrderByDescending(photo => photo.TakenAt).FirstOrDefault();
+
+                            return item;
+                        })
+                        .ToList();
+
                     return act;
                 })
                 .ToList();
@@ -131,6 +152,29 @@ namespace PlantAlarm.ViewModels
     {
         public PlantActivityItem PlantActivityItem { get; set; }
         public PlantTask PlantTask { get; set; }
-        public List<PlantPhoto> PrimaryPhotoOfPlantsInTask { get; set; }
+        public List<PlantItem> PlantsInTask { get; set; }
+
+        public class PlantItem : BindableObject
+        {
+            public Plant Plant { get; set; }
+
+            private PlantPhoto photo { get; set; }
+            public PlantPhoto Photo
+            {
+                get => photo;
+                set
+                {
+                    photo = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(HasPhoto));
+                    OnPropertyChanged(nameof(HasNoPhoto));
+                }
+            }
+
+            public bool HasPhoto { get => Photo != null; }
+            public bool HasNoPhoto { get => !HasPhoto; }
+
+            public string Monogram { get => Plant.GetMonogram(); }
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace PlantAlarm.ViewModels
     public class PlantsViewModel : INotifyPropertyChanged
     {
         private INavigation Navigation = Application.Current.MainPage.Navigation;
+        private readonly Page View;
 
         private ObservableCollection<PlantItem> plantItems { get; set; }
         public ObservableCollection<PlantItem> PlantItems
@@ -31,19 +32,38 @@ namespace PlantAlarm.ViewModels
 
         public ICommand ShowNewPlantPageCommand { get; private set; }
         private ICommand ShowPlantDetailsPageCommandBase { get; set; }
+        private ICommand TakeProgressPictureCommandBase { get; set; }
 
-        public PlantsViewModel()
+        public PlantsViewModel(Page view)
         {
+            this.View = view;
+
             this.RefreshSource();
 
             ShowNewPlantPageCommand = new Command(async () =>
             {
                 await Navigation.PushAsync(new NewPlantPage());
             });
-            ShowPlantDetailsPageCommandBase = new Command(async (_plant) =>
+            ShowPlantDetailsPageCommandBase = new Command<Plant>(async (plant) =>
             {
-                var plant = _plant as Plant;
                 await Navigation.PushAsync(new PlantDetailsPage(plant));
+            });
+            TakeProgressPictureCommandBase = new Command<Plant>(async (plant) =>
+            {
+                var photo = await View.GetNewPhoto();
+                if (photo == null) return;
+
+                var photoName = await MediaService.SavePhotoToLocalFolder(photo);
+
+                var newPlantPhoto = new PlantPhoto
+                {
+                    IsPrimary = false,
+                    PlantFk = plant.Id,
+                    TakenAt = DateTime.Now,
+                    Url = photoName
+                };
+
+                await PlantService.AddPlantPhotoAsync(newPlantPhoto); //Id gets populated here.
             });
 
             MessagingCenter.Subscribe<object>(this, "PlantAdded", (vm) =>
@@ -70,7 +90,12 @@ namespace PlantAlarm.ViewModels
             foreach (var plant in plantList)
             {
                 var plantItem = new PlantItem(plant);
-                var plantMainPhoto = photoList.FirstOrDefault(photo => photo.PlantFk == plant.Id && photo.IsPrimary);
+                var plantPhotos = photoList.Where(photo => photo.PlantFk == plant.Id);
+                var plantMainPhoto = plantPhotos.FirstOrDefault(photo => photo.IsPrimary);
+                if (plantMainPhoto == null)
+                {
+                    plantMainPhoto = plantPhotos.OrderByDescending(photo => photo.TakenAt).FirstOrDefault();
+                }
 
                 plantItem.MainPhoto = plantMainPhoto;
                 plantItem.ShowPlantDetailsPageCommand = new Command(() => this.ShowPlantDetailsPageCommandBase.Execute(plant));

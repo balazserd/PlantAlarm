@@ -58,7 +58,7 @@
 
                                 <BoxView Color="White" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="-3,0,-3,0"/>
 
-                                <CollectionView ItemsSource="{Binding PhotoViewModels}" VerticalOptions="Start" Margin="0,5,0,0"
+                                <CollectionView ItemsSource="{Binding PhotoViewModels}" VerticalOptions="Start" Margin="0,5,0,0" x:Name="PhotoCollectionView"
                                                 ItemsLayout="HorizontalList" HorizontalScrollBarVisibility="Never" HeightRequest="118">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
@@ -107,27 +107,33 @@
                                                         <Label Text="{Binding PlantActivityItem.Time, StringFormat='{0:MMM dd}'}" FontSize="13"
                                                                 FontAttributes="Italic" TextColor="#1EC088"/>
                                                     </StackLayout>
-                                                    <CollectionView ItemsSource="{Binding PrimaryPhotoOfPlantsInTask}" VerticalOptions="FillAndExpand" Grid.Column="1"
-                                                                    HeightRequest="42">
+                                                    <CollectionView ItemsSource="{Binding PlantsInTask}" VerticalOptions="FillAndExpand" Grid.Column="1"
+                                                                    HeightRequest="42" HorizontalScrollBarVisibility="Never">
                                                         <CollectionView.ItemTemplate>
                                                             <DataTemplate>
                                                                 <StackLayout WidthRequest="40" HeightRequest="40" VerticalOptions="Center">
-                                                                    <customControls:SquaredImage Source="{Binding Url}" Margin="0,0,0,0" HeightRequest="30" BackgroundColor="Green"
-                                                                                                    VerticalOptions="Center" Aspect="AspectFill">
-                                                                        <customControls:SquaredImage.Effects>
-                                                                            <customEffects:RoundedCornerEffect Radius="20"/>
-                                                                            <customEffects:BorderEffect Thickness="1.5" Color="White" />
-                                                                        </customControls:SquaredImage.Effects>
-                                                                    </customControls:SquaredImage>
+                                                                    <customControls:SquaredImage Source="{Binding Photo.Url}" Margin="0,0,0,0" HeightRequest="30" Aspect="AspectFill" 
+                                                                                                 BackgroundColor="Green" VerticalOptions="Center" IsVisible="{Binding HasPhoto}" />
+
+                                                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding HasNoPhoto}"
+                                                                                 BackgroundColor="#D5F0E6">
+                                                                        <Label HorizontalOptions="CenterAndExpand" Text="{Binding Monogram}" FontSize="14" FontAttributes="Bold"
+                                                                               TextColor="#105F43" CharacterSpacing="1" VerticalOptions="CenterAndExpand" />
+                                                                    </StackLayout>
+
+                                                                    <StackLayout.Effects>
+                                                                        <customEffects:RoundedCornerEffect Radius="20"/>
+                                                                        <customEffects:BorderEffect Thickness="1.5" Color="White" />
+                                                                    </StackLayout.Effects>
                                                                 </StackLayout>
                                                             </DataTemplate>
                                                         </CollectionView.ItemTemplate>
                                                         <CollectionView.ItemsLayout>
                                                             <LinearItemsLayout Orientation="Horizontal" />
                                                         </CollectionView.ItemsLayout>
-                                                        <!--<CollectionView.Effects>
-                                                            <customEffects:OverlappingEffect Size="25"/>
-                                                        </CollectionView.Effects>-->
+                                                        <CollectionView.Effects>
+                                                            <customEffects:OverlappingEffect />
+                                                        </CollectionView.Effects>
                                                     </CollectionView>
                                                 </Grid>
                                                 <BoxView Color="#199A6D" HorizontalOptions="FillAndExpand" HeightRequest="1" />

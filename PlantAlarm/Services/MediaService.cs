@@ -67,7 +67,7 @@ namespace PlantAlarm.Services
         /// <summary>
         /// Presents a flow that will result in getting an image.
         /// </summary>
-        /// <typeparam name="P"></typeparam>
+        /// <typeparam name="P">A type that is or the subclass of the Page class.</typeparam>
         /// <param name="ViewToPresentActionSheetOn">The page to present the flow on top of.</param>
         /// <param name="photoSourceOptions">The options to allow. See PhotoSourceOptions Enum for more info.</param>
         /// <returns></returns>

@@ -101,14 +101,16 @@ namespace PlantAlarm.ViewModels
             this.Task = pt;
 
             var plants = PlantActivityService.GetPlantsOfTask(pt);
-            var photos = PlantService.GetPrimaryPhotosOfPlants(plants);
+            var allPhotos = PlantService.GetAllPhotos();
 
             var plantItems = new ObservableCollection<PlantItemOfTask>();
             foreach (var plant in plants)
             {
                 var plantItem = new PlantItemOfTask();
                 plantItem.Plant = plant;
-                plantItem.PrimaryPhoto = photos.FirstOrDefault(ph => ph.PlantFk == plant.Id);
+
+                var photosOfPlant = allPhotos.Where(ph => ph.PlantFk == plant.Id);
+                plantItem.PrimaryPhoto = photosOfPlant.FirstOrDefault(ph => ph.IsPrimary) ?? photosOfPlant.OrderByDescending(ph => ph.TakenAt).FirstOrDefault();
 
                 plantItems.Add(plantItem);
             }
@@ -119,10 +121,29 @@ namespace PlantAlarm.ViewModels
         }
     }
 
-    public class PlantItemOfTask
+    public class PlantItemOfTask : BindableObject
     {
-        public PlantPhoto PrimaryPhoto { get; set; }
+        private PlantPhoto primaryPhoto { get; set; }
+        public PlantPhoto PrimaryPhoto
+        {
+            get => primaryPhoto;
+            set
+            {
+                primaryPhoto = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasPhoto));
+                OnPropertyChanged(nameof(HasNoPhoto));
+            }
+        }
+
+        public bool HasPhoto { get => PrimaryPhoto != null; }
+        public bool HasNoPhoto { get => !HasPhoto; }
+
+        public string Monogram { get => Plant.GetMonogram(); }
+
         public Plant Plant { get; set; }
+
+
     }
 
     #endregion mini-viewmodels

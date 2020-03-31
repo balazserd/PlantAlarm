@@ -13,7 +13,7 @@ namespace PlantAlarm.Views.RootPages
         public PlantsPage()
         {
             InitializeComponent();
-            this.BindingContext = new PlantsViewModel();
+            this.BindingContext = new PlantsViewModel(this);
             vm = this.BindingContext as PlantsViewModel;
         }
 

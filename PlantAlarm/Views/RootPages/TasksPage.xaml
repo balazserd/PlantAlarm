@@ -84,9 +84,14 @@
                                                             </customControls:ShadowLayout.Effects>
 
                                                             <customControls:SquaredImage Source="{Binding PrimaryPhoto.Url}" Margin="0,0,0,0" HeightRequest="45" Opacity="0.9"
-                                                                                         BackgroundColor="#F5D341" VerticalOptions="Center" Aspect="AspectFill">
-                                                            </customControls:SquaredImage>
+                                                                                         BackgroundColor="#F5D341" VerticalOptions="Center" Aspect="AspectFill"
+                                                                                         IsVisible="{Binding HasPhoto}" />
 
+                                                            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding HasNoPhoto}"
+                                                                         BackgroundColor="#FDF6D9">
+                                                                <Label HorizontalOptions="CenterAndExpand" Text="{Binding Monogram}" FontSize="14" FontAttributes="Bold"
+                                                                       TextColor="#9C841E" CharacterSpacing="1" VerticalOptions="CenterAndExpand" />
+                                                            </StackLayout>
                                                         </customControls:ShadowLayout>
                                                     </DataTemplate>
                                                 </CollectionView.ItemTemplate>

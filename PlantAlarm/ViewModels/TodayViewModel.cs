@@ -157,7 +157,11 @@ namespace PlantAlarm.ViewModels
             CalendarDays = listOfDays.ToList();
             SelectedDay = CalendarDays.Single(cd => cd.Date.Date == DateTime.Today.Date); //Default selection should be today.
 
-            MessagingCenter.Subscribe<object>(this as object, "SelectedDayActivitiesMightHaveChanged", async (viewModel) =>
+            MessagingCenter.Subscribe<object>(this as object, "SelectedDayActivitiesMightHaveChanged", async (_) =>
+            {
+                await this.PerformDaySelectionChange(this.SelectedDay);
+            });
+            MessagingCenter.Subscribe<object>(this as object, "PhotoAdded", async (_) =>
             {
                 await this.PerformDaySelectionChange(this.SelectedDay);
             });

@@ -108,34 +108,35 @@ namespace PlantAlarm.Services
         public static async Task<PlantPhoto> GetPrimaryPhotoOfPlantAsync(Plant plant)
         {
             var primaryPhoto = (await asyncDb.Table<PlantPhoto>()
-                .Where(photo => photo.PlantFk == plant.Id)
+                .Where(photo => photo.PlantFk == plant.Id && photo.IsPrimary)
                 .ToListAsync())
                 .CorrectUrlForAll();
 
-            return primaryPhoto.FirstOrDefault();
+            return primaryPhoto.FirstOrDefault()
+                ?? (await GetPhotosOfPlantAsync(plant))
+                    .OrderByDescending(ph => ph.TakenAt)
+                    .FirstOrDefault();
         }
 
         public static List<PlantPhoto> GetPhotosOfPlant(Plant plant)
         {
             var photos = Db.Table<PlantPhoto>()
+                .Where(photo => photo.PlantFk == plant.Id)
                 .ToList();
 
             var photosOfPlant = photos
-                .Where(photo => photo.PlantFk == plant.Id)
                 .CorrectUrlForAll(); //We do not store the constant part of the url.
 
             return photosOfPlant.ToList();
         }
 
-        public static async Task<List<PlantPhoto>> GetPhotosOfPlantAsync(Plant plant, bool onlyPrimaryPhoto = false)
+        public static async Task<List<PlantPhoto>> GetPhotosOfPlantAsync(Plant plant)
         {
             var photos = await asyncDb.Table<PlantPhoto>()
+                .Where(photo => photo.PlantFk == plant.Id)
                 .ToListAsync();
 
             var photosOfPlant = photos
-                .Where(photo => onlyPrimaryPhoto ?
-                    photo.PlantFk == plant.Id && photo.IsPrimary :
-                    photo.PlantFk == plant.Id)
                 .CorrectUrlForAll(); //We do not store the constant part of the url.
 
             return photosOfPlant.ToList();

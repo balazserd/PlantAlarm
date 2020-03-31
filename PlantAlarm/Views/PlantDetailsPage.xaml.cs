@@ -18,6 +18,14 @@ namespace PlantAlarm.Views
 
             this.BindingContext = new PlantDetailsViewModel(plant, this);
             vm = this.BindingContext as PlantDetailsViewModel;
+
+            MessagingCenter.Subscribe<object>(this as object, "PhotoAdded", _ =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.PhotoCollectionView.ScrollTo(0);
+                });
+            });
         }
     }
 }
