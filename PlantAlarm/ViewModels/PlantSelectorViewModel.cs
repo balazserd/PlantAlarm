@@ -35,17 +35,19 @@ namespace PlantAlarm.ViewModels
             var listOfPlants = PlantService.GetPlants();
             var listOfPhotos = PlantService.GetAllPhotos();
 
-            var plantItems = listOfPlants.Select(plant =>
-            {
-                var photos = listOfPhotos.Where(photo => photo.PlantFk == plant.Id);
-
-                return new PlantSelectionItem()
+            var plantItems = listOfPlants
+                .Select(plant =>
                 {
-                    Photos = photos.ToList(),
-                    PrimaryPhoto = photos?.FirstOrDefault(photo => photo.IsPrimary),
-                    Plant = plant
-                };
-            });
+                    var photos = listOfPhotos.Where(photo => photo.PlantFk == plant.Id);
+
+                    return new PlantSelectionItem()
+                    {
+                        Photos = photos.ToList(),
+                        PrimaryPhoto = photos?.FirstOrDefault(photo => photo.IsPrimary) ?? photos.OrderByDescending(ph => ph.TakenAt).FirstOrDefault(),
+                        Plant = plant
+                    };
+                })
+               .OrderBy(pi => pi.Plant.Name);
 
             Plants = new ObservableCollection<PlantSelectionItem>(plantItems);
             Device.StartTimer(TimeSpan.FromMilliseconds(600), () =>

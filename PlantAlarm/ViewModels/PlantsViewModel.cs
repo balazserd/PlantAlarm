@@ -64,6 +64,7 @@ namespace PlantAlarm.ViewModels
                 };
 
                 await PlantService.AddPlantPhotoAsync(newPlantPhoto); //Id gets populated here.
+                this.RefreshSource();
             });
 
             MessagingCenter.Subscribe<object>(this, "PlantAdded", _ =>

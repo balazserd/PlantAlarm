@@ -8,71 +8,148 @@
                                    xmlns:behaviors="clr-namespace:PlantAlarm.Behaviors"
                                    Title="Settings">
     <ContentPage.Content>
-        <ScrollView>
-            <TableView Intent="Form" HasUnevenRows="true">
-                <TableSection Title="Notifications">
-                    <ViewCell Height="44">
-                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
-                            <Label Text="Notifications" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
-                            <Switch IsToggled="{Binding AreNotificationsEnabled, Mode=TwoWay}" VerticalOptions="Center"
-                                    Scale=".9"/>
+        <StackLayout BackgroundColor="#EAF7F2" Margin="0">
+            <StackLayout.Effects>
+                <customEffects:SafeAreaEffect />
+            </StackLayout.Effects>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="42" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--TOOLBAR-->
+                <customControls:ShadowLayout OffsetY="3" ShadowRadius="2" ShadowOpacity="0.3" Padding="0,0,0,2" Grid.Row="0">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#EAF7F2" Padding="11,2">
+
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <!--LEFT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                            
+                            </StackLayout>
+
+                            <!--MIDDLE PART-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="Settings" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                            </StackLayout>
+
+                            <!--RIGHT TOOLBAR-->
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                <Button Text="" FontSize="16" Command="{Binding ShowNewPlantPageCommand}" HorizontalOptions="End" 
+                                        FontAttributes="Bold" TextColor="#16825B" Margin="0,3" />
+                            </StackLayout>
+                        </Grid>
+                        
+                    </StackLayout>
+                </customControls:ShadowLayout>
+                <ScrollView Grid.Row="1">
+                    <StackLayout Margin="10" Spacing="0">
+
+                        <!--Notifications-->
+                        <Label Text="Plant Tasks" Margin="0,0,0,5"/>
+                        <BoxView HeightRequest="1" BackgroundColor="Gray" Opacity="0.6" Margin="-10,0" />
+                        <StackLayout Margin="20,0,0,0" Spacing="0">
+                            <StackLayout Orientation="Horizontal" HeightRequest="35" Margin="0,4">
+                                <Label Text="Notifications" VerticalOptions="CenterAndExpand" Margin="0,1,0,0"/>
+                                <Switch IsToggled="{Binding AreNotificationsEnabled, Mode=TwoWay}" VerticalOptions="Center" Scale=".9" OnColor="Red" HorizontalOptions="EndAndExpand" />
+                            </StackLayout>
+                            <BoxView HeightRequest="1" BackgroundColor="Gray" Opacity="0.6" Margin="0,0,-10,0"/>
+                            <StackLayout Orientation="Horizontal" HeightRequest="35" Margin="0,5,0,3" >
+                                <Label Text="Notification time" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
+                                <TimePicker x:Name="TimePicker" HorizontalOptions="EndAndExpand" WidthRequest="100" Margin="0,0,-25,0" 
+                                            Time="{Binding NotificationTime, Mode=TwoWay}" Opacity="{Binding ReminderLinesOpacity}"
+                                            IsEnabled="{Binding AreNotificationsEnabled}" VerticalOptions="Center">
+                                    <TimePicker.Effects>
+                                        <customEffects:BorderlessEffect />
+                                    </TimePicker.Effects>
+                                </TimePicker>
+                            </StackLayout>
                         </StackLayout>
-                    </ViewCell>
-                    <ViewCell Height="44" IsEnabled="{Binding AreNotificationsEnabled}">
-                        <StackLayout Orientation="Horizontal" Margin="15,0,-5,0">
-                            <Label VerticalOptions="Center" Text="Reminder presentation time"
-                                   Opacity="{Binding ReminderLinesOpacity}" />
-                            <ImageButton Command="{Binding ShowReminderPresentationTimeExplanation}" Source="QuestionIcon.png"
-                                         Scale=".7" VerticalOptions="Center" Margin="5,0,0,0" />
-                            <TimePicker x:Name="TimePicker" HorizontalOptions="EndAndExpand" WidthRequest="100" 
-                                        Time="{Binding NotificationTime, Mode=TwoWay}" Opacity="{Binding ReminderLinesOpacity}"
-                                        IsEnabled="{Binding AreNotificationsEnabled}">
-                                <TimePicker.Effects>
-                                    <customEffects:BorderlessEffect />
-                                </TimePicker.Effects>
-                            </TimePicker>
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>
-                <TableSection>
-                    <ViewCell Height="44">
-                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
-                            <Label Text="Carry-forward forgotten tasks" VerticalOptions="Center" />
-                            <ImageButton Command="{Binding ShowCarryForwardExplanation}" Source="QuestionIcon.png"
-                                         Scale=".7" VerticalOptions="Center" Margin="5,0,0,0" />
-                            <Switch IsToggled="{Binding IsCarryingForgottenTasksForward, Mode=TwoWay}" VerticalOptions="Center"
+                        <BoxView HeightRequest="1" BackgroundColor="Gray" Opacity="0.6" Margin="-10,0" />
+                        <Label Text="You will receive a notification at this time of the day." FontSize="13" TextColor="Gray" Margin="0,5,0,0"/>
+
+                        <!--Carry-forward-->
+                        <BoxView HeightRequest="1" BackgroundColor="Gray" Opacity="0.6" Margin="-10,30,-10,0" />
+                        <StackLayout Orientation="Horizontal" Margin="20,4,0,4" HeightRequest="35">
+                            <Label Text="Carry-forward forgotten tasks" VerticalOptions="Center" Margin="0,1,0,0 "/>
+                            <Switch IsToggled="{Binding IsCarryingForgottenTasksForward, Mode=TwoWay}" VerticalOptions="Center" OnColor="Red"
                                     Scale=".9" HorizontalOptions="EndAndExpand" />
                         </StackLayout>
-                    </ViewCell>
-                </TableSection>
-                <TableSection>
-                    <ViewCell Height="44">
-                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
-                            <Label Text="Save taken photos to Camera Roll" VerticalOptions="Center" />
-                            <Switch IsToggled="{Binding IsSavingPhotosToCameraRoll, Mode=TwoWay}" VerticalOptions="Center"
-                                    Scale=".9" HorizontalOptions="EndAndExpand" />
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>
-                <!--<TableSection Title="Data">
-                    <ViewCell Height="44">
-                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
-                            <Label Text="Online Mode" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                            <Switch VerticalOptions="Center" Scale=".9" />
-                        </StackLayout>
-                    </ViewCell>
-                    <ViewCell Height="44">
-                        <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
-                            <Label Text="Upload interval" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                            <Picker ItemsSource="" SelectedItem="">
-                                <Picker.Effects>
-                                    <customEffects:BorderlessEffect />
-                                </Picker.Effects>
-                            </Picker>
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>-->
-            </TableView>
-        </ScrollView>
+                        <BoxView HeightRequest="1" BackgroundColor="Gray" Opacity="0.6" Margin="-10,0" />
+                        <Label Text="If you miss a task, it will be carried over to the next day (unless that day also has a task like that)." FontSize="13" TextColor="Gray"
+                               Margin="0,5,0,0"/>
+
+
+                    </StackLayout>
+                </ScrollView>
+                <ScrollView Grid.Row="1" IsVisible="False">
+                    <TableView Intent="Form" HasUnevenRows="true">
+                        <TableSection Title="Notifications">
+                            <ViewCell Height="44">
+                                <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                                    <Label Text="Notifications" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+                                    <Switch IsToggled="{Binding AreNotificationsEnabled, Mode=TwoWay}" VerticalOptions="Center"
+                                            Scale=".9"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell Height="44" IsEnabled="{Binding AreNotificationsEnabled}">
+                                <StackLayout Orientation="Horizontal" Margin="15,0,-5,0">
+                                    <Label VerticalOptions="Center" Text="Reminder presentation time"
+                                           Opacity="{Binding ReminderLinesOpacity}" />
+                                    <ImageButton Command="{Binding ShowReminderPresentationTimeExplanation}" Source="QuestionIcon.png"
+                                                 Scale=".7" VerticalOptions="Center" Margin="5,0,0,0" />
+                                    <!--<TimePicker x:Name="TimePicker" HorizontalOptions="EndAndExpand" WidthRequest="100" 
+                                                Time="{Binding NotificationTime, Mode=TwoWay}" Opacity="{Binding ReminderLinesOpacity}"
+                                                IsEnabled="{Binding AreNotificationsEnabled}">
+                                        <TimePicker.Effects>
+                                            <customEffects:BorderlessEffect />
+                                        </TimePicker.Effects>
+                                    </TimePicker>-->
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                        <TableSection>
+                            <ViewCell Height="44">
+                                <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                                    <Label Text="Carry-forward forgotten tasks" VerticalOptions="Center" />
+                                    <ImageButton Command="{Binding ShowCarryForwardExplanation}" Source="QuestionIcon.png"
+                                                 Scale=".7" VerticalOptions="Center" Margin="5,0,0,0" />
+                                    <Switch IsToggled="{Binding IsCarryingForgottenTasksForward, Mode=TwoWay}" VerticalOptions="Center"
+                                            Scale=".9" HorizontalOptions="EndAndExpand" />
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                        <TableSection>
+                            <ViewCell Height="44">
+                                <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                                    <Label Text="Save taken photos to Camera Roll" VerticalOptions="Center" />
+                                    <Switch IsToggled="{Binding IsSavingPhotosToCameraRoll, Mode=TwoWay}" VerticalOptions="Center"
+                                            Scale=".9" HorizontalOptions="EndAndExpand" />
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                        <!--<TableSection Title="Data">
+                            <ViewCell Height="44">
+                                <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                                    <Label Text="Online Mode" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                    <Switch VerticalOptions="Center" Scale=".9" />
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell Height="44">
+                                <StackLayout Orientation="Horizontal" Margin="15,0,20,0">
+                                    <Label Text="Upload interval" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                    <Picker ItemsSource="" SelectedItem="">
+                                        <Picker.Effects>
+                                            <customEffects:BorderlessEffect />
+                                        </Picker.Effects>
+                                    </Picker>
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>-->
+                    </TableView>
+                </ScrollView>
+            </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </rootpages:SafeAreaRespectingPage>
