@@ -311,6 +311,31 @@ namespace PlantAlarm.Services
         }
 
         /// <summary>
+        /// Carries over all forgotten activities to today, given that today has no acitivity of the same task.
+        /// </summary>
+        /// <returns>A Task object representing the work to be done.</returns>
+        public static async Task MoveForgottenTasksForward()
+        {
+            var allForgottenPastActivities = (await asyncDb.Table<PlantActivityItem>()
+                .ToListAsync())
+                .Where(pai => pai.Time.Date < DateTime.Now.Date && !pai.IsCompleted);
+
+            await Task.WhenAll(allForgottenPastActivities
+                .Select(async (activity) =>
+                {
+                    var sameActivityToday = await asyncDb.Table<PlantActivityItem>()
+                        .Where(pai => pai.Time == DateTime.Now && pai.PlantTaskFk == activity.PlantTaskFk)
+                        .FirstOrDefaultAsync();
+
+                    if (sameActivityToday == null)
+                    {
+                        activity.Time = DateTime.Now;
+                        await asyncDb.UpdateAsync(activity);
+                    }
+                }));
+        }
+
+        /// <summary>
         /// Creates all activities for the next 60 days that haven't been created yet.
         /// You should NOT call this method when the task has changed since the last AddActivitiesFromTaskAsync() call.
         /// </summary>
@@ -486,7 +511,7 @@ namespace PlantAlarm.Services
 
             for (int i = 0; i <= numberOfDays; i++)
             {
-                result[i] = activities.Where(act => act.Time.Day == from.Date.AddDays(i).Day).ToList();
+                result[i] = activities.Where(act => act.Time.Date == from.AddDays(i).Date).ToList();
             }
 
             return result;

@@ -10,6 +10,10 @@ namespace PlantAlarm.Helpers
         {
             string result = "";
 
+            if (plant.Name.Count() == 0) {
+                return result;
+            }
+
             string[] words = plant.Name.Split(' ');
             for (int i = 0; i < Math.Min(2, words.Count()); i++)
             {

@@ -103,9 +103,7 @@
                                         <Grid BackgroundColor="Transparent">
                                             <Grid x:Name="ImageContainerStack">
                                                 <customControls:SquaredImage Source="{Binding PhotoToAdd.Url}" HorizontalOptions="FillAndExpand" Aspect="AspectFill">
-                                                    <customControls:SquaredImage.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding ShowPhotoOptionsCommand}" />
-                                                    </customControls:SquaredImage.GestureRecognizers>
+                                                    
                                                     <customControls:SquaredImage.Effects>
                                                         <customEffects:RoundedCornerEffect Radius="7" />
                                                         <customEffects:BorderEffect Color="White" Thickness="2" />
@@ -113,10 +111,14 @@
 
                                                 </customControls:SquaredImage>
 
-                                                <Label Text="Add a picture by tapping the button above." HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"
+                                                <Label Text="Add a picture by tapping here or the button above." HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"
                                                        IsVisible="{Binding HasNoPhoto}" HorizontalTextAlignment="Center"/>
                                             </Grid>
                                         </Grid>
+
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding AddPhotoCommand}" />
+                                        </StackLayout.GestureRecognizers>
                                     </StackLayout>
                 
                                     <StackLayout.Effects>

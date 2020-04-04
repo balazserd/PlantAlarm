@@ -117,6 +117,7 @@ namespace PlantAlarm.ViewModels
 
         public ICommand ShowReminderPresentationTimeExplanation { get; private set; }
         public ICommand ShowCarryForwardExplanation { get; private set; }
+        public ICommand ReviewCommand { get; private set; }
 
         public SettingsViewModel(Page page)
         {
@@ -136,10 +137,21 @@ namespace PlantAlarm.ViewModels
                 notificationTime = TimeSpan.FromHours(8);
             }
 
-            if (!GlobalProps.TryGetValue(MediaService.kIsSavingPhotosToPhotoLibrary, out object _isSavingPhotosToCameraRoll))
+            //Retrieve saved value of camera roll save, or set default.
+            bool couldGetSavePhotos = GlobalProps.TryGetValue(MediaService.kIsSavingPhotosToPhotoLibrary, out object isSavingPhotosToCameraRollAsObject);
+            if (!couldGetSavePhotos)
             {
                 GlobalProps[MediaService.kIsSavingPhotosToPhotoLibrary] = false;
             }
+            this.IsCarryingForgottenTasksForward = couldGetSavePhotos ? bool.Parse(isSavingPhotosToCameraRollAsObject.ToString()) : false;
+
+            //Retrieve saved value of carry-forwarding of activities, or set default.
+            bool couldGetCarryForward = GlobalProps.TryGetValue(NotificationService.kIsCarryingForgottenTasksForward, out object isCarryingForwardAsObject);
+            if (!couldGetCarryForward)
+            {
+                GlobalProps[NotificationService.kIsCarryingForgottenTasksForward] = true;
+            }
+            this.IsCarryingForgottenTasksForward = couldGetCarryForward ? bool.Parse(isCarryingForwardAsObject.ToString()) : true;
 
             ShowCarryForwardExplanation = new Command(async () =>
             {
@@ -155,6 +167,10 @@ namespace PlantAlarm.ViewModels
                     "Reminder time",
                     "You will receive a push notification at this time of the day if you have tasks to complete.",
                     "OK");
+            });
+            ReviewCommand = new Command(() =>
+            {
+                AppReviewService.InitiateReviewRequest();
             });
         }
 

@@ -30,6 +30,10 @@ namespace PlantAlarm
 
             //Create missing activities
             _ = PlantActivityService.CreateAllMissingActivitiesForNext60Days();
+            if (NotificationService.ShouldCarryForgottenTasksForward())
+            {
+                _ = PlantActivityService.MoveForgottenTasksForward();
+            }
 
             if (Application.Current.Properties.TryGetValue(NotificationService.kNotificationTime, out object sNotiTime))
             {

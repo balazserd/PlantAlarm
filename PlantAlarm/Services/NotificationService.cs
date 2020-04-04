@@ -13,7 +13,7 @@ namespace PlantAlarm.Services
 {
     //This is the service that should be called instead of DependencyService.Get<INotificationServiceProvider>().
     public static class NotificationService
-    { 
+    {
         private static readonly INotificationServiceProvider platformNotiSvc = DependencyService.Get<INotificationServiceProvider>();
 
         /// <summary>
@@ -49,5 +49,13 @@ namespace PlantAlarm.Services
         public static void ExplainNotificationPermissionHandling(Action completionhandler) => platformNotiSvc.ExplainNotificationPermissionHandling(completionhandler);
 
         public static void AskForNotificationPermission() => platformNotiSvc.AskForNotificationPermission();
+
+        public static bool ShouldCarryForgottenTasksForward() {
+            bool couldParse = bool.TryParse(Application.Current.Properties[kIsCarryingForgottenTasksForward].ToString(), out bool isCarryingForward);
+
+            if (!couldParse) return false;
+
+            return isCarryingForward;
+        }
     }
 }

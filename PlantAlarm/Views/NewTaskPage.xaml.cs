@@ -10,7 +10,6 @@ namespace PlantAlarm.Views
 {
     public partial class NewTaskPage : SafeAreaRespectingPage
     {
-        private const int CellHeight = 44;
         private readonly NewTaskViewModel vm;
 
         public NewTaskPage(bool isEditingMode, PlantTask taskToEdit = null)
@@ -22,11 +21,6 @@ namespace PlantAlarm.Views
 
             this.BindingContext = new NewTaskViewModel(this, isEditingMode, taskToEdit);
             vm = this.BindingContext as NewTaskViewModel;
-        }
-
-        void CategorySelectorTapped(object sender, EventArgs e)
-        {
-            //Show category selector window.
         }
 
         void AddPlantsTapped(object sender, EventArgs e)
