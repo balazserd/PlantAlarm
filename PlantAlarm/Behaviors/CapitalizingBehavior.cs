@@ -9,6 +9,7 @@ namespace PlantAlarm.Behaviors
         protected override void OnAttachedTo(Label bindable)
         {
             base.OnAttachedTo(bindable);
+            bindable.Text = bindable.Text.ToUpper();
             bindable.PropertyChanged += this.MakeUpperCase;
         }
 
