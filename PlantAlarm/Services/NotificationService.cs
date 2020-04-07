@@ -51,8 +51,10 @@ namespace PlantAlarm.Services
         public static void AskForNotificationPermission() => platformNotiSvc.AskForNotificationPermission();
 
         public static bool ShouldCarryForgottenTasksForward() {
-            bool couldParse = bool.TryParse(Application.Current.Properties[kIsCarryingForgottenTasksForward].ToString(), out bool isCarryingForward);
+            bool couldGetValue = Application.Current.Properties.TryGetValue(kIsCarryingForgottenTasksForward, out object boolObject);
+            if (!couldGetValue) { return false; }
 
+            bool couldParse = bool.TryParse(Application.Current.Properties[kIsCarryingForgottenTasksForward].ToString(), out bool isCarryingForward);
             if (!couldParse) return false;
 
             return isCarryingForward;

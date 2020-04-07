@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml" Line="17" Column="50" />
-      <File FileName="PlantAlarm.iOS/Main.cs" Line="17" Column="1" />
+      <File FileName="PlantAlarm.iOS/Main.cs" />
       <File FileName="PlantAlarm/Views/NewPlantPage.xaml" />
       <File FileName="PlantAlarm/ViewModels/NewPlantViewModel.cs" />
       <File FileName="PlantAlarm/Views/NewPlantPage.xaml.cs" />
@@ -20,16 +20,16 @@
       <File FileName="PlantAlarm/CustomControls/RoundedCorneredStackLayout.cs" />
       <File FileName="PlantAlarm.iOS/CustomRenderers/RoundedCorneredStackLayoutRenderer_iOS.cs" />
       <File FileName="PlantAlarm.iOS/CustomRenderers/GradientStackLayoutRenderer_iOS.cs" />
-      <File FileName="PlantAlarm/Services/PlantActivityService.cs" Line="323" Column="1" />
+      <File FileName="PlantAlarm/Services/PlantActivityService.cs" />
       <File FileName="PlantAlarm/DatabaseModels/Tables.cs" />
       <File FileName="PlantAlarm/DatabaseModels/LocalDbConnection.cs" />
-      <File FileName="PlantAlarm/App.xaml.cs" Line="27" Column="1" />
+      <File FileName="PlantAlarm/App.xaml.cs" />
       <File FileName="PlantAlarm/Views/RootPages/TasksPage.xaml" />
       <File FileName="PlantAlarm/Views/RootPages/TodoPage.xaml.cs" />
       <File FileName="PlantAlarm/Views/RootPages/PlantsPage.xaml" />
       <File FileName="PlantAlarm/Helpers/Extensions.cs" />
       <File FileName="PlantAlarm/Helpers/XamlHelpers.cs" />
-      <File FileName="PlantAlarm.iOS/DependencyServices/NotificationService_iOS.cs" Line="79" Column="1" />
+      <File FileName="PlantAlarm.iOS/DependencyServices/NotificationService_iOS.cs" />
       <File FileName="PlantAlarm/CustomControls/RoundedImage.cs" />
       <File FileName="PlantAlarm/CustomControls/SquaredImageContainerStack.cs" />
       <File FileName="PlantAlarm/CustomControls/SquaredImage.cs" />
@@ -53,23 +53,25 @@
       <File FileName="PlantAlarm/AppShell.xaml" />
       <File FileName="PlantAlarm/AppShell.xaml.cs" />
       <File FileName="PlantAlarm/Views/RootPages/SafeAreaRespectingPage.cs" />
-      <File FileName="PlantAlarm/ViewModels/SettingsViewModel.cs" Line="173" Column="1" />
-      <File FileName="PlantAlarm/Views/RootPages/SettingsPage.xaml" Line="126" Column="91" />
+      <File FileName="PlantAlarm/ViewModels/SettingsViewModel.cs" />
+      <File FileName="PlantAlarm/Views/RootPages/SettingsPage.xaml" />
       <File FileName="../../../../Library/Frameworks/Mono.framework/External/xbuild/Xamarin/iOS/Xamarin.iOS.Common.targets" />
-      <File FileName="PlantAlarm/Services/NotificationService.cs" Line="56" Column="1" />
+      <File FileName="PlantAlarm/Services/NotificationService.cs" />
       <File FileName="PlantAlarm/Behaviors/FadingBehavior.cs" />
       <File FileName="PlantAlarm/Behaviors/DoubleDigitEntryCheckingBehavior.cs" />
       <File FileName="PlantAlarm/Effects/NotchEqualizerForColViewsEffect.cs" />
       <File FileName="PlantAlarm/Behaviors/CapitalizingBehavior.cs" />
-      <File FileName="PlantAlarm.Android/MainActivity.cs" Line="1" Column="1" />
-      <File FileName="PlantAlarm.iOS/AppDelegate.cs" Line="33" Column="40" />
-      <File FileName="PlantAlarm/DependencyServices/IAppReviewServiceProvider.cs" Line="6" Column="30" />
-      <File FileName="PlantAlarm/DependencyServices/IMediaManagementService.cs" Line="1" Column="1" />
-      <File FileName="PlantAlarm/DependencyServices/INotificationServiceProvider.cs" Line="1" Column="1" />
-      <File FileName="PlantAlarm.iOS/DependencyServices/AppReviewService_iOS.cs" Line="15" Column="107" />
-      <File FileName="PlantAlarm.iOS/DependencyServices/MediaManagementService_iOS.cs" Line="1" Column="1" />
-      <File FileName="PlantAlarm/Services/AppReviewService.cs" Line="11" Column="60" />
-      <File FileName="PlantAlarm.iOS/PrivacyPolicy.txt" Line="6" Column="1" />
+      <File FileName="PlantAlarm.Android/MainActivity.cs" />
+      <File FileName="PlantAlarm.iOS/AppDelegate.cs" />
+      <File FileName="PlantAlarm/DependencyServices/IAppReviewServiceProvider.cs" />
+      <File FileName="PlantAlarm/DependencyServices/IMediaManagementService.cs" />
+      <File FileName="PlantAlarm/DependencyServices/INotificationServiceProvider.cs" />
+      <File FileName="PlantAlarm.iOS/DependencyServices/AppReviewService_iOS.cs" />
+      <File FileName="PlantAlarm.iOS/DependencyServices/MediaManagementService_iOS.cs" />
+      <File FileName="PlantAlarm/Services/AppReviewService.cs" />
+      <File FileName="PlantAlarm.iOS/PrivacyPolicy.txt" />
+      <File FileName="PlantAlarm/Helpers/CallbackCommand.cs" />
+      <File FileName="PlantAlarm.iOS/Info.plist" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -84,9 +86,7 @@
                 <Node name="CalendarDayViewCell.xaml" expanded="True" />
               </Node>
               <Node name="DatabaseModels" expanded="True" />
-              <Node name="DependencyServices" expanded="True">
-                <Node name="IAppReviewServiceProvider.cs" selected="True" />
-              </Node>
+              <Node name="DependencyServices" expanded="True" />
               <Node name="Effects" expanded="True" />
               <Node name="Helpers" expanded="True" />
               <Node name="Services" expanded="True" />
@@ -102,6 +102,7 @@
               <Node name="CustomRenderers" expanded="True" />
               <Node name="DependencyServices" expanded="True" />
               <Node name="Effects" expanded="True" />
+              <Node name="Info.plist" selected="True" />
             </Node>
           </Node>
         </State>
@@ -110,12 +111,10 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.PlantAlarm.Android PreferredExecutionTarget="Android.my_device" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
-  <MonoDevelop.Ide.ItemProperties.PlantAlarm.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.00008020-001C25A82269002E" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.ItemProperties.PlantAlarm.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.72E0B654-894B-461B-80AF-0F09BA9FB73E" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/Services/MediaService.cs" relfile="PlantAlarm/Services/MediaService.cs" line="55" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

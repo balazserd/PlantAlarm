@@ -75,7 +75,7 @@ namespace PlantAlarm.ViewModels
             set
             {
                 isCarryingForgottenTasksForward = value;
-                GlobalProps[NotificationService.kIsCarryingForgottenTasksForward] = value.ToString();
+                GlobalProps[NotificationService.kIsCarryingForgottenTasksForward] = value;
 
                 OnPropertyChanged();
             }
@@ -115,8 +115,6 @@ namespace PlantAlarm.ViewModels
             }
         }
 
-        public ICommand ShowReminderPresentationTimeExplanation { get; private set; }
-        public ICommand ShowCarryForwardExplanation { get; private set; }
         public ICommand ReviewCommand { get; private set; }
 
         public SettingsViewModel(Page page)
@@ -151,23 +149,8 @@ namespace PlantAlarm.ViewModels
             {
                 GlobalProps[NotificationService.kIsCarryingForgottenTasksForward] = true;
             }
-            this.IsCarryingForgottenTasksForward = couldGetCarryForward ? bool.Parse(isCarryingForwardAsObject.ToString()) : true;
+            this.IsCarryingForgottenTasksForward = couldGetCarryForward ? (bool)isCarryingForwardAsObject : true;
 
-            ShowCarryForwardExplanation = new Command(async () =>
-            {
-                await view.DisplayAlert(
-                    "Carry-forwarding Tasks",
-                    "When you miss a task, the next time you log in, it will be carried over to that day's tasks (if that given day hasn't already got a task like that).",
-                    "OK");
-            });
-
-            ShowReminderPresentationTimeExplanation = new Command(async () =>
-            {
-                await view.DisplayAlert(
-                    "Reminder time",
-                    "You will receive a push notification at this time of the day if you have tasks to complete.",
-                    "OK");
-            });
             ReviewCommand = new Command(() =>
             {
                 AppReviewService.InitiateReviewRequest();

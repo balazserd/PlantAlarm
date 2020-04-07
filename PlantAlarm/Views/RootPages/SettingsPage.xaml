@@ -120,7 +120,7 @@
                         <BoxView HeightRequest="0.5" BackgroundColor="#851F1E" Opacity="0.6" Margin="-10,30,-10,0" />
                         <StackLayout Margin="-10,0" BackgroundColor="#FCDADA" Padding="20,4">
                             <Label HeightRequest="35" Text="Leave a review on the App Store" VerticalOptions="Center" Margin="0,1,0,0"
-                                   TextColor="#F33837" FontSize="16" HorizontalOptions="StartAndExpand" />
+                                   TextColor="#F33837" FontSize="16" HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" />
 
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ReviewCommand}" />

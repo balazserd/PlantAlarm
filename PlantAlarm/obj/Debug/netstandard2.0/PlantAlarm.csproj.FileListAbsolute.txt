@@ -25,3 +25,4 @@
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.dll
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/ref/PlantAlarm.dll
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.pdb
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm/obj/Debug/netstandard2.0/PlantAlarm.csprojAssemblyReference.cache
