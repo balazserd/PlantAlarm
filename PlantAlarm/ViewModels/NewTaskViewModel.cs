@@ -76,6 +76,8 @@ namespace PlantAlarm.ViewModels
                 : 1.0;
         }
 
+        public string Title { get => IsEditingMode ? PlantTaskToEdit.Name : "New Plant"; }
+
         public string CommitButtonLabel => this.IsEditingMode ? "Save" : "Add";
 
         public ICommand CommitTaskCommand { get; private set; }

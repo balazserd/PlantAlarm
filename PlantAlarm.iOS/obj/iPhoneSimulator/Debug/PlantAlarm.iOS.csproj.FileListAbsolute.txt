@@ -65,9 +65,9 @@
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.csproj.CopyComplete
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.exe
 /Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/PlantAlarm.iOS.pdb
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro-13.4/ibtool/_BundleResourceWithLogicalName.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro-13.4/actool/_PartialAppManifest.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro-13.4/actool/_BundleResourceWithLogicalName.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro-13.4/coremlc/_PartialAppManifest.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro-13.4/coremlc/_BundleResourceWithLogicalName.items
-/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro-13.4/optimized/
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro max-13.4/ibtool/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro max-13.4/actool/_PartialAppManifest.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro max-13.4/actool/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro max-13.4/coremlc/_PartialAppManifest.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro max-13.4/coremlc/_BundleResourceWithLogicalName.items
+/Users/balazserdesz/Projects/PlantAlarm/PlantAlarm.iOS/obj/iPhoneSimulator/Debug/device-builds/iphone 11 pro max-13.4/optimized/

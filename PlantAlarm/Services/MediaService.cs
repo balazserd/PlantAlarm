@@ -40,6 +40,11 @@ namespace PlantAlarm.Services
                 File.Create(
                     AppendLocalAppDataFolderToPhotoName(photoName)));
 
+            if (IsSavingPhotosToPhotoLibrary())
+            {
+                SavePhotoToCameraRoll(photo);
+            }
+
             return photoName;
         }
 
@@ -103,7 +108,7 @@ namespace PlantAlarm.Services
                         {
                             PhotoSize = PhotoSize.Medium,
                             CompressionQuality = 75,
-                            SaveToAlbum = IsSavingPhotosToPhotoLibrary()
+                            SaveToAlbum = true
                         });
                         break;
                     }

@@ -25,7 +25,7 @@ namespace PlantAlarm.ViewModels
             get => plantItems;
             set
             {
-                plantItems = value;
+                plantItems = new ObservableCollection<PlantItem>(value.OrderBy(pi => pi.Plant.Name));
                 OnPropertyChanged();
             }
         }

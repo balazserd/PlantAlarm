@@ -31,7 +31,7 @@
 
                             <!--MIDDLE PART-->
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                                <Label Text="New Task" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
+                                <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" />
                             </StackLayout>
 
                             <!--RIGHT TOOLBAR-->

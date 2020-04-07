@@ -91,7 +91,6 @@
     <Compile Include="Effects\OverlappingEffect_iOS.cs" />
     <Compile Include="DependencyServices\AppReviewService_iOS.cs" />
     <None Include="PrivacyPolicy.txt" />
-    <None Include="Info %28copy%29.plist" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

@@ -25,7 +25,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.EBUniApps.PlantAlarm</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.2</string>
+	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -38,9 +38,5 @@
 	<string>In order to upload photos from your camera roll, PlantAlarm needs access to your Photo Libraries.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>In order to save the photos you shoot while using PlantAlarm, we need access to adding items to your Photo Libraries.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This permission is never required by the app. This message should never be seen by users.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>This permission is never required by the app. This message should never be seen by users.</string>
 </dict>
 </plist>
